@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : testFile.xml.xml
+    Created on : 4 giugno 2010, 22.41
+    Author     : Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+    Description:
+        This is a minimal configuration file useful to run the test cases on junit.
+-->
+
+<test>
+    <!-- Elements to test the loading of the configuration parameters -->
+    <global>
+        <defaultEncoding>UTF-8</defaultEncoding>
+        <logging>
+            <level>INFO</level>
+            <filePrefix>/tmp/proxyma</filePrefix>
+            <maxLinesPerFile>500000</maxLinesPerFile>
+            <retention>5</retention>
+        </logging>
+    </global>
+    <singleParameter>single</singleParameter>
+    <loadAttribute value="attribute"/>
+    <aggregation>
+        <multivalue name="name0">value0</multivalue>
+        <multivalue name="name1">value1</multivalue>
+        <multivalue name="name2">value2</multivalue>
+    </aggregation>
+
+    <!-- Element to test the instantiation of a new proxy folder by ProxymaFacace -->
+    <defaultContext>
+        <folderSettings>
+            <maxPostSize>5000</maxPostSize>
+            <enabled>true</enabled>
+            <preprocessors>
+                <resourceHandler />
+            </preprocessors>
+            <cacheProvider>m.c.m.proxyma.plugins.caches.EhcacheCacheProvider</cacheProvider>
+            <retriver>m.c.m.proxyma.plugins.retrivers.SimpleHttpResourceRetriver</retriver>
+            <transformers>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUriRewriter</resourceHandler>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUriRewriter</resourceHandler>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
+            </transformers>
+            <serializer>m.c.m.proxyma.plugins.serializers.SimpleSerializer</serializer>
+        </folderSettings>
+    </defaultContext>
+
+    <!-- elements to test the instantiation of a new proxyengine -->
+    <plugins>
+        <avaliableCacheProviders>
+            <cacheProvider>m.c.m.proxyma.plugins.caches.NullCacheProvider</cacheProvider>
+            <cacheProvider>m.c.m.proxyma.plugins.caches.UnexistingCacheProvider</cacheProvider>
+            <cacheProvider>m.c.m.proxyma.plugins.retrivers.NullRetriver</cacheProvider>
+        </avaliableCacheProviders>
+
+        <avaliablePreprocessors>
+            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.NullPreprocessor</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.retrivers.NullRetriver</resourceHandler>
+        </avaliablePreprocessors>
+
+        <avaliableTransformers>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.NullTransformer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.UnexistingTransformer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.NullPreprocessor</resourceHandler>
+        </avaliableTransformers>
+
+        <availableSerializers>
+            <resourceHandler>m.c.m.proxyma.plugins.serializers.NullSerializer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.serializers.UnexistingSerializer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.NullTransformer</resourceHandler>
+        </availableSerializers>
+
+        <availableRetrivers>
+            <resourceHandler>m.c.m.proxyma.plugins.retrivers.NullRetriver</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.retrivers.UnexistingRetriver</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.serializers.NullSerializer</resourceHandler>
+        </availableRetrivers>
+    </plugins>
+
+    <!-- Element to test plugin-specefic configuration loading -->
+    <plugins-specific>
+        <plugin name="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider">
+
+        </plugin>
+    </plugins-specific>
+</test>
