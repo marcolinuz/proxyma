@@ -1,0 +1,214 @@
+<project name="proxyma" default="dist" basedir=".">
+
+    <!-- Created By Marco Casavecchia Morganti (marcolinuz) -->
+    <!-- (ICQ UIN: 245662445) -->
+
+    <property name="version" value="0.7"/>
+
+    <property name="resources.dir" value="../resources"/>
+    <property name="extlib.dir" value="../lib-ext"/>
+    <property name="jar.name" value="${ant.project.name}-${version}.jar"/>
+    <property name="war.name" value="${ant.project.name}-${version}.war"/>
+
+    <property name="jar.name.14" value="${ant.project.name}-${version}-jdk14.jar"/>
+    <property name="jar.name.50" value="${ant.project.name}-${version}-jdk5.jar"/>
+    <property name="war.name.14" value="${ant.project.name}-${version}-jdk14.war"/>
+    <property name="war.name.50" value="${ant.project.name}-${version}-jdk5.war"/>
+
+    <property name="assemble.dir.14" value="../assemble14"/>
+    <property name="assemble.dir.50" value="../assemble50"/>
+    <property name="jsp.dir" value="../pages"/>
+    <property name="img.dir" value="../img"/>
+    <property name="lib.dir" value="../lib"/>
+    <property name="lib.dir.14" value="../lib14"/>
+    <property name="lib.dir.50" value="../lib50"/>
+    <property name="doc.dir" value="../doc/apidocs"/>
+
+    <!-- classpath -->
+    <path id="compile.classpath.14">
+        <pathelement path="../lib/htmlparser.jar"/>
+        <pathelement path="../lib/commons-codec-1.3.jar"/>
+        <pathelement path="../lib/slf4j-api-1.3.1.jar"/>
+        <pathelement path="../lib/slf4j-log4j12-1.3.1.jar"/>
+        <pathelement path="../lib/log4j-1.2.14.jar"/>
+        <pathelement path="../lib/ehcache-1.3.0.jar"/>
+        <pathelement path="../lib14/backport-util-concurrent.jar"/>
+        <pathelement path="../classes14"/>
+        <pathelement path="../lib-ext/servlet-api.jar"/>
+        <pathelement path="../lib-ext/portlet-api.jar"/>
+    </path>
+
+    <path id="compile.classpath.50">
+        <pathelement path="../lib/htmlparser.jar"/>
+        <pathelement path="../lib/commons-codec-1.3.jar"/>
+        <pathelement path="../lib/slf4j-api-1.3.1.jar"/>
+        <pathelement path="../lib/slf4j-log4j12-1.3.1.jar"/>
+        <pathelement path="../lib/log4j-1.2.14.jar"/>
+        <pathelement path="../lib/ehcache-1.3.0.jar"/>
+        <pathelement path="../lib50/backport-util-concurrent.jar"/>
+        <pathelement path="../classes50"/>
+        <pathelement path="../lib-ext/servlet-api.jar"/>
+        <pathelement path="../lib-ext/portlet-api.jar"/>
+    </path>
+
+    <!-- build of application for java5-->
+    <target name="compile50">
+        <mkdir dir="../classes50"/>
+
+        <!-- target a 1.5 jvm -->
+        <javac srcdir="../src" destdir="../classes50" debug="on" deprecation="on" nowarn="on" target="1.5" source="1.4">
+            <classpath refid="compile.classpath.50"/>
+        </javac>
+
+    </target>
+
+    <!-- Normal build of application for jdk1.4-->
+    <target name="compile14">
+        <mkdir dir="../classes14"/>
+
+        <!-- target a 1.4 jvm -->
+        <javac srcdir="../src" destdir="../classes14" debug="on" deprecation="on" target="1.4" source="1.4">
+            <classpath refid="compile.classpath.14"/>
+        </javac>
+
+    </target>
+
+    <!-- Elimina le directory di output -->
+    <target name="clean">
+        <delete file="../${war.name.14}"/>
+        <delete file="../${war.name.50}"/>
+        <delete file="../${jar.name.14}"/>
+        <delete file="../${jar.name.50}"/>
+        <delete dir="../doc"/>
+        <delete dir="${assemble.dir.14}"/>
+        <delete dir="${assemble.dir.50}"/>
+        <delete dir="../classes14"/>
+        <delete dir="../classes50"/>
+    </target>
+
+    <!-- Generate the application jars (one for jdk14 and one for jdk5) -->
+    <target name="makeJar14" depends="compile14">
+        <mkdir dir="${assemble.dir.14}"/>
+        <mkdir dir="${assemble.dir.14}/WEB-INF/lib"/>
+        <jar jarfile="${assemble.dir.14}/WEB-INF/lib/${jar.name.14}" basedir="../classes14"/>
+    </target>
+    <target name="makeJar50" depends="compile50">
+        <mkdir dir="${assemble.dir.50}"/>
+        <mkdir dir="${assemble.dir.50}/WEB-INF/lib"/>
+        <jar jarfile="${assemble.dir.50}/WEB-INF/lib/${jar.name.50}" basedir="../classes50"/>
+    </target>
+
+    <!-- create both jdk 14 and jdk 5 distributions -->
+    <target name="dist" depends="dist14,dist50" description="create both jdk 14 and jdk 5 distributions"/>
+
+    <target name="dist14" depends="makeJar14" description="create .war and .jar distribution for jdk14">
+        <!-- copying jsp -->
+        <mkdir dir="${assemble.dir.14}/pages"/>
+        <copy todir="${assemble.dir.14}/pages/">
+            <fileset dir="${jsp.dir}"/>
+        </copy>
+
+        <!-- copying images -->
+        <mkdir dir="${assemble.dir.14}/img"/>
+        <copy todir="${assemble.dir.14}/img/">
+            <fileset dir="${img.dir}"/>
+        </copy>
+
+	<!-- Create logs directory -->
+        <mkdir dir="${assemble.dir.14}/WEB-INF/logs"/>
+
+        <!-- copying libaries -->
+        <copy todir="${assemble.dir.14}/WEB-INF/lib/">
+            <fileset dir="${lib.dir}"/>
+            <fileset dir="${lib.dir.14}"/>
+        </copy>
+
+        <!-- copying resources -->
+        <copy todir="${assemble.dir.14}/WEB-INF/">
+            <fileset dir="${resources.dir}" includes="*.xml"/>
+        </copy>
+
+        <!-- copy any properties files from the source folder into the 
+	    classes folder (this will cover log4j.properties at this time -->
+        <copy todir="${assemble.dir.14}/WEB-INF/classes">
+            <fileset dir="${resources.dir}" includes="*.properties"/>
+        </copy>
+        
+        <!-- put index in the right position -->
+        <move file="${assemble.dir.14}/pages/index.jsp" todir="${assemble.dir.14}"/>
+
+        <!-- build the war file -->
+        <war warfile="../${war.name.14}" webxml="../web.xml">
+            <fileset dir="${assemble.dir.14}"/>
+        </war>
+
+        <!-- keep the jar file too, for imbedding in other applications -->
+        <move todir=".." file="${assemble.dir.14}/WEB-INF/lib/${jar.name.14}"/>
+    </target>
+
+    <target name="dist50" depends="makeJar50" description="create .war and .jar distribution for jdk5">
+        <!-- copying jsp -->
+        <mkdir dir="${assemble.dir.50}/pages"/>
+        <copy todir="${assemble.dir.50}/pages/">
+            <fileset dir="${jsp.dir}"/>
+        </copy>
+
+        <!-- copying images -->
+        <mkdir dir="${assemble.dir.50}/img"/>
+        <copy todir="${assemble.dir.50}/img/">
+            <fileset dir="${img.dir}"/>
+        </copy>
+
+	<!-- Create logs directory -->
+        <mkdir dir="${assemble.dir.50}/WEB-INF/logs"/>
+
+        <!-- copying libaries -->
+        <copy todir="${assemble.dir.50}/WEB-INF/lib/">
+            <fileset dir="${lib.dir}"/>
+            <fileset dir="${lib.dir.50}"/>
+        </copy>
+
+        <!-- copying resources -->
+        <copy todir="${assemble.dir.50}/WEB-INF/">
+            <fileset dir="${resources.dir}" includes="*.xml"/>
+        </copy>
+
+        <!-- copy any properties files from the resource folder into the 
+	classes folder (this will cover log4j.properties at this time -->
+        <copy todir="${assemble.dir.50}/WEB-INF/classes">
+            <fileset dir="${resources.dir}" includes="*.properties"/>
+        </copy>
+
+        <!-- put index in the right position -->
+        <move file="${assemble.dir.50}/pages/index.jsp" todir="${assemble.dir.50}"/>
+
+        <!-- build the war file -->
+        <war warfile="../${war.name.50}" webxml="../web.xml">
+            <fileset dir="${assemble.dir.50}"/>
+        </war>
+
+        <!-- keep the jar file too, for imbedding in other applications -->
+        <move todir=".." file="${assemble.dir.50}/WEB-INF/lib/${jar.name.50}"/>
+    </target>
+
+    <target name="javadoc" description="generate the javadoc">
+        <delete dir="${doc.dir}"/>
+        <mkdir dir="${doc.dir}"/>
+        <javadoc destdir="${doc.dir}" packagenames="org.homelinux.nx01.proxyma.*"
+                 Windowtitle="proxyma ${version}"
+                 Header="&lt;b&gt;&lt;a href=&quot;http://proxyma.sourceforge.net&quot;&gt;proxyma ${version}&lt;/a&gt;&lt;/b&gt;"
+                 Use="true" breakiterator="true">
+            <classpath refid="compile.classpath.50"/>
+            <sourcepath path="../src"/>
+
+            <!-- note that the jdk source code is referenced here so that 
+	         javadoc will be generated from interface class methods when
+		 none is specified in the implementation -->
+            <!--
+                        <sourcepath path="/j2sdk1.4.2_13/src"/>
+                        <link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+                        <link href="http://java.sun.com/j2ee/1.4/docs/api/"/>
+            -->
+        </javadoc>
+    </target>
+</project>

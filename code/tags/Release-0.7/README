@@ -1,0 +1,99 @@
+Hello all,
+
+This is my little project "Proxyma".
+It's a multiple reverse-proxy implementation with a smart cache and basic url-rewriting capabilities.
+It's not perfect, but can handle most of the pages (and web applications) that I had tested.
+
+NOTE: this is a beta-version (0.7) and is released under the GPL license
+(see the LICENSE file for more informations)
+
+Requirements:
+You neeed "ant" and Java to build this project
+You need also a running Servlet Container like tomcat, jetty, ecc..
+to deploy the web-application.
+
+Binary Distribution:
+I added to this package a "dist" directory where you can find the
+compiled packages.
+
+Getting started:
+ * Enter into the project directory (cd proxyma)
+
+ * Due to the use of backports for Concurrent utils, I have 2
+   different targets to buil the project based upon your Java Virtual Machine.
+   type: "ant -f ./ant/build.xml" to build both versions.
+   You can use the 1.4 build even on a 1.5 VM, but if you want best performance
+   i suggest you to use the proper version.
+
+ * Deploy the generated proxyma-0.3.war file into your application server.
+
+ * go to the url of proxyma and click on the link "Proxyma Console"
+
+ * Add a rule (to begin you can use the default rule :O)
+
+ * Click on the generated rule and surf the site with proxyma.
+
+ A special Thanks to Arthur Blake (arthur.blake@gmail.com) for his help ;O)
+
+------------------------------
+ RELEASE NOTES: (Proxyma 0.7)
+------------------------------
+
+ * Introduced a Facade class to make easyest the use of Proxyma as a library.
+
+ * Introduced a configuration bean and a factory class to build the reverse
+   proxy instances in a better way.
+ 
+ * Introduced a new logging policy "Performance Test" that could be useful for
+   cache benchmarks.
+ 
+ * Introduced a Cache subsystem that can store remote resources (even rewritten
+   ones) into a Buffer Class.
+   This new class can store data into the RAM and into a chache File (this 
+   depends by the size of the resource).
+   So, now you can choose the maximum size of a cached object for any 
+   masqueraded resource and if you want to enable or disable the cache.
+   Note: The Cache subsystem is based upon the ehcache library.
+
+ * Introduced Cookie-Rewriting/Forwarding feature. 
+   Now Proxyma can handle Cookies in a better way.
+
+------------------------------
+ RELEASE NOTES: (Proxyma 0.5)
+------------------------------
+ * Introduced a ReverseProxyForServlets Class to simplify the deploy of proxyma
+   into custom web-applications.
+
+ * Introduced by Arthur Blake and revisited by me all the Audit functionality. 
+   Now we can select between two kinds of logging for Debug: 
+   on-line and on-file. 
+
+ * Introduced a new logging policy: "Production" that creates an access log
+   of clients requestts in Common Logging Format 
+   (so you can use it with third party log analyzers). 
+
+------------------------------
+ RELEASE NOTES: (Proxyma 0.3)
+------------------------------
+
+ In this release I made a massive refactory of the whole project and now 
+ Proxyma has the following new features.
+
+ * Introduced full support for multiple proxy target, now you can masquerade
+   many hosts wiht the same instance of proxyma.
+   Note that this support is cross/rule enabled. So if a page has a link that
+   points to another resource proxed by another rule, it will be rewritten in
+   according to that rule.
+ * Introduced support to change, add, remove, pause, ecc.. the proxy targets
+   on-the-fly BO)
+ * Introduced a Configuration Console to manage multiple rules
+ * Introduced a feature that makes proxyma show you the current available
+   rules. You only need to browse to the base path of the
+   HttpReverseProxyServlet..  (see the web.xml file for more info)
+ * Introduced optimizations for java 5 and java 4 (via backports util libraries)
+ * Introduced apache commons library for BASE64 Encoding/Decoding
+ * Improoved the proxy API with a RuleFactory that could be useful for manage
+   rules persistence.
+ * Added a section into web.xml that helps you to add basic protection to the
+   configuration console (on tomcat).
+ * Added support for some non-standard attributes that works on MSIE, Netscape and Firefox.

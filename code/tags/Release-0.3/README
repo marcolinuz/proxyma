@@ -1,0 +1,59 @@
+Hello all,
+
+This is my little project "Proxyma".
+It's a multiple reverse-proxy servlet with basic url-rewriting capabilities.
+It is not perfect, but can handle most of the pages (and web applications) that I have tested.
+
+NOTE: this is a beta-version (0.3) and is released under the GPL license
+(see the LICENSE file for more informations)
+
+Requirements:
+You neeed "ant" and Java to build this project
+You need also a running Servlet Container like tomcat, jetty, ecc..
+to deploy the web-application.
+
+Getting started:
+ * Enter into the project directory (cd proxyma)
+
+ * Due to the use of backports for Concurrent utils, I have 2
+   different targets to buil the project based upon your Java Virtual Machine.
+   for Java 1.5+ type: ant -f ./ant/build.xml dist50
+   for Java 1.4  type: ant -f ./ant/build.xml dist14
+   You can use the 1.4 build even on a 1.5 VM, but if you want best performance
+   i suggest you to use the proper version.
+
+ * Deploy the generated proxyma-0.3.war file into your application server.
+
+ * go to the url of proxyma and click on the link "Proxyma Console"
+
+ * Add a rule (to begin you can use the default rule :O)
+
+ * Click on the generated rule and surf the site with proxyma.
+
+ A special Thanks to Arthur Blake (arthur.blake@gmail.com) for his help ;O)
+
+------------------------------
+ RELEASE NOTES: (Proxyma 0.3)
+------------------------------
+
+ In this release I made a massive refactory of the whole project and now 
+ Proxyma has the following new features.
+
+ * Introduced full support for multiple proxy target, now you can masquerade
+   many hosts wiht the same instance of proxyma. 
+   Note that this support is cross/rule enabled. So if a page has a link that
+   points to another resource proxed by another rule, it will be rewritten in 
+   according to that rule.
+ * Introduced support to change, add, remove, pause, ecc.. the proxy targets 
+   on-the-fly BO)
+ * Introduced a Configuration Console to manage multiple rules
+ * Introduced a feature that makes proxyma show you the current available
+   rules. You only need to browse to the base path of the 
+   HttpReverseProxyServlet..  (see the web.xml file for more info)
+ * Introduced optimizations for java 5 and java 4 (via backports util libraries)
+ * Introduced apache commons library for BASE64 Encoding/Decoding
+ * Improved the proxy API with a RuleFactory that could be useful for manage 
+   rules persistence.
+ * Added a section into web.xml that helps you to add basic protection to the
+   configuration console (on tomcat).
+ * Added support for some non-standard attributes that works on MSIE, Netscape and Firefox.

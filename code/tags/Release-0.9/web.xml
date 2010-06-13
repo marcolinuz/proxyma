@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<!-- Created By Marco Casavecchia Morganti (marcolinuz@gmail.com) -->
+<!-- (ICQ UIN: 245662445) -->
+
+<web-app>
+    <!-- Application Name -->
+    <display-name>
+        Proxyma (Multiple Reverse/Proxy Application)
+    </display-name>
+
+    <!-- Application Description -->
+    <description>
+        This is a Java Reverse Proxy with basic url-rewriting capabilities.
+    </description>
+
+    <!-- The main proxy servlet is defined here -->
+    <servlet>
+<!--
+        <description>
+            This is the main servlet that processes the requests and performs
+            the url-rewriting job for the retrived pages.
+        </description>
+-->
+        <servlet-name>HttpReverseProxyServlet</servlet-name>
+        <servlet-class>
+            org.homelinux.nx01.proxyma.HttpReverseProxyServlet
+        </servlet-class>
+
+        <!-- Show Masqueraded resource list -->
+        <init-param>
+<!--
+            <description>
+                This is a boolean parameter. 
+        If enabled (set it to "enabled"), browsingn to the sevlet
+                without specify a resource to fetch makes it show you a page
+        with the current available destinations, their link and status.
+                If is set to "disabled" it will send back an http error 400
+                (request syntattically incorrect).
+            </description>
+-->
+            <param-name>showMasqueradedResources</param-name>
+            <param-value>enabled</param-value>
+        </init-param>
+
+        <!-- Cache Subsystem configuration file -->
+        <init-param>
+<!--
+            <description>
+                This is an optional parameter that specifies the path of the configuration file for the ehcache subsystem.
+                If you don't set this parameter the cache will be configured with default parameters.
+                The file could be useful to make a fine tuning of the the cache subsystem used by proxyma to speed-up its job.
+            </description>
+-->
+            <param-name>ehcacheSubsystemConfigurationFile</param-name>
+            <param-value>/WEB-INF/ehcache.xml</param-value>
+        </init-param>
+
+        <!-- Proxy connections are not enabled by Default
+        <init-param>
+            <description>
+                If needed you can specify an Http Proxy to use
+                for retrive the pages.
+            </description>
+            <param-name>proxyHost</param-name>
+            <param-value>myproxy.mynet</param-value>
+        </init-param>
+
+        <init-param>
+            <description>
+                If you provided an Http Proxy for retrive the
+                pages you must provide also a port for it.
+            </description>
+            <param-name>proxyPort</param-name>
+            <param-value>3128</param-value>
+        </init-param>
+        -->
+    </servlet>
+
+    <!-- This is the configuration servlet of proxyma -->
+    <servlet>
+<!--
+        <description>
+            This is the configuration servlet of Proxyma
+        </description>
+-->
+        <servlet-name>ProxymaConfigurationServlet</servlet-name>
+        <servlet-class>
+            org.homelinux.nx01.proxyma.ProxymaConfigurationServlet
+        </servlet-class>
+        <init-param>
+<!--
+            <description>
+                Tells to the Configuration Servlet the context path
+                where the HttpReverseProxyServlet is deployed.
+                This should be equal to the value of the "servlet-mapping"
+                of the httpReverseProxyServlet without any slash "/" character.
+            </description>
+-->
+            <param-name>httpReverseProxyServletSubPath</param-name>
+            <param-value>fetch</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- This is the configuration for the Proxyma-Portlet
+        (This is under development and does not works!!) -->
+    <!--
+    <servlet>
+        <servlet-name>ProxymaPortlet</servlet-name>
+        <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+        <init-param>
+          <param-name>portlet-name</param-name>
+          <param-value>ProxymaPortlet</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    -->
+
+    <!-- Context paths of the proxy servlet -->
+    <servlet-mapping>
+        <servlet-name>HttpReverseProxyServlet</servlet-name>
+        <url-pattern>/fetch/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Context paths of the configuration servlet -->
+    <servlet-mapping>
+        <servlet-name>ProxymaConfigurationServlet</servlet-name>
+        <url-pattern>/config</url-pattern>
+    </servlet-mapping>
+
+    <!-- Context path of the portlet
+         (This is under development and does not works!!) -->
+    <!--
+    <servlet-mapping>
+        <servlet-name>ProxymaPortlet</servlet-name>
+        <url-pattern>/PlutoInvoker/ProxymaPortlet</url-pattern>
+    </servlet-mapping>
+    -->
+
+    <!-- Define reference to the user database for looking up roles
+         NOTE: This is a Tomcat specific configuration.
+               if you want the same thing on your application server
+               see the specific manuals.
+         The following Sections set an Authentication Realm
+         to protect the access to the Proxyma Configuration Console
+         (disabled by default) -->
+<!-- Uncomment to activate BASIC authentication
+    <resource-env-ref>
+        <description>
+          Link to the UserDatabase instance from which we request lists of
+          defined role names.  Typically, this will be connected to the global
+          user database with a ResourceLink element in server.xml or the context
+          configuration file for the Manager web application.
+        </description>
+        <resource-env-ref-name>users</resource-env-ref-name>
+        <resource-env-ref-type>
+            org.apache.catalina.UserDatabase
+        </resource-env-ref-type>
+    </resource-env-ref>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Proxyma Configuration Servlet</web-resource-name>
+            <url-pattern>/config</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>manager</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Proxyma Configuration Console</realm-name>
+    </login-config>
+
+    <security-role>
+        <description>
+            The role that is required to log in to the Proxyma Console
+        </description>
+        <role-name>manager</role-name>
+    </security-role>
+Uncomment until here -->
+
+  <!-- Session configuration parameters -->
+  <session-config>
+      <!-- timeout della sessione http in minuti -->
+      <session-timeout>
+          1
+      </session-timeout>
+  </session-config>
+</web-app>

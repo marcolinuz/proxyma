@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright 2004 The Apache Software Foundation
+Licensed  under the  Apache License,  Version 2.0  (the "License");
+you may not use  this file  except in  compliance with the License.
+You may obtain a copy of the License at 
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed  under the  License is distributed on an "AS IS" BASIS,
+WITHOUT  WARRANTIES OR CONDITIONS  OF ANY KIND, either  express  or
+implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<portlet-app
+    xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+    version="1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd
+                        http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
+    <portlet>
+        <description>Portlet Adapter for Proxyma</description>
+        <portlet-name>ProxymaPortlet</portlet-name>
+        <display-name>Proxyma - Portlet</display-name>
+
+        <portlet-class>org.homelinux.nx01.proxyma.HttpReverseProxyPortlet</portlet-class>
+
+        <!-- The URL to retrive -->
+        <init-param>
+            <description>
+                This is the url to point for retrive the original pages.
+                NOTE: The path must end with a "/".
+            </description>
+            <name>proxyPassHost</name>
+            <value>
+                http://proxyma.sourceforge.net/
+            </value>
+        </init-param>
+
+        <!-- Url rewrite engine status -->
+        <init-param>
+            <description>
+                Enables or disables the rewrite engine.
+                (Possible values are "enabled" or "disabled").
+                If is set to "enabled" the links into retrived pages
+                will be rewritten in according to the current proxyma
+                context path (or the "forceSourceUrl" value if provided).
+            </description>
+            <name>urlRewriteEngine</name>
+            <value>enabled</value>
+        </init-param>
+
+        <!-- Javascript Handling method -->
+        <init-param>
+            <description>
+                If you enabled the Url rewrite engine
+                with this parameter you can control javascript
+                handling. There are 2 possible values:
+                rewrite -> try to rewrite urls into javascript code
+                remove -> remove all the javascript code.
+            </description>
+            <name>javascriptHandlingMode</name>
+            <value>rewrite</value>
+        </init-param>
+
+        <!-- Set the Maximum size of the POST data -->
+        <init-param>
+            <description>
+                This option sets the maximum allowed size for
+                the POST data that comes from the client browser.
+                The default value is 64Kb (65536 Bytes) and
+                it should be a good choice for any use.
+                Please note that this parameter could be useful
+                to avoid some kind of DOS attaks based on large
+                POSTS (that cause high memory consumption).
+                To disable this limit set it to 0 (zero).
+            </description>
+            <name>maxPostDataSize</name>
+            <value>65536</value>
+        </init-param>
+
+        <!-- Enable or Disable Debug mode -->
+        <init-param>
+            <description>
+                Enables or disables the debug mode.
+                (Possible values are "true" or "false").
+                If is "true", the output page will be
+                rendered in plain/text with a lot of useful information.
+            </description>
+            <name>debugMode</name>
+            <value>false</value>
+        </init-param>
+
+        <!-- Enable or Disable Audit mode -->
+        <init-param>
+            <description>
+                Enables or disables the audit mode.
+                (Possible values are "true" or "false").
+                If this is true, the same information from debugMode is
+                written to stdout during processing, without affecting
+                the request and response streams that the user sees.
+            </description>
+            <name>auditMode</name>
+            <value>false</value>
+        </init-param>
+
+        <expiration-cache>-1</expiration-cache>
+
+        <supports>
+        <mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+            <portlet-mode>EDIT</portlet-mode>
+            <portlet-mode>HELP</portlet-mode>
+    </supports>
+
+        <supported-locale>en</supported-locale>
+
+        <portlet-info>
+        <title>Proxyma - Portlet Adapter</title>
+        <short-title>ProxymaPortlet</short-title>
+        <keywords>Reverse/Proxy,Proxy,Url-Rewrite,Single-Sign-On</keywords>
+        </portlet-info>
+    </portlet>
+ </portlet-app>
