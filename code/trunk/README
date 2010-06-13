@@ -1,0 +1,47 @@
+Hello all,
+
+This is my little project "Proxyma".
+It's a multiple reverse-proxy implementation with a smart cache and basic url-rewriting capabilities.
+It's not perfect, but can handle most of the pages (and web applications) that I tested.
+
+NOTE: this is a complete rewrite of the whole project. So, in other words,
+it will NOT be compatible with the latest release poblished (0.9).
+
+The new project is splitted into 3 modules:
+ - proxyma-core -> the core library to use into your own applications
+ - proxyma-webapp -> a simple webapp that uses the core library to deploy a
+                     reverse proxy into any servlet container.
+ - proxyma-config -> a simple web front-end to configure the proxy folders into
+                     proxyma-webapp
+
+As always, it's released under the GPL license. 
+(see the LICENSE file for more informations)
+
+Requirements:
+You neeed "maven 2" and Java to build this project
+You need also a running Servlet Container like tomcat, jetty, glassfish, ecc..
+to deploy the web-application.
+
+Sorry, no binary distribution is available yet.
+
+Getting started:
+ * Enter into the project directory (cd proxyma)
+
+ * Load the project into NetBeans or simply type: "mvn install" to build the 
+   whole project.
+
+ * Deploy the generated proxyma-webapp.war and proxyma-config.war files into 
+   your application server.
+
+ * go to the url of proxyma-config and the "Proxyma Console" will appear.
+
+ * Add a rule (to begin you can use the default rule :O)
+
+ * Click on the generated rule and surf the site with proxyma.
+
+------------------------------
+ RELEASE NOTES: (Proxyma 1.0-SNAPSHOT)
+------------------------------
+
+First project release.
+This is an alpha version.
