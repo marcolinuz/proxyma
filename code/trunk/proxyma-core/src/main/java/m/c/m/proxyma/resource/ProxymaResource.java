@@ -1,7 +1,6 @@
 package m.c.m.proxyma.resource;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -31,7 +30,7 @@ public class ProxymaResource {
      * @param context the context where the Resource will live.
      * @throws NullArgumentException if any of the passed parameters is null
      */
-    public ProxymaResource (ProxymaRequest request, ProxymaResponse response, ProxymaContext context) 
+    public ProxymaResource (ProxymaRequest request, ProxymaResponse response, ProxymaContext context)
            throws NullArgumentException {
         //initialize the logger for this class.
         log = context.getLogger();
