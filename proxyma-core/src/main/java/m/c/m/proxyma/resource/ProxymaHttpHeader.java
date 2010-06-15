@@ -79,6 +79,20 @@ public class ProxymaHttpHeader implements Cloneable, Serializable {
     }
 
     /**
+     * This method clone the current header.
+     *
+     * @return a new and separate instance of the object.
+     * @throws CloneNotSupportedException if the clone operation is not supported
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        ProxymaHttpHeader clone = (ProxymaHttpHeader)super.clone();
+        clone.name = new String(name);
+        clone.value = new String(value);
+        return clone;
+    }
+
+    /**
      * The name of the header
      */
     private String name = null;

@@ -102,4 +102,20 @@ public class ProxymaHttpHeaderTest extends TestCase {
         assertEquals(expResult, instance.toString());
     }
 
+    /**
+     * Test of clone method, of class ProxymaHttpHeader.
+     */
+    public void testClone() throws CloneNotSupportedException {
+        System.out.println("clone");
+
+        ProxymaHttpHeader instance = new ProxymaHttpHeader("name", "value");
+        ProxymaHttpHeader clone = (ProxymaHttpHeader) instance.clone();
+
+        assertNotSame(instance, clone);
+        assertNotSame(instance.getName(), clone.getName());
+        assertEquals(instance.getName(), clone.getName());
+        assertNotSame(instance.getValue(), clone.getValue());
+        assertEquals(instance.getValue(), clone.getValue());
+    }
+
 }

@@ -290,6 +290,54 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
     }
 
     /**
+     * This method clone the current response data into a new separated object.
+     *
+     * @return a new and separate instance of the object.
+     * @throws CloneNotSupportedException if the clone operation is not supported
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        //clone self
+        ProxymaResponseDataBean clone = (ProxymaResponseDataBean)super.clone();
+
+        //Clone headers
+        clone.headers = (HashMap<String, Object>) new HashMap();
+        Iterator<String> stringIterarot = this.getHeaderNames().iterator();
+        String headerName = null;
+        ProxymaHttpHeader header = null;
+        Collection<ProxymaHttpHeader> multiHeader = null;
+        while (stringIterarot.hasNext()) {
+            headerName = stringIterarot.next();
+            if (this.isMultipleHeader(headerName)) {
+                //Process multiple values header.
+                multiHeader = this.getMultivalueHeader(headerName);
+                Iterator<ProxymaHttpHeader> instanceHeaders = multiHeader.iterator();
+                while (instanceHeaders.hasNext()) {
+                    header = instanceHeaders.next();
+                    clone.addHeader(header.getName(), header.getValue());
+                }
+            } else {
+                //Process Sungle value header
+                header = this.getHeader(headerName);
+                clone.addHeader(header.getName(), header.getValue());
+            }
+        }
+
+        //clone cookies
+        clone.cookies = (HashMap<String, Cookie>) new HashMap();
+        Iterator<Cookie> cookieIterator = this.getCookies().iterator();
+        while (cookieIterator.hasNext()) {
+            Cookie original = cookieIterator.next();
+            clone.addCookie((Cookie)original.clone());
+        }
+
+        //Clone data
+        if (data != null)
+            clone.data = (ByteBuffer)data.clone();
+        return clone;
+    }
+
+    /**
      * The collection of the available headers of the response
      */
     private HashMap<String, Object> headers = new HashMap();

@@ -87,6 +87,23 @@ public class FileBufferTest extends TestCase {
         assertTrue(result.length()>0);
     }
 
+    /**
+     * Test of clone method, of class FileBuffer.
+     */
+    public void testClone() throws CloneNotSupportedException {
+        System.out.println("clone");
+        String result = instance.getFileFullPath();
+
+        FileBuffer clone = (FileBuffer) instance.clone();
+
+        assertNotSame(instance, clone);
+        assertSame(instance.getFileFullPath(), clone.getFileFullPath());
+        assertEquals(instance.getSize(), clone.getSize());
+        assertFalse(instance.isLocked());
+        assertTrue(clone.isLocked());
+    }
+
+
     FileBuffer instance = null;
     int size = 0;
 }

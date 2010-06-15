@@ -143,6 +143,25 @@ public class SmartBuffer implements Serializable, Cloneable, ByteBuffer {
     }
 
     /**
+     * This method clones the current object.<br/>
+     * Because it uses the same buffers of its parents as storage area,
+     * the new clone will be locked. <br/>
+     * ..in other words the clone can't be modified.
+     *
+     * @return a new and separate instance of the object.
+     * @throws CloneNotSupportedException if the clone operation is not supported
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        SmartBuffer clone = (SmartBuffer)super.clone();
+        clone.ramBuf = (RamBuffer)ramBuf.clone();
+        if (fileBuf != null)
+            clone.fileBuf = (FileBuffer)fileBuf.clone();
+        clone.locked = true;
+        return clone;
+    }
+
+    /**
      * Obtain the internal FileBuffer to read into it.
      * @return the filebuffer.
      */
