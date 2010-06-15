@@ -13,7 +13,6 @@ import m.c.m.proxyma.resource.ProxymaResourceFactory;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
- * 
  * <p>
  * This class is the main interface (Facade) to intercact with Proxyma.
  * </p><p>
@@ -22,7 +21,6 @@ import org.apache.commons.lang.NullArgumentException;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
- *
  */
 public class ProxymaFacade {
     /**

@@ -12,6 +12,7 @@
     <!-- Elements to test the loading of the configuration parameters -->
     <global>
         <defaultEncoding>UTF-8</defaultEncoding>
+        <byteBufferImplementation>m.c.m.proxyma.buffers.SmartBuffer</byteBufferImplementation>
         <logging>
             <level>INFO</level>
             <filePrefix>/tmp/proxyma</filePrefix>

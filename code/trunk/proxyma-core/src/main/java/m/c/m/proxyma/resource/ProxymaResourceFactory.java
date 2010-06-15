@@ -6,6 +6,7 @@ import m.c.m.proxyma.context.ProxymaContext;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
+ * <p>
  * This the "FactoryMethod" to build the new instances of proxyma resources.
  * Currently it can build a ProxymaResource from HttpServlet request and response,
  * but it will be easy to add more "sources" like Portlet requests and responses.
@@ -32,8 +33,8 @@ public class ProxymaResourceFactory {
      */
     public ProxymaResource createNewResourceInstance(HttpServletRequest request, HttpServletResponse response, ProxymaContext context)
         throws NullArgumentException {
-        ProxymaRequest proxymaRequest = new ProxymaServletRequest(request);
-        ProxymaResponse proxymaResponse = new ProxymaServletResponse(response);
+        ProxymaRequest proxymaRequest = new ProxymaServletRequest(request, context);
+        ProxymaResponse proxymaResponse = new ProxymaServletResponse(response, context);
         return new ProxymaResource(proxymaRequest, proxymaResponse, context);
     }
 }

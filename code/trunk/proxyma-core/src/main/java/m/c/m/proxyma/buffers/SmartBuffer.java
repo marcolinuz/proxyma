@@ -4,11 +4,7 @@ import java.io.Serializable;
 import java.io.IOException;
 
 /**
- * </p><p>
- * User: makko
- * Date: 10-ago-2007
- * Time: 10.13.30
- * </p><p>
+ * <p>
  * This class implements a generalyzed Buffer that can be used to store large and small binary data.
  * It uses both a RamBuffer and a FileBuffer to mantain the data.
  * If the data that comes into the buffer are more than its soft-limit, the buffer

@@ -3,6 +3,7 @@ package m.c.m.proxyma.buffers;
 import java.io.IOException;
 
 /**
+ * <p>
  * This is a common interface for my Buffer classes.
  * This allows me to change the implementation as needed
  * </p><p>

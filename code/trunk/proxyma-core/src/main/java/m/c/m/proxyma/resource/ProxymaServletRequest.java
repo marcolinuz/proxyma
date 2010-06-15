@@ -1,10 +1,13 @@
 package m.c.m.proxyma.resource;
 
 import java.util.Enumeration;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import m.c.m.proxyma.context.ProxymaContext;
 
 /**
+ * <p>
  * This class implements a requests wrapper.
  * It adapts servlet container requests to the Proxyma API.
  * Through this class Proxyma can transparently handle any Servlet request.
@@ -20,10 +23,12 @@ public class ProxymaServletRequest implements ProxymaRequest {
     /**
      * Default constructor for this class.
      * It thakes the original servlet request to wrap as parameter.
-     * @param aRequest
+     * @param aRequest the request to satisfy
+     * @param theContext the context where the request will live.
      */
-    public ProxymaServletRequest (HttpServletRequest aRequest) {
+    public ProxymaServletRequest (HttpServletRequest aRequest, ProxymaContext theContext) {
         this.theOriginalRequest = aRequest;
+        this.log = theContext.getLogger();
     }
 
     /**
@@ -182,4 +187,9 @@ public class ProxymaServletRequest implements ProxymaRequest {
      * This is the original "wrapped" request
      */
     private HttpServletRequest theOriginalRequest = null;
+
+    /**
+     * The logger for this request
+     */
+    private Logger log = null;
 }

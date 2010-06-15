@@ -91,14 +91,10 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * This method allows to set multiple values for the same headerName.<br/>
      * You can use the containsHeader method if you want to test for the presence
      * of a an existing header before setting its value.
-     * @throws IllegalStateException is raised if the response is locked
      * @throws NullArgumentException is raised if the header name is null
      * @see ProxymaHttpHeader
      */
-    public void addHeader(String headerName, String headerValue) throws IllegalStateException, NullArgumentException {
-        //Throw an exception if the resource is locked
-        if (this.locked)
-            throw new IllegalStateException("This response is locked.");
+    public void addHeader(String headerName, String headerValue) throws NullArgumentException {
         if (headerName == null)
             throw new NullArgumentException("You can't set a null-named header");
 
@@ -134,6 +130,23 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
     }
 
     /**
+     * Checks whether the specified header has multiple values.
+     *
+     * @param headerName The name of the header to check
+     * @return true if the header has multiple values
+     * @throws NullPointerException if the header doesn't exists at all.
+     */
+    public boolean isMultipleHeader(String headerName) throws NullPointerException {
+        boolean retVal = false;
+        Object theHeader = this.headers.get(headerName.toLowerCase().trim());
+        if (theHeader == null)
+            throw new NullPointerException("Attempting to check the multiplicity of an unexisting header: " + headerName);
+        else if (theHeader instanceof LinkedList)
+            retVal = true;
+        return retVal;
+    }
+
+    /**
      * Removes an header from the response data.<br/>
      * The header name is case insensitive<br/>
      * If the specifyed header is not found, nothing will be done.<br/>
@@ -142,12 +155,8 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * the values of a multiple-values header will be removed.
      *
      * @param headerName The name of the header to remove
-     * @throws IllegalStateException if the response is locked
      */
-    public void deleteHeader(String headerName) throws IllegalStateException {
-        //Throw an exception if the resource is locked
-        if (this.locked)
-            throw new IllegalStateException("This response is locked.");
+    public void deleteHeader(String headerName) {
 
         String lowercaseHeaderName = headerName.toLowerCase().trim();
         if (this.headers.containsKey(lowercaseHeaderName))
@@ -179,13 +188,9 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * If the Cookie has been already set, the new value overwrites the previous one.
      * The containsCookie method can be used to test for the presence of a
      * Cookie before setting its value.
-     * @throws IllegalStateException if the resource is locked
      * @throws NullArgumentException if the passed argument is null
      */
-    public void addCookie(Cookie aCookie) throws IllegalStateException, NullArgumentException {
-        //Throw an exception if the resource is locked
-        if (this.locked)
-            throw new IllegalStateException("This response is locked.");
+    public void addCookie(Cookie aCookie) throws NullArgumentException {
         if (aCookie == null)
             throw new NullArgumentException("You can't set a null Cookie");
 
@@ -210,13 +215,9 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * of a Cookie before remove it.
      *
      * @param cookieName The name of the cookie to remove
-     * @throws IllegalStateException if the resource is locked
      * @throws NullArgumentException if the passed parameter is null
      */
-    public void deleteCookie(String cookieName) throws IllegalStateException {
-        //Throw an exception if the resource is locked
-        if (this.locked)
-            throw new IllegalStateException("This response is locked.");
+    public void deleteCookie(String cookieName) throws NullArgumentException {
         if (cookieName == null)
             throw new NullArgumentException("You can't delete a null Cookie");
         this.cookies.remove(cookieName);
@@ -233,13 +234,10 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
     /**
      * Set the raw binary data of the response
      * @param aBuffer the ByteBuffer containing the binary data
-     * @throws IllegalStateException if the resource is locked
      *
      */
-    public void setData(ByteBuffer aBuffer) throws IllegalStateException {
+    public void setData(ByteBuffer aBuffer) {
          //Throw an exception if the resource is locked
-        if (this.locked)
-            throw new IllegalStateException("This response is locked.");
         this.data = aBuffer;
     }
 
@@ -257,12 +255,9 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * (for example, for the status codes SC_OK or SC_MOVED_TEMPORARILY).
      *
      * @param value the new status value
-     * @throws IllegalStateException is called after the method serializeToClient
      * @see serializeToClient
      */
-    public void setStatus (int value)  throws IllegalStateException {
-        if (this.locked)
-            throw new IllegalStateException("This response is locked.");
+    public void setStatus (int value) {
         this.status = value;
     }
 
@@ -275,20 +270,23 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
     }
 
     /**
-     * Lock the resource data<br/>
-     * After the invocation of this method, any further modification on the
-     * data will be denyed.
+     * Returns true if the response is a redirect.
+     *
+     * @return true if response is a redirect.
      */
-    public void lock() {
-        this.locked = true;
-    }
-
-    /**
-     * Resturns the status of the lock of the response data.
-     * @return true is the response is locked.
-     */
-    public boolean islocked() {
-        return this.locked;
+    public boolean isRedirect() {
+        boolean retVal = false;
+        switch (this.status) {
+            case 300: //Multiple Choices
+            case 301: //Moved Permanently
+            case 302: //Found
+            case 303: //See Other
+            case 305: //Use Proxy
+            case 307: //Temporary Redirect
+                retVal = true;
+                break;
+        }
+        return retVal;
     }
 
     /**
@@ -310,9 +308,4 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * The binary data of the response
      */
     private ByteBuffer data = null;
-
-    /**
-     * If set to true any changes to the response are denyed
-     */
-    private boolean locked = false;
 }

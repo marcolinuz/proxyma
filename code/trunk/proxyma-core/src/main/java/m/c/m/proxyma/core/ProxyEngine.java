@@ -11,7 +11,6 @@ import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
- *
  * <p>
  * This class is the main skeleton of this whole project and is a mixture of many design patterns.
  * </p><p>
@@ -29,7 +28,6 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
- *
  */
 public class ProxyEngine {
 

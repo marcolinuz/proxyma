@@ -3,11 +3,7 @@ package m.c.m.proxyma.buffers;
 import java.io.IOException;
 
 /**
- * </p>
- * User: makko
- * Date: 9-ago-2007
- * Time: 14.48.08
- * <p></p>
+ * <p>
  * This class implements a Reader Class for the RamBuffer.
  * To read more than once the same data you have to execute reset() method
  * between every read operation.

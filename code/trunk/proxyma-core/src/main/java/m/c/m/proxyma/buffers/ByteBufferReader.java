@@ -3,6 +3,7 @@ package m.c.m.proxyma.buffers;
 import java.io.IOException;
 
 /**
+ * <p>
  * This is a common interface to read into my Buffer classes.
  * It is a Reader that allows many threads to read data at the same time (thread-safe).
  * </p><p>

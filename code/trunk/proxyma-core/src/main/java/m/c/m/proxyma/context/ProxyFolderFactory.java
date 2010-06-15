@@ -7,7 +7,6 @@ import m.c.m.proxyma.ProxymaTags;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
- *
  * <p>
  * This class is a "FactoryMethod" for the ProxyFolderBean Class.
  * </p><p>
@@ -16,7 +15,6 @@ import org.apache.commons.lang.NullArgumentException;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
- *
  */
 public class ProxyFolderFactory {
 

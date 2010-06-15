@@ -8,7 +8,7 @@ import m.c.m.proxyma.resource.ProxymaResource;
 import m.c.m.proxyma.util.ProxymaLogger;
 
 /**
- * </p><p>
+ * <p>
  * This is the "null" implementation of a serializer plugin.
  * It does absolutely nothing. :O)
  * </p><p>

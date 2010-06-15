@@ -21,7 +21,6 @@ import org.apache.commons.lang.NullArgumentException;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
- *
  */
 public class ProxymaResource {
     /**
