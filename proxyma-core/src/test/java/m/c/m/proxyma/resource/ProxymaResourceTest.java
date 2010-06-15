@@ -47,8 +47,8 @@ public class ProxymaResourceTest extends TestCase {
         InvocationContext ic = sc.newInvocation( wreq );
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
-        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request);
-        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response);
+        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request, context);
+        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response, context);
         ProxymaResource instance = new ProxymaResource(proxumaReq, proxymaRes, context);
         assertSame(context, instance.getContext());
 
@@ -82,8 +82,8 @@ public class ProxymaResourceTest extends TestCase {
         InvocationContext ic = sc.newInvocation( wreq );
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
-        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request);
-        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response);
+        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request, context);
+        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response, context);
         ProxymaResource instance = new ProxymaResource(proxumaReq, proxymaRes, context);
         //run the specific tests
         ProxyFolderBean folder = proxyma.createNewProxyFolder("default", "http://www.google.com", context);
@@ -127,8 +127,8 @@ public class ProxymaResourceTest extends TestCase {
         InvocationContext ic = sc.newInvocation( wreq );
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
-        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request);
-        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response);
+        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request, context);
+        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response, context);
         ProxymaResource instance = new ProxymaResource(proxumaReq, proxymaRes, context);
         //run the specific tests
         String anAttributeName = null;
@@ -194,8 +194,8 @@ public class ProxymaResourceTest extends TestCase {
         InvocationContext ic = sc.newInvocation( wreq );
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
-        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request);
-        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response);
+        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request, context);
+        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response, context);
         ProxymaResource instance = new ProxymaResource(proxumaReq, proxymaRes, context);
         //run the specific tests
         String anAttributeName = null;
@@ -257,8 +257,8 @@ public class ProxymaResourceTest extends TestCase {
         InvocationContext ic = sc.newInvocation( wreq );
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
-        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request);
-        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response);
+        ProxymaServletRequest proxumaReq = new ProxymaServletRequest(request, context);
+        ProxymaServletResponse proxymaRes = new ProxymaServletResponse(response, context);
         ProxymaResource instance = new ProxymaResource(proxumaReq, proxymaRes, context);
 
         //run the specific tests

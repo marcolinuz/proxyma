@@ -27,9 +27,9 @@ public class ProxymaResponseDataBeanTest extends TestCase {
     public void testGetHeaderNames() {
         System.out.println("getHeaderNames");
         ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
-        instance.addHeader("name1", "value1");
-        instance.addHeader("name1 ", "value1.1");
-        instance.addHeader(" name2", "value2");
+        instance.addHeader("naMe1", "value1");
+        instance.addHeader("Name1 ", "value1.1");
+        instance.addHeader(" nAme2", "value2");
         Collection<String> result = instance.getHeaderNames();
 
         //test collection size
@@ -37,10 +37,10 @@ public class ProxymaResponseDataBeanTest extends TestCase {
 
         //Test values
         Iterator<String> iter = result.iterator();
-        if ("name1".equals(iter.next())) {
-            assertEquals("name2", iter.next());
+        if ("naMe1".equals(iter.next())) {
+            assertEquals("nAme2", iter.next());
         } else {
-            assertEquals("name1", iter.next());
+            assertEquals("naMe1", iter.next());
         }
 
     }
@@ -51,9 +51,9 @@ public class ProxymaResponseDataBeanTest extends TestCase {
     public void testGetMultvalueHeader() {
         System.out.println("getMultivalueHeader");
         ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
-        instance.addHeader("name1 ", "value1");
-        instance.addHeader(" name1", "value2");
-        instance.addHeader("name3", "value3");
+        instance.addHeader("namE1 ", "value1");
+        instance.addHeader(" Name1", "value2");
+        instance.addHeader("nAme3", "value3");
         Collection<ProxymaHttpHeader> result = instance.getMultivalueHeader("nAmE1");
 
         //Test size
@@ -61,8 +61,8 @@ public class ProxymaResponseDataBeanTest extends TestCase {
 
         //Test multi values header
         Iterator<ProxymaHttpHeader> iter = result.iterator();
-        if ("name1: value1".equals(iter.next().toString())) {
-            assertEquals("name1: value2", iter.next().toString());
+        if ("namE1: value1".equals(iter.next().toString())) {
+            assertEquals("Name1: value2", iter.next().toString());
         } else {
             assertEquals("name1: value1", iter.next().toString());
         }
@@ -71,7 +71,7 @@ public class ProxymaResponseDataBeanTest extends TestCase {
         result = instance.getMultivalueHeader("NAME3");
         assertEquals(1, result.size());
         iter = result.iterator();
-        assertEquals("name3: value3", iter.next().toString());
+        assertEquals("nAme3: value3", iter.next().toString());
 
         //Test unexisting header
         result = instance.getMultivalueHeader("Unexisting");
@@ -84,11 +84,11 @@ public class ProxymaResponseDataBeanTest extends TestCase {
     public void testGetHeader() {
         System.out.println("getHeader");
         ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
-        instance.addHeader("name1", "value1 ");
-        instance.addHeader("name1 ", "value2");
-        instance.addHeader("Name3", " Value3");
+        instance.addHeader("Name1 ", "value1 ");
+        instance.addHeader("naMe1", "value2");
+        instance.addHeader(" Name3", " Value3");
         ProxymaHttpHeader result = instance.getHeader("nAmE1");
-        assertEquals("name1: value1", result.toString());
+        assertEquals("Name1: value1", result.toString());
 
         result = instance.getHeader("name3");
         assertEquals("Name3: Value3", result.toString());
@@ -120,15 +120,6 @@ public class ProxymaResponseDataBeanTest extends TestCase {
 
         instance.addHeader("Name ", " Value");
         assertEquals("Name: Value", instance.getHeader("nAmE").toString());
-
-        //testLocking
-        instance.lock();
-        try {
-            instance.addHeader("name4", "value4");
-            fail("exception not thrown");
-        } catch (IllegalStateException x) {
-            assertTrue(true);
-        }
     }
 
     /**
@@ -148,13 +139,40 @@ public class ProxymaResponseDataBeanTest extends TestCase {
     }
 
     /**
+     * Test of containsHeader method, of class ProxymaResponseDataBean.
+     */
+    public void isMultipleHeader() {
+        System.out.println("isMultipleHeader");
+
+        ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
+        instance.addHeader(" nAme1 ", "value1");
+        instance.addHeader("naMe1 ", "value2");
+        instance.addHeader("NamE3", " Value3");
+
+
+        boolean result = instance.isMultipleHeader("NaMe1");
+        assertTrue(result);
+
+        result = instance.isMultipleHeader("Name3");
+        assertFalse(result);
+
+        try {
+           result = instance.isMultipleHeader("Unexisting");
+           fail("exception not thrown");
+        } catch (NullPointerException x) {
+            assertTrue(true);
+        }
+
+    }
+
+    /**
      * Test of deleteHeader method, of class ProxymaResponseDataBean.
      */
     public void testDeleteHeader() {
         System.out.println("deleteHeader");
         ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
-        instance.addHeader("name1 ", "value1");
-        instance.addHeader("name1", "value2");
+        instance.addHeader("nAme1 ", "value1");
+        instance.addHeader("naMe1", "value2");
         instance.addHeader(" Name3 ", "Value3");
 
         Collection result = instance.getHeaderNames();
@@ -171,15 +189,6 @@ public class ProxymaResponseDataBeanTest extends TestCase {
         instance.deleteHeader("NAme1");
         result = instance.getHeaderNames();
         assertEquals(0, result.size());
-
-        //testLocking
-        instance.lock();
-        try {
-            instance.deleteHeader("name2");
-            fail("exception not thrown");
-        } catch (IllegalStateException x) {
-            assertTrue(true);
-        }
     }
 
     /**
@@ -259,15 +268,6 @@ public class ProxymaResponseDataBeanTest extends TestCase {
 
         instance.addCookie(new Cookie("name1", "value1"));
         assertEquals(1, instance.getCookies().size());
-
-        //testLocking
-        instance.lock();
-        try {
-            instance.addCookie(new Cookie("name4", "value4"));
-            fail("exception not thrown");
-        } catch (IllegalStateException x) {
-            assertTrue(true);
-        }
     }
 
     /**
@@ -322,27 +322,46 @@ public class ProxymaResponseDataBeanTest extends TestCase {
         instance.deleteCookie("name1");
         result = instance.getCookies();
         assertEquals(1, result.size());
-
-        //testLocking
-        instance.lock();
-        try {
-            instance.deleteCookie("name1");
-            fail("exception not thrown");
-        } catch (IllegalStateException x) {
-            assertTrue(true);
-        }
     }
 
     /**
-     * Test of getBufferSize method, of class ProxymaResponseDataBean.
+     * Test of isRedirect method, of class ProxymaResponseDataBean.
      */
-    public void testLock_isLocked() {
-        System.out.println("lock/isLocked");
+    public void testIsRedirect() {
+        System.out.println("isRedirect");
         ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
 
-        assertFalse(instance.islocked());
-        instance.lock();
-        assertTrue(instance.islocked());
-    }
+        instance.setStatus(300);
+        assertTrue(instance.isRedirect());
 
+        instance.setStatus(301);
+        assertTrue(instance.isRedirect());
+
+        instance.setStatus(302);
+        assertTrue(instance.isRedirect());
+
+        instance.setStatus(303);
+        assertTrue(instance.isRedirect());
+
+        instance.setStatus(304);
+        assertFalse(instance.isRedirect());
+
+        instance.setStatus(305);
+        assertTrue(instance.isRedirect());
+
+        instance.setStatus(306);
+        assertFalse(instance.isRedirect());
+
+        instance.setStatus(307);
+        assertTrue(instance.isRedirect());
+
+        instance.setStatus(201);
+        assertFalse(instance.isRedirect());
+
+        instance.setStatus(404);
+        assertFalse(instance.isRedirect());
+
+        instance.setStatus(502);
+        assertFalse(instance.isRedirect());
+    }
 }

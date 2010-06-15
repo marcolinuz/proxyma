@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import javax.servlet.http.Cookie;
 
 /**
+ * <p>
  * This the "Adapter" interface that will be used by Proxyma to manage client
  * requests. Any concrete class that implements this interface can be used as
  * Client request by Proxyma.

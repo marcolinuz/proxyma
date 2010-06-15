@@ -1,7 +1,6 @@
 package m.c.m.proxyma;
 
 /**
- *
  * <p>
  * This class is only a constants aggregator
  * </p><p>
@@ -10,7 +9,6 @@ package m.c.m.proxyma;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
- *
  */
 public class ProxymaTags {
     //Resource Handler available Types
@@ -21,6 +19,7 @@ public class ProxymaTags {
     public static final String DEFAULT_LOGGER_PREFIX = "m.c.m.proxyma";
     public static final String GLOBAL_DEFAULT_ENCODING = "global/defaultEncoding";
     public static final String CONFIG_FILE_VERSION = "global/version";
+    public static final String GLOBAL_BUFFERS_IMPLEMENTATION = "global/byteBufferImplementation";
     public static final String GLOBAL_LOGLEVEL = "global/logging/level";
     public static final String GLOBAL_LOGFILE_PREFIX = "global/logging/filePrefix";
     public static final String GLOBAL_LOGFILE_MAXSIZE = "global/logging/maxLinesPerFile";

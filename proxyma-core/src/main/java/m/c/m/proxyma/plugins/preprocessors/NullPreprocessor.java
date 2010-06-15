@@ -6,7 +6,7 @@ import m.c.m.proxyma.ProxymaTags.HandlerType;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
- * </p><p>
+ * <p>
  * This is the "null" implementation of a preprocessor plugin.
  * It does absolutely nothing. :O)
  * </p><p>

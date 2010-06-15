@@ -3,11 +3,7 @@ package m.c.m.proxyma.buffers;
 import java.io.*;
 
 /**
- * </p>
- * User: makko
- * Date: 10-ago-2007
- * Time: 10.07.38
- * <p></p>
+ * <p>
  * This class implements a ByteBuffer that can be used to store large and small binary data.
  * It uses a temporary file to mantain the data.
  * You can't write simultaneouusly from separate threads (write operations are not thread-safe).

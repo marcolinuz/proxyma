@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
- *
  * <p>
  * This is Singleton class that stores an hashtable of ProxyContexts.
  * Every record in the hashtable is referred to a single instance of Proxyma and
@@ -16,7 +15,6 @@ import org.apache.commons.lang.NullArgumentException;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
- * 
  */
 public class ProxymaContextPool {
 

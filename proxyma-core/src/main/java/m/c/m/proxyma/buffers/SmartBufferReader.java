@@ -3,11 +3,7 @@ package m.c.m.proxyma.buffers;
 import java.io.IOException;
 
 /**
- * </p><p>
- * User: makko
- * Date: 10-ago-2007
- * Time: 10.13.30
- * </p><p>
+ * <p>
  * This class implements a Reader Class for the SmartBuffer.
  * To read more than once the same data you have to execute reset() method
  * between every read operation.

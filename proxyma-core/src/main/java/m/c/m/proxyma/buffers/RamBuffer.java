@@ -6,11 +6,7 @@ import java.io.Serializable;
 import java.io.IOException;
 
 /**
- * </p>
- * User: makko
- * Date: 9-ago-2007
- * Time: 14.48.08
- * <p></p>
+ * <p>
  * This class implements a ByeBuffer that can be used to store large (and small) binary data into RAM.
  * It uses a list of "pages" (byte array of a specified size) to mantain the data, and it's capable
  * of self-expansion when needed.
