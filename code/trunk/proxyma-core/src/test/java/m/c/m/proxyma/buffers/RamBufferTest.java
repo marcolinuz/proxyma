@@ -73,6 +73,21 @@ public class RamBufferTest extends TestCase {
         assertEquals(expResult, result);
     }
 
+    /**
+     * Test of clone method, of class RamBuffer.
+     */
+    public void testClone() throws CloneNotSupportedException {
+        System.out.println("clone");
+
+        RamBuffer clone = (RamBuffer) instance.clone();
+
+        assertNotSame(instance, clone);
+        assertSame(instance.getPage(0), clone.getPage(0));
+        assertEquals(instance.getSize(), clone.getSize());
+        assertFalse(instance.isLocked());
+        assertTrue(clone.isLocked());
+    }
+
     RamBuffer instance = null;
     int size = 0;
 }

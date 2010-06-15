@@ -6,6 +6,7 @@
 package m.c.m.proxyma.buffers;
 
 import java.io.File;
+import java.io.IOException;
 import junit.framework.TestCase;
 
 /**
@@ -72,6 +73,25 @@ public class SmartBufferTest extends TestCase {
         long expResult = size;
         long result = instance.getSize();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of clone method, of class SmartBuffer.
+     */
+    public void testClone() throws CloneNotSupportedException, IOException {
+        System.out.println("clone");
+
+        byte[] data = "Some Data to write into this buffer".getBytes();
+        size = data.length;
+        long result = instance.appendBytes(data, size);
+
+        SmartBuffer clone = (SmartBuffer) instance.clone();
+        assertNotSame(instance, clone);
+        assertNotSame(instance.getFileBuffer(), clone.getFileBuffer());
+        assertNotSame(instance.getRamBuffer(), clone.getRamBuffer());
+        assertEquals(instance.getSize(), clone.getSize());
+        assertFalse(instance.isLocked());
+        assertTrue(clone.isLocked());
     }
 
     SmartBuffer instance = null;

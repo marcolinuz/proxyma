@@ -115,6 +115,24 @@ public class FileBuffer implements Serializable, Cloneable, ByteBuffer {
     }
 
     /**
+     * This method clones the current object.<br/>
+     * Because it uses the same file of its parent as storage area,
+     * the new clone will be locked. <br/>
+     * ..in other words the clone can't be modified.
+     *
+     * @return a new and separate instance of the object.
+     * @throws CloneNotSupportedException if the clone operation is not supported
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        FileBuffer clone = (FileBuffer)super.clone();
+        clone.locked = true;
+        clone.os = null;
+        clone.buffer = null;
+        return clone;
+    }
+
+    /**
      * close and delete the temporary file..
      */
     @Override

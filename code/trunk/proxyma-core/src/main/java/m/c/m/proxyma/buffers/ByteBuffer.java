@@ -53,4 +53,10 @@ public interface ByteBuffer {
      * @return the current status.
      */
     public boolean isLocked();
+
+    /**
+     * Returns a separate but inentical instance of the object
+     * @return a clone of the object
+     */
+    public Object clone() throws CloneNotSupportedException;
 }

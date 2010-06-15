@@ -138,6 +138,22 @@ public class RamBuffer implements Serializable, Cloneable, ByteBuffer {
     }
 
     /**
+     * This method clones the current object.<br/>
+     * Because it uses the same buffer of its parent as storage area,
+     * the new clone will be locked. <br/>
+     * ..in other words the clone can't be modified.
+     *
+     * @return a new and separate instance of the object.
+     * @throws CloneNotSupportedException if the clone operation is not supported
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        RamBuffer clone = (RamBuffer)super.clone();
+        clone.locked = true;
+        return clone;
+    }
+
+    /**
      *  Get the specified page of data
      *
      * @param pageNumber the number of the wanted page

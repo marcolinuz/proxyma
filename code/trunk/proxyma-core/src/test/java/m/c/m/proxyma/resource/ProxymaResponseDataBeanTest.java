@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import javax.servlet.http.Cookie;
 import junit.framework.TestCase;
+import m.c.m.proxyma.buffers.RamBuffer;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
@@ -363,5 +364,28 @@ public class ProxymaResponseDataBeanTest extends TestCase {
 
         instance.setStatus(502);
         assertFalse(instance.isRedirect());
+    }
+
+    /**
+     * Test of clone method, of class ProxymaResponseDataBean.
+     */
+    public void testClone() throws CloneNotSupportedException {
+        System.out.println("clone");
+
+        ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
+        instance.addHeader("nAme1 ", "value1");
+        instance.addCookie(new Cookie("name1", "value1"));
+        instance.setData(new RamBuffer(1024));
+        instance.setStatus(200);
+
+        ProxymaResponseDataBean clone = (ProxymaResponseDataBean) instance.clone();
+
+        assertNotSame(instance, clone);
+        assertNotSame(instance.getCookie("name1"), clone.getCookie("name1"));
+        assertNotSame(instance.getHeader("name1"), clone.getHeader("name1"));
+        assertNotSame(instance.getData(), clone.getData());
+        assertEquals(instance.getStatus(), clone.getStatus());
+        assertEquals(instance.getCookie("name1").getValue(), clone.getCookie("name1").getValue());
+        assertEquals(instance.getHeader("name1").getValue(), clone.getHeader("name1").getValue());
     }
 }
