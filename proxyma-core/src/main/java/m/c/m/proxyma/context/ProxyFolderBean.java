@@ -68,7 +68,10 @@ public class ProxyFolderBean implements Serializable {
     }
 
     /**
-     * Standard setter method for folderName
+     * Standard setter method for folderName.<br/>
+     * Setting the folder name will set also the URLEncoded version of it.<br/>
+     * Note: The foldername can't contain "/" characters.
+     *
      * @param folderName the folder name to set
      * @throws NullArgumentException if some parameter is null
      * @throws IllegalArgumentException if the folder name is not valid
@@ -85,16 +88,13 @@ public class ProxyFolderBean implements Serializable {
                 throw new IllegalArgumentException("The passed folderName is an empty (or blank)");
             } else {
                 //encoding-decoding the folder name
-                if (this.folderName.endsWith("/")) {
-                    this.URLEncodedName = URLEncoder.encode(this.folderName.substring(0,this.folderName.length()-1), defaultEncoding) + "/";
+                if (this.folderName.indexOf("/") != -1) {
+                    log.warning("The foldername can't contain a \"/\" character");
+                    throw new IllegalArgumentException("The foldername can't contain a \"/\" character");
                 } else {
                     //check for the last character presence
-                    this.URLEncodedName = URLEncoder.encode(this.folderName, defaultEncoding) + "/";
-                    this.folderName = this.folderName + "/";
-                }
-                if (this.folderName.indexOf("/") != this.folderName.length()-1) {
-                    log.warning("The foldername must contain a \"/\" only as last character");
-                    throw new IllegalArgumentException("The foldername can contain a \"/\" only as last character");
+                    this.URLEncodedName = URLEncoder.encode(this.folderName, defaultEncoding);
+                    this.folderName = this.folderName;
                 }
             }
         }
@@ -124,13 +124,14 @@ public class ProxyFolderBean implements Serializable {
                 log.warning("The passed destination is an empty (or blank) string");
                 throw new IllegalArgumentException("The passed folderName is an empty (or blank) string");
             } else {
-                if (!destination.endsWith("/"))
-                    destination = destination + "/";
-
                 //Check if it's a valid URL
                 try {
-                    URL url = new URL(destination);
-                    this.destination = destination;
+                    //remove tailing "/" if any
+                    if (destination.endsWith("/"))
+                        this.destination = destination.substring(0, destination.length()-1);
+                    else
+                        this.destination = destination;
+                    URL url = new URL(this.destination);
                 } catch (MalformedURLException ex) {
                     log.warning("Destination \"" + destination + "\" is an Invalid URL.");
                     throw new IllegalArgumentException("Destination \"" + destination + "\" is an Invalid URL.");

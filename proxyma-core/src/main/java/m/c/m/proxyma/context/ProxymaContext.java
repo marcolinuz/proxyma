@@ -54,18 +54,18 @@ public class ProxymaContext {
     /**
      * Get a proxy folder by folder name (if exists)
      *
-     * @param proxyFolderName the wanted ProxyFolderBean
+     * @param proxyFolderURLEncodedName the wanted ProxyFolderBean
      * @return null if the proxyFolder doesn't exists.
      */
-    public ProxyFolderBean getProxyFolderByName(String proxyFolderName) {
+    public ProxyFolderBean getProxyFolderByURLEncodedName(String proxyFolderURLEncodedName) {
        ProxyFolderBean retVal = null;
-       log.finest("Searching for Proxy folder " + proxyFolderName);
-       if (proxyFolderName == null) {
+       log.finest("Searching for Proxy folder " + proxyFolderURLEncodedName);
+       if (proxyFolderURLEncodedName == null) {
            log.warning("Null proxyFolderName parameter.. Ignoring operation");
-       } else if (proxyFoldersByName.containsKey(proxyFolderName)) {
-           retVal = proxyFoldersByName.get(proxyFolderName);
+       } else if (proxyFoldersByName.containsKey(proxyFolderURLEncodedName)) {
+           retVal = proxyFoldersByName.get(proxyFolderURLEncodedName);
        } else {
-           log.finest("Proxy folder " + proxyFolderName + " not found.");
+           log.finest("Proxy folder " + proxyFolderURLEncodedName + " not found.");
        }
        return retVal;
     }
@@ -73,7 +73,7 @@ public class ProxymaContext {
     /**
      * Get a proxy folder by folder name (if exists)
      *
-     * @param proxyFolderName the wanted ProxyFolderBean
+     * @param proxyFolderURLEncodedName the wanted ProxyFolderBean
      * @return null if the proxyFolder doesn't exists.
      */
     public ProxyFolderBean getProxyFolderByDestination(String proxyFolderDestination) {

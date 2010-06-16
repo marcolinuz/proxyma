@@ -8,6 +8,8 @@ import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.context.ProxymaContextPool;
 import m.c.m.proxyma.context.ProxyFolderFactory;
+import m.c.m.proxyma.core.ProxyEngine;
+import m.c.m.proxyma.core.ProxyEngineFactory;
 import m.c.m.proxyma.resource.ProxymaResource;
 import m.c.m.proxyma.resource.ProxymaResourceFactory;
 import org.apache.commons.lang.NullArgumentException;
@@ -29,6 +31,7 @@ public class ProxymaFacade {
     public ProxymaFacade () {
         this.foldersFactory = new ProxyFolderFactory();
         this.resourceFactory = new ProxymaResourceFactory();
+        this.proxyFactory = new ProxyEngineFactory();
         init();
     }
 
@@ -97,14 +100,14 @@ public class ProxymaFacade {
     }
 
     /**
-     * Get from the passed context an existing proxyFolder searching it by its name
+     * Get from the passed context an existing proxyFolder searching it by its URL encoded name
      *
      * @param FolderName the folder to retrive
      * @param context the context to inspect
      * @return the requested ProxyFolderBean (or null if it's not found)
      */
-    public ProxyFolderBean getProxyFolderByName(String FolderName, ProxymaContext context) {
-        return context.getProxyFolderByName(FolderName);
+    public ProxyFolderBean getProxyFolderByURLEncodedName(String urlEncodedName, ProxymaContext context) {
+        return context.getProxyFolderByURLEncodedName(urlEncodedName);
     }
 
     /**
@@ -159,6 +162,17 @@ public class ProxymaFacade {
         return resourceFactory.createNewResourceInstance(request, response, context);
      }
 
+     /**
+      * This method creates a new instance of the Proxyma Proxy-Engine, the core of this project.
+      *
+      * @param context the context where the proxy will work
+      * @return a new instance of proxy
+      * @throws IllegalAccessException if there are some troubles with the plugins loading.
+      */
+     public ProxyEngine createNewProxyEngine (ProxymaContext context) throws IllegalAccessException {
+        return proxyFactory.createNewProxyEngine(context);
+     }
+
     /**
      * This method initialize the proxyma subsystems.
      * It is fired any time a new instance of Facade is created but it has
@@ -188,6 +202,11 @@ public class ProxymaFacade {
      * The resource factory used by this instance
      */
     private ProxymaResourceFactory resourceFactory = null;
+
+    /**
+     * The proxy engine factory used by this instance
+     */
+    private ProxyEngineFactory proxyFactory = null;
 
     /**
      * The logger for this class

@@ -18,15 +18,17 @@ import m.c.m.proxyma.context.ProxymaContext;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
 public class ProxyEngineFactory {
-
     /**
      * The constructor for this class.
      *
      * @param context the context to use to retrive configuration data
      */
-    public static ProxyEngine createNewProxyEngine(ProxymaContext context) throws IllegalAccessException {
+    public ProxyEngine createNewProxyEngine(ProxymaContext context) throws IllegalAccessException {
+        //set the logger if is not already set.
+        if (log == null)
+            this.log = context.getLogger();
+
         //initialize the logger for this class.
-        Logger log = context.getLogger();
         ProxyEngine newEngine = new ProxyEngine(context);
 
         HashMap<String, CacheProvider> availableCacheProviders = new HashMap();
@@ -37,26 +39,26 @@ public class ProxyEngineFactory {
 
         // *** Load the available Cache Provider Plugins ***
         Iterator<String> availableCaches = context.getMultiValueParameter(ProxymaTags.AVAILABLE_CACHE_PROVIDERS).iterator();
-        loadCacheProviders(availableCaches, availableCacheProviders, log);
+        loadCacheProviders(availableCaches, availableCacheProviders);
         
         // *** Load the available Resource Handler Plugins ***
         Iterator<String> availablePlugins = null;
 
         //Load the preprocessors
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_PREPROCESSORS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.PREPROCESSOR, availablePreprocessors, log);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.PREPROCESSOR, availablePreprocessors);
 
         //Load the retrivers
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_RETRIVERS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.RETRIVER, availableRetrivers, log);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.RETRIVER, availableRetrivers);
 
         //Load the transformers
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_TRANSFORMERS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.TRANSFORMER, availableTransformers, log);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.TRANSFORMER, availableTransformers);
 
         //Load the serializers
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_SERIALIZERS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.SERIALIZER, availableSerializers, log);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.SERIALIZER, availableSerializers);
 
         //set the values into the proxy engine
         newEngine.setAvailableCacheProviders(availableCacheProviders);
@@ -77,14 +79,14 @@ public class ProxyEngineFactory {
      * @param availablePlugins an iterator of plugin class names to load
      * @param container the cache provider container to fill.
      */
-    private static void loadCacheProviders(Iterator<String> availableCaches, HashMap<String, CacheProvider> availableCacheProviders, Logger log) throws IllegalAccessException {
+    private void loadCacheProviders(Iterator<String> availableCaches, HashMap<String, CacheProvider> availableCacheProviders) throws IllegalAccessException {
         String cachePluginName = "";
         while (availableCaches.hasNext()) {
             try {
                 cachePluginName = availableCaches.next();
                 Object cachePlugin = Class.forName(cachePluginName).newInstance();
                 if (cachePlugin instanceof CacheProvider) {
-                    registerCacheProvider((CacheProvider)cachePlugin, availableCacheProviders, log);
+                    registerCacheProvider((CacheProvider)cachePlugin, availableCacheProviders);
                 } else {
                     log.warning("The Class \"" + cachePluginName  + "\" is not a CacheProvider.. plugin not loaded.");
                 }
@@ -101,14 +103,14 @@ public class ProxyEngineFactory {
      *
      * @param availablePlugins an iterator of plugin class names to load
      */
-    private static void loadPlugins(Iterator<String> availablePlugins, ProxymaTags.HandlerType requiredType, HashMap<String, ResourceHandler> pluginContainer, Logger log) throws IllegalAccessException {
+    private void loadPlugins(Iterator<String> availablePlugins, ProxymaTags.HandlerType requiredType, HashMap<String, ResourceHandler> pluginContainer) throws IllegalAccessException {
         String pluginName = "";
         while (availablePlugins.hasNext()) {
             try {
                 pluginName = availablePlugins.next();
                 Object thePlugin = Class.forName(pluginName).newInstance();
                 if ((thePlugin instanceof ResourceHandler) && ((ResourceHandler)thePlugin).getType() == requiredType) {
-                    registerNewPlugin((ResourceHandler)thePlugin, pluginContainer, log);
+                    registerNewPlugin((ResourceHandler)thePlugin, pluginContainer);
                 } else {
                     log.warning("The Class \"" + pluginName  + "\" is not a " + requiredType + ".. plugin not loaded.");
                 } 
@@ -124,7 +126,7 @@ public class ProxyEngineFactory {
      * Register a new cache provoder implementation into the cache collection
      * @param providerImpl class that implements a CacheProvider
      */
-    private static void registerCacheProvider(CacheProvider providerImpl, HashMap<String, CacheProvider> availableCacheProviders, Logger log) {
+    private void registerCacheProvider(CacheProvider providerImpl, HashMap<String, CacheProvider> availableCacheProviders) {
         if (providerImpl == null) {
             log.warning("Null provider implementation parameter.. Ignoring operation");
         } else {
@@ -143,7 +145,7 @@ public class ProxyEngineFactory {
      *
      * @param handlerImpl class that implements the handler
      */
-    private static void registerNewPlugin(ResourceHandler pluginImpl, HashMap<String, ResourceHandler> pluginContainer, Logger log) {
+    private void registerNewPlugin(ResourceHandler pluginImpl, HashMap<String, ResourceHandler> pluginContainer) {
         if (pluginImpl == null) {
             log.warning("Null handler implementation parameter.. Ignoring operation");
         } else {
@@ -195,4 +197,9 @@ public class ProxyEngineFactory {
             }
         }
     }
+
+    /**
+     * The logger of the context
+     */
+    private Logger log = null;
 }

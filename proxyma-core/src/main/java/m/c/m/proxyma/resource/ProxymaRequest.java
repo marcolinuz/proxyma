@@ -48,10 +48,16 @@ public interface ProxymaRequest {
     public Enumeration getHeaders(String headerName);
     
     /**
-     * Get the absolute path of the request (without host, port, protocol and query string)
+     * Get the base path of proxyma from the request (without host, port, protocol and query string)
      * @return the absolute path of the requested URI.
      */
-    public String getPath();
+    public String getBasePath();
+
+    /**
+     * Get the absoute requested path (without protocol, host, port and query string)
+     * @return the absolute path of the requested URI.
+     */
+    public String getRequestURI();
     
     /**
      * Returns the query string that is contained in the request URL after the path.

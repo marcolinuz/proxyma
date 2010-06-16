@@ -4,8 +4,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import m.c.m.proxyma.ProxymaTags;
+import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
+import m.c.m.proxyma.resource.ProxymaRequest;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
@@ -47,10 +51,34 @@ public class ProxyEngine {
      * @param aResource a resource to masquerade by the proxy.
      */
     public void doProxy(ProxymaResource aResource) {
-        //A new resource request has come, we have to try to match it with a proxyfolder
+        //A new resource request has come.. try to match it with a proxyfolder
         ProxymaContext context = aResource.getContext();
+        ProxymaRequest request = aResource.getRequest();
 
-        throw new UnsupportedOperationException("Not yet implemented..");
+        // *** find if the request belongs to any proxyFolder ***
+        String subPath = request.getRequestURI().replaceFirst(request.getBasePath(), EMPTY_STRING);
+        if (EMPTY_STRING.equals(subPath)) {
+            //prepare a redirect response to the "basepath + /"
+        } else if (PATH_SEPARATOR.equals(subPath)) {
+            //prepare a response page with the list of the available proxyFolders
+            //with destinations..(if provided by confguration, else prepare an error response)
+        } else {
+            //Searching for a matching proxyFolderURLEncoded into the ..
+            String URLEncodedProxyFolder = subPath.split("/")[1];
+            ProxyFolderBean folder = context.getProxyFolderByURLEncodedName(URLEncodedProxyFolder);
+
+            if (folder == null) {
+                //If the proxyFolder doesn't exists
+                //prepare a reponse with not found error
+            } else {
+                //Set the proxyFolder into the resource
+                aResource.setProxyFolder(folder);
+                //Set the destination subpath
+                aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));
+            }
+        }
+
+        // *** NOW I know what the user has Just asked for ***
     }
 
     /**
@@ -175,4 +203,9 @@ public class ProxyEngine {
      * The logger for this class
      */
     private Logger log = null;
+
+    /* SOME USEFUL CONSTANTS */
+    private static final String EMPTY_STRING = "";
+    private static final String QUERY_STRING_SEPARATOR = "?";
+    private static final String PATH_SEPARATOR = "/";
 }

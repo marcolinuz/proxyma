@@ -36,10 +36,10 @@ public class ProxymaContextTest extends TestCase {
         }
         proxyma.registerProxyFolderIntoContext(expResult, instance);
 
-        ProxyFolderBean result = instance.getProxyFolderByName(expResult.getFolderName());
+        ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(expResult.getFolderName());
         assertSame(expResult, result);
 
-        result = instance.getProxyFolderByName("notExists");
+        result = instance.getProxyFolderByURLEncodedName("notExists");
         assertNull(result);
 
         //clean up the context for further tests
@@ -111,12 +111,12 @@ public class ProxymaContextTest extends TestCase {
             instance.addProxyFolder(null);
             fail("Exception not thrown");
         } catch (NullArgumentException x) {
-            ProxyFolderBean result = instance.getProxyFolderByName(null);
+            ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(null);
             assertNull(result);
         }
 
         instance.addProxyFolder(expResult);
-        ProxyFolderBean result = instance.getProxyFolderByName(expResult.getFolderName());
+        ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(expResult.getFolderName());
         assertSame(expResult, result);
 
         try {
@@ -158,7 +158,7 @@ public class ProxymaContextTest extends TestCase {
         }
         instance.addProxyFolder(expResult);
 
-        ProxyFolderBean result = instance.getProxyFolderByName(expResult.getFolderName());
+        ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(expResult.getFolderName());
         assertSame(expResult, result);
 
         int expResultCount = 1;
@@ -170,7 +170,7 @@ public class ProxymaContextTest extends TestCase {
             fail("Exception not thrown");
         } catch (NullArgumentException x) {
             instance.removeProxyFolder(result);
-            result = instance.getProxyFolderByName(proxyFolderName);
+            result = instance.getProxyFolderByURLEncodedName(proxyFolderName);
             assertNull(result);
         }
 

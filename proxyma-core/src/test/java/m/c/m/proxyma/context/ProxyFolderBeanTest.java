@@ -187,7 +187,7 @@ public class ProxyFolderBeanTest extends TestCase {
         String destination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
-        String folderName = "default/";
+        String folderName = "default";
         ProxyFolderBean instance = null;
 
         try {
@@ -232,7 +232,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         try {
             folderName = " amico%20pippo ";
-            String expected = "amico%20pippo/";
+            String expected = "amico%20pippo";
             instance.setFolderName(folderName);
             assertEquals(instance.getFolderName(), expected);
         } catch (IllegalArgumentException x) {
@@ -243,7 +243,7 @@ public class ProxyFolderBeanTest extends TestCase {
         }
 
         try {
-            folderName = "default/";
+            folderName = "default";
             instance.setFolderName(folderName);
         } catch (Exception x) {
             x.printStackTrace();
@@ -268,7 +268,7 @@ public class ProxyFolderBeanTest extends TestCase {
         String expected = null;
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
-        String folderName = "default/";
+        String folderName = "default";
         ProxyFolderBean instance = null;
 
         try {
@@ -280,7 +280,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         try {
             folderName = " trying to fool ";
-            expected = "trying+to+fool/";
+            expected = "trying+to+fool";
             instance.setFolderName(folderName);
         } catch (Exception x) {
             x.printStackTrace();
@@ -289,8 +289,8 @@ public class ProxyFolderBeanTest extends TestCase {
         assertEquals(instance.getURLEncodedFolderName(), expected);
 
         try {
-            folderName = "now%2Ffake%2Fslashes/";
-            expected = "now%252Ffake%252Fslashes/";
+            folderName = "now%2Ffake%2Fslashes";
+            expected = "now%252Ffake%252Fslashes";
             instance.setFolderName(folderName);
         } catch (Exception x) {
             x.printStackTrace();
@@ -299,7 +299,7 @@ public class ProxyFolderBeanTest extends TestCase {
         assertEquals(instance.getURLEncodedFolderName(), expected);
 
         try {
-            folderName = "default/";
+            folderName = "default";
             instance.setFolderName(folderName);
         } catch (Exception x) {
             x.printStackTrace();
@@ -368,7 +368,7 @@ public class ProxyFolderBeanTest extends TestCase {
         }
 
         try {
-            expected = "http://www.a.valid/destination/";
+            expected = "http://www.a.valid/destination";
             destination = " http://www.a.valid/destination ";
             instance.setDestination(destination);
         } catch (Exception e) {
@@ -379,8 +379,8 @@ public class ProxyFolderBeanTest extends TestCase {
         
 
         try {
-            expected = "http://www.a.valid/destination/";
-            destination = expected;
+            expected = "http://www.a.valid/destination";
+            destination = "http://www.a.valid/destination/";
             instance.setDestination(destination);
         } catch (Exception e) {
             e.printStackTrace();
