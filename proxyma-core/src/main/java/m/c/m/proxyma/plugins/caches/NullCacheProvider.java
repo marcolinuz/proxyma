@@ -3,10 +3,8 @@ package m.c.m.proxyma.plugins.caches;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.logging.Logger;
-import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
-import m.c.m.proxyma.util.ProxymaLogger;
 
 /**
  * </p><p>
@@ -87,6 +85,24 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
         log.info("Null cache doesn't provide statistics..");
         return "Null cache doesn't provide statistics..";
     }
+
+    /**
+     * Returns always false because this is not a real cache provuder.
+     * @return false
+     */
+    @Override
+    public boolean needInitialization() {
+        return false;
+    };
+
+    /**
+     * Returns always false because this is not a real cache provuder.
+     * @return false
+     */
+    @Override
+    public boolean needFinalization() {
+        return false;
+    };
 
     /**
      * The logger for this class

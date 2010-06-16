@@ -8,16 +8,15 @@ package m.c.m.proxyma.core;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import junit.framework.TestCase;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.ProxymaFacade;
 import m.c.m.proxyma.plugins.caches.NullCacheProvider;
-import m.c.m.proxyma.plugins.preprocessors.NullPreprocessor;
-import m.c.m.proxyma.plugins.retrivers.NullRetriver;
-import m.c.m.proxyma.plugins.serializers.NullSerializer;
-import m.c.m.proxyma.plugins.transformers.NullTransformer;
+import m.c.m.proxyma.plugins.preprocessors.AbstractPreprocessor;
+import m.c.m.proxyma.plugins.retrivers.AbstractRetriver;
+import m.c.m.proxyma.plugins.serializers.AbstractSerializer;
+import m.c.m.proxyma.plugins.transformers.AbstractTransformer;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
@@ -37,7 +36,7 @@ public class ProxyEngineTest extends TestCase {
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
         try {
-            instance = new ProxyEngine(context);
+            instance = ProxyEngineFactory.createNewProxyEngine(context);
         } catch (IllegalAccessException ex) {
             context.getLogger().log(Level.SEVERE, null, ex);
         }
@@ -52,25 +51,25 @@ public class ProxyEngineTest extends TestCase {
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.PREPROCESSOR);
         assertEquals(1, plugins.size());
         iter=plugins.iterator();
-        assertTrue(iter.next() instanceof  NullPreprocessor);
+        assertTrue(iter.next() instanceof  AbstractPreprocessor);
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.RETRIVER);
         assertEquals(1, plugins.size());
         iter=plugins.iterator();
-        assertTrue(iter.next() instanceof  NullRetriver);
+        assertTrue(iter.next() instanceof  AbstractRetriver);
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.SERIALIZER);
         assertEquals(1, plugins.size());
         iter=plugins.iterator();
-        assertTrue(iter.next() instanceof  NullSerializer);
+        assertTrue(iter.next() instanceof  AbstractSerializer);
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.TRANSFORMER);
         assertEquals(1, plugins.size());
         iter=plugins.iterator();
-        assertTrue(iter.next() instanceof  NullTransformer);
+        assertTrue(iter.next() instanceof  AbstractTransformer);
 
         //Cleanup pool
         try {
@@ -90,7 +89,7 @@ public class ProxyEngineTest extends TestCase {
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
         try {
-            instance = new ProxyEngine(context);
+            instance = ProxyEngineFactory.createNewProxyEngine(context);
         } catch (IllegalAccessException ex) {
             context.getLogger().log(Level.SEVERE, null, ex);
         }

@@ -1,15 +1,12 @@
-package m.c.m.proxyma.plugins.serializers;
+package m.c.m.proxyma.plugins.transformers;
 
-import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.ProxymaTags.HandlerType;
-import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
-import m.c.m.proxyma.util.ProxymaLogger;
 
 /**
  * <p>
- * This is the "null" implementation of a serializer plugin.
+ * This is the "null" implementation of a transformer plugin.
  * It does absolutely nothing. :O)
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -18,16 +15,16 @@ import m.c.m.proxyma.util.ProxymaLogger;
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
-public class NullSerializer implements m.c.m.proxyma.core.ResourceHandler {
+public abstract class AbstractTransformer implements m.c.m.proxyma.core.ResourceHandler {
 
     /**
      * This method is required to declare the type of plugin that this class
      * implements.
-     * @return the type of this plugin: SERIALIZER
+     * @return the type of this plugin: TRANSFORMER
      */
     @Override
     public final HandlerType getType() {
-        return ProxymaTags.HandlerType.SERIALIZER;
+        return ProxymaTags.HandlerType.TRANSFORMER;
     }
 
     /**
@@ -36,15 +33,20 @@ public class NullSerializer implements m.c.m.proxyma.core.ResourceHandler {
      * @param aResource any ProxymaResource
      */
     @Override
-    public void process(ProxymaResource aResource) {
-        if (log == null) 
-            log = aResource.getContext().getLogger();
-        
-        log.info("Null Serializer just did nothing..");
-    }
+    public abstract void process(ProxymaResource aResource);
 
     /**
-     * The logger for this class
+     * Implement this method to return the name of the plugin.
+     * @return the name of the plugin
      */
-    private Logger log = null;
+    @Override
+    public abstract String getName();
+
+    /**
+     * Implement this method to provide a short description of what the plugin
+     * does.. you can use html tags into it.
+     * @return a short description of the plugin
+     */
+    @Override
+    public abstract String getHtmlDescription();
 }

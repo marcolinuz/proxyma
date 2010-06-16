@@ -8,9 +8,9 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * This is the interface to implement Preprocessors, Transformers, Serializers
  * and Retrivers.
  * However, it's not recommanded to build plugins starting from this interface.
- * To do so, you should extend and override the "process" method of the "NullHandlers".
+ * To do so, you should extend and override the "process" method of the "AbstraceHandlers".
  *
- * @see NullPreprocessord, NillSerializer, NullTransformer and NullRetriver
+ * @see AbstractPreprocessord, AbstractSerializer, AbstractTransformer and AbstractRetriver
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -36,4 +36,21 @@ public interface ResourceHandler {
      * @param aResource the resource to process.
      */
     public void process(ProxymaResource aResource);
+
+    /**
+     * Returns the name of the plugin (only a name that characterize the plugin,
+     * not the class name..) that will be used into the web interface as plugin name.
+     * @return the plugin name.
+     */
+    public String getName();
+
+    /**
+     * Returns a short description (html formatted) of the plugin.<br>
+     * It will be used into the web interface to give some information about the
+     * plugin.
+     *
+     * @return a short description of the plugin.
+     */
+    public String getHtmlDescription();
+
 }

@@ -48,8 +48,8 @@ public class ProxyFolderFactoryTest extends TestCase {
         Collection <String> transformers = expResult.getTransformers();
         assertEquals(transformers.size(), 4);
 
-        assertTrue(transformers.contains("m.c.m.proxyma.plugins.transformers.HtmlUriRewriter"));
-        assertTrue(transformers.contains("m.c.m.proxyma.plugins.transformers.CssUriRewriter"));
+        assertTrue(transformers.contains("m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"));
+        assertTrue(transformers.contains("m.c.m.proxyma.plugins.transformers.CssUrlRewriter"));
         assertTrue(transformers.contains("m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter"));
         assertTrue(transformers.contains("m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter"));
 

@@ -57,12 +57,12 @@
             <maxPostSize>5000</maxPostSize>
             <enabled>true</enabled>
             <preprocessors>
-                <resourceHandler>m.c.m.proxyma.plugins.preprocessors.NullPreprocessor</resourceHandler>
+                <resourceHandler/>
             </preprocessors>
             <cacheProvider>m.c.m.proxyma.plugins.caches.EhcacheCacheProvider</cacheProvider>
-            <retriver>m.c.m.proxyma.plugins.retrivers.SimpleHttpResourceRetriver</retriver>
+            <retriver>m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver</retriver>
             <transformers>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUriRewriter</resourceHandler>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUriRewriter</resourceHandler>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
@@ -84,41 +84,38 @@
         </avaliableCacheProviders>
 
         <!-- List of Preprocessor plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "NullPreprocessor" class overriding
+             NOTE: these plugins extends the "AbstractPreprocessor" class overriding
              the "process" method. -->
         <avaliablePreprocessors>
-            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.NullPreprocessor</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.preprocessors.PerformanceTestPreprocessor</resourceHandler>
         </avaliablePreprocessors>
 
         <!-- List of Transformer plugins that can be used by the proxyma engine
-             NOTE: these plugins extends the "NullTransformer" class overriding
+             NOTE: these plugins extends the "AbstractTransformer" class overriding
              the "process" method. -->
         <avaliableTransformers>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.NullTransformer</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUriRewriter</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlEmbedJSRewriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.JSLibraryRewriter</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUriRewriter</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUrlRewriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
         </avaliableTransformers>
 
         <!-- List of Serializer plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "NullSerializer" class overriding
+             NOTE: these plugins extends the "AbstractSerializer" class overriding
              the "process" method. -->
         <availableSerializers>
-            <resourceHandler>m.c.m.proxyma.plugins.serializers.NullSerializer</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.serializers.SimpleSerializer</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.serializers.DebugSerializer</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer</resourceHandler>
         </availableSerializers>
 
         <!-- List of Retriver plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "NullRetriver" class overriding
+             NOTE: these plugins extends the "AbstractRetriver" class overriding
              the "process" method. -->
         <availableRetrivers>
-            <resourceHandler>m.c.m.proxyma.plugins.retrivers.NullRetriver</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver</resourceHandler>
         </availableRetrivers>
     </plugins>
