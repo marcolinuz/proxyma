@@ -70,4 +70,22 @@ public interface CacheProvider {
      * @return some statistics data about the cache status and usage.
      */
     public String getStatistics();
+
+
+    /**
+     * Returns true if the chache subsystem need initialization before start
+     * to work.<br/>
+     * Note: This method is invoked any time a new request comes to the server.
+     * @return true if is needed to run the initialize() method
+     */
+    public boolean needInitialization();
+
+    /**
+     * Returns true if the cache subsystem need to cleanup its environment on
+     * server shutdown.<br/>
+     * Note: This metho is invoked more any time a reverse proxy instance
+     * is finalized.
+     * @return true if is needed to run the shutdown() method.
+     */
+    public boolean needFinalization();
 }

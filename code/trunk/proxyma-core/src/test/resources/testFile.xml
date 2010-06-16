@@ -37,10 +37,10 @@
                 <resourceHandler />
             </preprocessors>
             <cacheProvider>m.c.m.proxyma.plugins.caches.EhcacheCacheProvider</cacheProvider>
-            <retriver>m.c.m.proxyma.plugins.retrivers.SimpleHttpResourceRetriver</retriver>
+            <retriver>m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver</retriver>
             <transformers>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUriRewriter</resourceHandler>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUriRewriter</resourceHandler>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
+                <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUrlRewriter</resourceHandler>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
             </transformers>
@@ -53,31 +53,31 @@
         <avaliableCacheProviders>
             <cacheProvider>m.c.m.proxyma.plugins.caches.NullCacheProvider</cacheProvider>
             <cacheProvider>m.c.m.proxyma.plugins.caches.UnexistingCacheProvider</cacheProvider>
-            <cacheProvider>m.c.m.proxyma.plugins.retrivers.NullRetriver</cacheProvider>
+            <cacheProvider>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</cacheProvider>
         </avaliableCacheProviders>
 
         <avaliablePreprocessors>
-            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.NullPreprocessor</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.PerformanceTestPreprocessor</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.retrivers.NullRetriver</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
         </avaliablePreprocessors>
 
         <avaliableTransformers>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.NullTransformer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.UnexistingTransformer</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.NullPreprocessor</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
         </avaliableTransformers>
 
         <availableSerializers>
-            <resourceHandler>m.c.m.proxyma.plugins.serializers.NullSerializer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.serializers.SimpleSerializer</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.serializers.UnexistingSerializer</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.NullTransformer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
         </availableSerializers>
 
         <availableRetrivers>
-            <resourceHandler>m.c.m.proxyma.plugins.retrivers.NullRetriver</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.retrivers.UnexistingRetriver</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.serializers.NullSerializer</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
         </availableRetrivers>
     </plugins>
 

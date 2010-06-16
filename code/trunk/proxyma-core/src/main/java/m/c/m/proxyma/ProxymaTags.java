@@ -48,7 +48,7 @@ public class ProxymaTags {
     //Misc constants
     public static final int UNSPECIFIED_POST_SIZE = 5000;
     public static final String UNSPECIFIED_CACHEPROVIDER = "m.c.m.proxyma.plugins.caches.NullCacheProvider";
-    public static final String UNSPECIFIED_RETRIVER = "m.c.m.proxyma.plugins.retrivers.NullRetriver";
-    public static final String UNSPECIFIED_SERIALIZER = "m.c.m.proxyma.plugins.serializers.NullSerializer";
+    public static final String UNSPECIFIED_RETRIVER = "m.c.m.proxyma.plugins.retrivers.AbstractRetriver";
+    public static final String UNSPECIFIED_SERIALIZER = "m.c.m.proxyma.plugins.serializers.AbstractSerializer";
     public static final String UNSPECIFIED_LOGLEVEL = "INFO";
 }
