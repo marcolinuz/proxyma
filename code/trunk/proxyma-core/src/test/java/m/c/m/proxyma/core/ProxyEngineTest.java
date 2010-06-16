@@ -36,7 +36,7 @@ public class ProxyEngineTest extends TestCase {
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
         try {
-            instance = ProxyEngineFactory.createNewProxyEngine(context);
+            instance = proxyma.createNewProxyEngine(context);
         } catch (IllegalAccessException ex) {
             context.getLogger().log(Level.SEVERE, null, ex);
         }
@@ -89,7 +89,7 @@ public class ProxyEngineTest extends TestCase {
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
         try {
-            instance = ProxyEngineFactory.createNewProxyEngine(context);
+            instance = proxyma.createNewProxyEngine(context);
         } catch (IllegalAccessException ex) {
             context.getLogger().log(Level.SEVERE, null, ex);
         }
@@ -102,9 +102,6 @@ public class ProxyEngineTest extends TestCase {
         } catch (Exception x) {
             fail("Unable to unregister the context");
         }
-
-        //Remove after implementation.
-        fail("The test case is a prototype.");
     }
 
 }

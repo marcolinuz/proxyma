@@ -34,8 +34,8 @@ public class ProxyFolderFactoryTest extends TestCase {
             fail("ProxyFolderBean creation failed");
         }
         
-        assertEquals(expResult.getFolderName(), proxyFolderName+"/");
-        assertEquals(expResult.getDestination(), proxyFolderDestination+"/");
+        assertEquals(expResult.getFolderName(), proxyFolderName);
+        assertEquals(expResult.getDestination(), proxyFolderDestination);
         assertEquals(expResult.getMaxPostSize(), Integer.parseInt(context.getSingleValueParameter(ProxymaTags.FOLDER_MAX_POST_SIZE)));
         assertEquals(expResult.isEnabled(), context.getSingleValueParameter(ProxymaTags.FOLDER_ENABLED).equalsIgnoreCase("true")?true:false);
         assertEquals(expResult.getCacheProvider(), context.getSingleValueParameter(ProxymaTags.FOLDER_CACHEPROVIDER));

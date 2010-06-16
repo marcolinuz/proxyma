@@ -92,6 +92,22 @@ public class ProxymaResource {
     }
 
     /**
+     * Returns the subpath relative to the destination of the proxy folder
+     *
+     * @return the subpath of the proxy folder
+     */
+    public String getDestinationSubPath() {
+        return destinationSubPath;
+    }
+
+    /**
+     * Sets the subpath relative to the destination of the proxy folder
+     */
+    public void setDestinationSubPath(String destinationSubPath) {
+        this.destinationSubPath = destinationSubPath;
+    }
+
+    /**
      * Set the proxy foder that matched the requested URI.
      *
      * @return the response for the client.
@@ -196,6 +212,11 @@ public class ProxymaResource {
      * The client response that will be refined by the reverse proxy engine
      */
     private ProxymaResponse response = null;
+
+    /**
+     * The subpath relative to the destination of the proxy folder.
+     */
+    private String destinationSubPath = null;
 
     /**
      * A general purpose container for intra-plugins communication using key-value pairs.
