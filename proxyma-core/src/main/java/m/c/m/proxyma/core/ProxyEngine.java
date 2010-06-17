@@ -52,8 +52,9 @@ public class ProxyEngine {
      *
      * @param aResource a resource to masquerade by the proxy.
      */
-    public void doProxy(ProxymaResource aResource) {
-        //A new resource request has come.. 
+    public int doProxy(ProxymaResource aResource) {
+        //A new resource request has come..
+        int retValue = STATUS_OK;
         ProxymaContext context = aResource.getContext();
         ProxymaRequest request = aResource.getRequest();
         ProxymaResponse response = aResource.getResponse();
@@ -62,57 +63,67 @@ public class ProxyEngine {
         //set proxyma root URI
         aResource.setProxymaRootURI(getProxymaRootURI(request));
 
-        // *** find if the request belongs to any proxyFolder ***
+        // *** Try to understand what kind of request was come and if it belongs to any proxyFolder ***
         String subPath = request.getRequestURI().replaceFirst(request.getBasePath(), EMPTY_STRING);
+        ProxymaResponseDataBean responseData = null;
         if (EMPTY_STRING.equals(subPath)) {
+            //The path is not complete, redirect the client to proxyma root path
             try {
                 //prepare a redirect response to the "Proxyma root uri"
                 log.fine("Requested the proxyma path without trailing \"/\".. Redirecting to root uri: " + aResource.getProxymaRootURI());
-                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createRedirectResponse(aResource.getProxymaRootURI());
-                aResource.getResponse().setResponseData(responseData);
+                responseData = ProxyStandardResponsesFactory.createRedirectResponse(aResource.getProxymaRootURI());
             } catch (MalformedURLException ex) {
                 //if the URL is malformed send back an error page.
                 log.severe("Malformed URL found (" + aResource.getProxymaRootURI() + ") for the proxyma root URI!");
-                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_BAD_REQUEST);
-                aResource.getResponse().setResponseData(responseData);
+                responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_BAD_REQUEST);
             }
+
+            //Serialize the response with the default serializer
+            aResource.getResponse().setResponseData(responseData);
+            retValue = responseData.getStatus();
             defaultSerializer.process(aResource);
         } else if (PATH_SEPARATOR.equals(subPath)) {
+            //The Proxyma root path was requested.
             if (isEnableShowFoldersListOnRootURI()) {
-                //prepare the response with the list of the rules
+                //The folders list page is enabled, prepre the response with the folders list
                 log.fine("Requested the \"registered folders page\", generating it..");
-                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createFoldersListResponse(context);
-                aResource.getResponse().setResponseData(responseData);
-                defaultSerializer.process(aResource);
+                responseData = ProxyStandardResponsesFactory.createFoldersListResponse(context);
             } else {
-                // list view denied by configuration, send a 404 error response
+                //The folders list page is disabled by configuration, send a 404 error response
                 log.fine("Requested the proxyma root uri but the \"registered folders page\" is denyed by configuration.");
-                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
-                aResource.getResponse().setResponseData(responseData);
-                defaultSerializer.process(aResource);
+                responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
             }
+            //Serialize the response with the default serializer
+            aResource.getResponse().setResponseData(responseData);
+            retValue = responseData.getStatus();
+            defaultSerializer.process(aResource);
         } else {
-            //Searching for a matching proxyFolderURLEncoded into the context
+            //Searching into the context for a matching proxyFolder using "URLEncoded value"
             String URLEncodedProxyFolder = subPath.split("/")[1];
             ProxyFolderBean folder = context.getProxyFolderByURLEncodedName(URLEncodedProxyFolder);
 
             if (folder == null) {
-                //If the proxyFolder doesn't exists, (send a 404 error response)
+                //The proxyFolder doesn't exists, (send a 404 error response)
                 log.fine("Requested an unexistent or proxy folder (" + folder.getFolderName() + "), sending error response..");
-                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
+                responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
                 aResource.getResponse().setResponseData(responseData);
+                retValue = responseData.getStatus();
                 defaultSerializer.process(aResource);
             } else if (!folder.isEnabled()) {
                 //The requested proxy folder exixts but is disabled (send a 403 error response)
                 log.fine("Requested a disabled or proxy folder (" + folder.getFolderName() + "), sending error response..");
-                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_FORBIDDEN);
+                responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_FORBIDDEN);
                 aResource.getResponse().setResponseData(responseData);
+                retValue = responseData.getStatus();
                 defaultSerializer.process(aResource);
             } else {
+                //The requested proxy folder exists and is enabled.
                 log.fine("Requested an available and enabled proxy folder content, go to process it");
-                //Set the proxyFolder into the resource
+                
+                //Set the matched proxyFolder into the resource
                 aResource.setProxyFolder(folder);
-                //Set the destination subpath
+
+                //Set the destination subpath into the resource
                 aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));
 
                 // *** NOW I know what the user has Just asked for ***
@@ -120,31 +131,55 @@ public class ProxyEngine {
                 ResourceHandler plugin = null;
                 CacheProvider cache = null;
                 try {
-                    //Applying all the configured preprocessors to the resource in registration order
+                    //Applying all the folder-specific preprocessors to the resource in registration order
                     configuredPlugins = folder.getPreprocessors();
                     while (configuredPlugins.hasNext()) {
                         plugin = availablePreprocessors.get(configuredPlugins.next());
                         plugin.process(aResource);
                     }
 
-                    //Use the configured cache provider to search for the resource into the cache
+                    //Use the folder-specific cache provider to search for the wanted resource into the cache subsystem
                     cache = availableCacheProviders.get(folder.getCacheProvider());
-                    if (cache.getResponseData(aResource)) {
-                        //The resource was found into the cache provider
-                    } else {
-                        //The resource was not found into the cache
+                    if (!cache.getResponseData(aResource)) {
+                        // *** The resource is not present into the cache **
+                        //Go to retrive it using the folder-specific retriver
+                        plugin = availableRetrivers.get(folder.getRetriver());
+                        plugin.process(aResource);
+
+                        //Inspect the response headers and set the cacheable flag.
+                        setCacheableFlag(aResource);
+
+                        //Apply the folder-specific transformer in registration order
+                        configuredPlugins = folder.getTransformers();
+                        while (configuredPlugins.hasNext()) {
+                            plugin = availableTransformers.get(configuredPlugins.next());
+                            plugin.process(aResource);
+                        }
+
+                        //Try to understand if the resource is cacheable
+                        if (aResource.getResponse().isCacheable())
+                            cache.storeResponseData(aResource);
                     }
 
+                    //Finally pass the resource to the folder-specific serializer
+                    plugin = availableSerializers.get(folder.getSerializer());
+                    retValue = aResource.getResponse().getResponseData().getStatus();
+                    plugin.process(aResource);
+
                 } catch (Exception e) {
-                    //If an unexpected exception is thrown, send the back the error resource to the client.
+                    //If any unexpected exception is thrown, send the back the error resource to the client.
                     log.warning("Trhere was an error Processing the request \"" + aResource.getRequest().getRequestURI() +  "\" by the Proxy folder \"" + folder.getFolderName() + "\"");
                     e.printStackTrace();
-                    ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_INTERNAL_SERVER_ERROR);
+                    responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_INTERNAL_SERVER_ERROR);
                     aResource.getResponse().setResponseData(responseData);
+                    retValue = responseData.getStatus();
                     defaultSerializer.process(aResource);
                 }
             }
         }
+
+        //Return the status to the caller
+        return retValue;
     }
 
     /**
@@ -260,7 +295,12 @@ public class ProxyEngine {
     }
 
 
-
+    /**
+     * Calculates the root URI of the reverse proxy context.
+     *
+     * @param request the request to use for the calculus.
+     * @return http://proxyma.host[:proxymaPort]/
+     */
     private String getProxymaRootURI (ProxymaRequest request) {
         StringBuffer retVal = new StringBuffer();
 
@@ -275,6 +315,80 @@ public class ProxyEngine {
         retVal.append("/");
         
         return retVal.toString();
+    }
+
+    /**
+     * Inspect the response Headers to understand if the resource can be
+     * stored into the cache.
+     *
+     * @param aResource the resource that countains the response data
+     * @return true if the response is cacheable.
+     */
+    private void setCacheableFlag(ProxymaResource aResource) {
+        ProxymaResponseDataBean responseData = aResource.getResponse().getResponseData();
+        boolean cacheableFlag = false;
+
+        //Check for intresting HTTP headers
+        String pragmaHeader = responseData.getHeader(PRAGMA_HEADER).getValue();
+        String cacheControlHeader = responseData.getHeader(CACHE_CONTROL_HEADER).getValue();
+
+        //If there are no directives we can cache it
+        if ((pragmaHeader == null) && (cacheControlHeader == null)) {
+            //No directives found: we can cache it!!!
+            cacheableFlag = true;
+        } else {
+            // check for pragma directives..
+            if (pragmaHeader != null) {
+                //Check the Pragma header..
+                if (pragmaHeader.indexOf(PRAGMA_NO_CACHE) > 0)
+                //we can't cache this...
+                    cacheableFlag = false;
+                else
+                    cacheableFlag = true;
+            }
+
+            // check for cache-control directives
+            if (cacheControlHeader != null) {
+                //Check the value
+                if ((cacheControlHeader.indexOf(CACHE_CONTROL_NO_CACHE) > 0) ||
+                        (cacheControlHeader.indexOf(CACHE_CONTROL_NO_STORE) > 0) ||
+                        (cacheControlHeader.indexOf(CACHE_CONTROL_PRIVATE) > 0)) {
+                    //we can't cache this
+                    cacheableFlag = false;
+                } else if (cacheControlHeader.indexOf(CACHE_CONTROL_PUBLIC) > 0) {
+                    cacheableFlag = true;
+                } else {
+                    //Ok.. we have to parse the whole string.. :O(
+                    //we split the values by "," and search for max-age values.
+                    String[] entries = cacheControlHeader.split(",");
+                    for (int i=0; i<entries.length; i++) {
+                        if (entries[i].indexOf(CACHE_CONTROL_MAX_AGE) > 0) {
+                            //find maxage value
+                            int value = Integer.parseInt(entries[i].replaceFirst(CACHE_CONTROL_MAX_AGE, EMPTY_STRING));
+                            if (value > 0)
+                                cacheableFlag = true;
+                            else
+                                cacheableFlag = false;
+                            break;
+                        } else if (entries[i].indexOf(CACHE_CONTROL_S_MAXAGE) > 0) {
+                            //find maxage value
+                            int value = Integer.parseInt(entries[i].replaceFirst(CACHE_CONTROL_S_MAXAGE, EMPTY_STRING));
+                            if (value > 0)
+                                cacheableFlag = true;
+                            else
+                                cacheableFlag = false;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                //we can cache this
+                cacheableFlag = true;
+            }
+        }
+
+        //Set the value of the ispection into the resource data
+        aResource.getResponse().setCacheable(cacheableFlag);
     }
 
     /**
@@ -350,9 +464,69 @@ public class ProxyEngine {
     private static final int STATUS_BAD_REQUEST = 400;
 
     /**
-     * Http status code for "Internal Server Error
+     * Http status code for "Internal Server Error"
      */
     private static final int STATUS_INTERNAL_SERVER_ERROR = 500;
+
+    /**
+     * Http status code for "Ok"
+     */
+    private static final int STATUS_OK = 200;
+
+    /**
+     * Http status code for redirect "Found"
+     */
+    private static final int STATUS_FOUND = 302;
+
+    /**
+     * An header for the cache control
+     */
+    private static final String PRAGMA_HEADER = "Pragma";
+
+    /**
+     * No cache value for the Pragma header
+     */
+    public final static String PRAGMA_NO_CACHE = "no-cache";
+
+    /**
+     * Another Header for the cache control
+     */
+    private static final String CACHE_CONTROL_HEADER = "Cache-Control";
+
+    /**
+     * Cache control value that means: ok, cache it!
+     */
+    public final static String CACHE_CONTROL_PUBLIC = "public";
+
+    /**
+     * Cache control value that means: You can cache it only for this user.
+     */
+    public final static String CACHE_CONTROL_PRIVATE = "private";
+
+    /**
+     * No cache value for the Pragma header
+     */
+    public final static String CACHE_CONTROL_NO_CACHE = "no-cache";
+
+    /**
+     * Cache control value that means: no, don't cache this
+     */
+    public final static String CACHE_CONTROL_NO_STORE = "no-store";
+
+    /**
+     * Cache control value that means: this can be cached for X seconds
+     */
+    public final static String CACHE_CONTROL_MAX_AGE = "max-age=";
+
+    /**
+     * Similar to the previous but for shared caches
+     */
+    public final static String CACHE_CONTROL_S_MAXAGE = "s-maxage=";
+
+    /**
+     * Cache control value that means: this is not to cache..
+     */
+    public final static String CACHE_CONTROL_MAX_AGE_ZERO = "max-age=0";
 
     /**
      * The default serializer to use for internal generated resources

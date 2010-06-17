@@ -51,8 +51,8 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      * @param aResource
      */
     @Override
-    public void storeResponse(ProxymaResource aResource) {
-        log.info("Null cache cant't store responses..");
+    public void storeResponseData(ProxymaResource aResource) {
+        log.finest("Null cache cant't store responses..");
     }
 
     /**
@@ -62,7 +62,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      */
     @Override
     public boolean getResponseData(ProxymaResource aResource) {
-        log.info("Null cache cant't get respones..");
+        log.finest("Null cache cant't get respones..");
         return false;
     }
 
@@ -72,7 +72,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      */
     @Override
     public Collection<String> getCachedURIs() {
-        log.info("Null cache always returns an empty collection..");
+        log.finest("Null cache always returns an empty collection..");
         return new LinkedList();
     }
 
@@ -82,7 +82,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      */
     @Override
     public String getStatistics() {
-        log.info("Null cache doesn't provide statistics..");
+        log.finest("Null cache doesn't provide statistics..");
         return "Null cache doesn't provide statistics..";
     }
 
@@ -104,8 +104,39 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
         return false;
     };
 
+    /*
+     * Returns the name of the cache provider.
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns a short description of the cache provider formatted for html output.
+     * @return the description of the cache provider
+     */
+    @Override
+    public String getHtmlDescription() {
+        return description;
+    }
+
     /**
      * The logger for this class
      */
     private Logger log = null;
+
+    /**
+     * The name of this plugin.
+     */
+    private static final String name = "Null Cache Provider";
+
+    /**
+     * A short html description of what it does.
+     */
+    private static final String description = "" +
+            "This is a null cache provider.<br/>" +
+            "Use this plugin if you don't want to use a cache subsystem" +
+            "on the proxy-folder. It always force the proxy to retrive the" +
+            "resources from the original server";
 }

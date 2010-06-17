@@ -42,10 +42,10 @@ public interface CacheProvider {
      *
      * @param aResource the resource countaining the response to store.
      */
-    public void storeResponse(ProxymaResource aResource);
+    public void storeResponseData(ProxymaResource aResource);
 
     /**
-     * Method provided to search for a response that fits the passed resource into the cache.
+     * Method provided to search into the cache a responseData suitable for the passed resource.
      *
      * @param aResource the resource to complete with a response.
      * If a fittin gresponse is found it will be attached to the resource.
@@ -88,4 +88,19 @@ public interface CacheProvider {
      * @return true if is needed to run the shutdown() method.
      */
     public boolean needFinalization();
+
+    /**
+     * Returns the name of the cache provider (only a name that characterize the plugin,
+     * not the class name..) that could be used into the interfaces as cache name.
+     * @return the cache name.
+     */
+    public String getName();
+
+    /**
+     * Returns a short description (html formatted) of the cache.<br>
+     * It will be used into the interfaces to give some information about the cache.
+     *
+     * @return a short description of the cache.
+     */
+    public String getHtmlDescription();
 }
