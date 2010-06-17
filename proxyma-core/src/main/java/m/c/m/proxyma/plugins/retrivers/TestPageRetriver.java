@@ -32,7 +32,6 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
         }
 
         log.info("Not yet Implemented..");
-        throw new UnsupportedOperationException("Not Yet Implemented..");
     }
     
     /**

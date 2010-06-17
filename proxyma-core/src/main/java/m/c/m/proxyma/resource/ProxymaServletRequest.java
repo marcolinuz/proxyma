@@ -73,8 +73,17 @@ public class ProxymaServletRequest implements ProxymaRequest {
      * @return the absolute base path of the proxy URI.
      */
     @Override
-    public String getBasePath() {
+    public String getContextPath() {
         return theOriginalRequest.getContextPath();
+    }
+
+    /**
+     * Returns the path of the request (without protocol, host, port, proxyma context and query string)
+     * @return the relative path from the proxyma base uri.
+     */
+    @Override
+    public String getSubPath() {
+        return theOriginalRequest.getPathInfo();
     }
 
     /**
