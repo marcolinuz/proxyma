@@ -6,7 +6,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
 import org.apache.commons.lang.NullArgumentException;
@@ -45,8 +47,8 @@ public class ProxyFolderBean implements Serializable {
 
         setFolderName(folderName);
         setDestination(destination);
-        this.preprocessors = new ConcurrentHashMap<String,String>();
-        this.transformers = new ConcurrentHashMap<String,String>();
+        this.preprocessors = new ConcurrentLinkedQueue<String>();
+        this.transformers = new ConcurrentLinkedQueue<String>();
     
         log.finest("ProxyFolder " + folderName + " for " + destination + "created.");
     }
@@ -269,11 +271,11 @@ public class ProxyFolderBean implements Serializable {
             preprocessorClassName = preprocessorClassName.trim();
             if (preprocessorClassName.length() == 0) {
                 log.warning("The preprocessor class name is an empty (or blank) string.. nothing done");
-            } else if (preprocessors.containsKey(preprocessorClassName)) {
+            } else if (preprocessors.contains(preprocessorClassName)) {
                 log.warning("The preprocessor \"" + preprocessorClassName + "\" is already registered in proxy folder \"" + getFolderName() + "\".. nothing done.");
             } else {
                 log.finest("Registering new preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
-                preprocessors.put(preprocessorClassName,preprocessorClassName);
+                preprocessors.add(preprocessorClassName);
             }
         }
     }
@@ -287,7 +289,7 @@ public class ProxyFolderBean implements Serializable {
             log.warning("Null class name parameter.. Ignoring operation");
         } else {
             preprocessorClassName = preprocessorClassName.trim();
-            if (preprocessors.containsKey(preprocessorClassName)) {
+            if (preprocessors.contains(preprocessorClassName)) {
                 log.finest("Unregistering preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
                 preprocessors.remove(preprocessorClassName);
             } else {
@@ -300,8 +302,8 @@ public class ProxyFolderBean implements Serializable {
      * Obtain a collection of preprocessor class names registered for the proxy folder
      * @return a Collection of class names.
      */
-    public Collection<String> getPreprocessors () {
-        return preprocessors.values();
+    public Iterator<String> getPreprocessors () {
+        return preprocessors.iterator();
     }
 
     /**
@@ -315,11 +317,11 @@ public class ProxyFolderBean implements Serializable {
             transformerClassName = transformerClassName.trim();
             if (transformerClassName.length() == 0) {
                 log.warning("The transformer class name is an empty (or blank) string.. nothing done");
-            } else if (transformers.containsKey(transformerClassName)) {
+            } else if (transformers.contains(transformerClassName)) {
                 log.warning("The transformer \"" + transformerClassName + "\" is already registered in proxy folder \"" + getFolderName() + "\".. nothing done.");
             } else {
                 log.finest("Registering new transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
-                transformers.put(transformerClassName,transformerClassName);
+                transformers.add(transformerClassName);
             }
         }
     }
@@ -333,7 +335,7 @@ public class ProxyFolderBean implements Serializable {
             log.warning("Null class name parameter.. Ignoring operation");
         } else {
             transformerClassName = transformerClassName.trim();
-            if (transformers.containsKey(transformerClassName)) {
+            if (transformers.contains(transformerClassName)) {
                 log.finest("Unregistering transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
                 transformers.remove(transformerClassName);
             } else {
@@ -346,8 +348,8 @@ public class ProxyFolderBean implements Serializable {
      * Obtain a collection of transformers class names registered for the proxy folder
      * @return a Collection of class names.
      */
-    public Collection<String> getTransformers () {
-        return transformers.values();
+    public Iterator<String> getTransformers () {
+        return transformers.iterator();
     }
 
     /**
@@ -393,12 +395,12 @@ public class ProxyFolderBean implements Serializable {
     /**
      * The list of the preprocessor Classes to apply to the resource
      */
-    private ConcurrentHashMap<String, String> preprocessors = null;
+    private ConcurrentLinkedQueue<String> preprocessors = null;
 
     /**
      * The list of the transformer Classes to apply to the resource
      */
-    private ConcurrentHashMap<String, String> transformers = null;
+    private ConcurrentLinkedQueue<String> transformers = null;
 
     /**
      * The default encodig to use to encode/decode URLs

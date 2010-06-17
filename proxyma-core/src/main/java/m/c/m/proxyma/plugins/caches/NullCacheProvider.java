@@ -61,7 +61,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      * @return always false
      */
     @Override
-    public boolean getResponse(ProxymaResource aResource) {
+    public boolean getResponseData(ProxymaResource aResource) {
         log.info("Null cache cant't get respones..");
         return false;
     }
