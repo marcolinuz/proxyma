@@ -52,7 +52,7 @@ public interface CacheProvider {
      *
      * @return false if no fitting response were found into the cache.
      */
-    public boolean getResponse(ProxymaResource aResource);
+    public boolean getResponseData(ProxymaResource aResource);
 
     /**
      * Method provided to get a collection on URIs (keys for the cache matching) that are stored

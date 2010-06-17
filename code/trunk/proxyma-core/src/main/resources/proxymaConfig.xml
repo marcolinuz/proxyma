@@ -75,10 +75,11 @@
         </folderSettings>
     </defaultContext>
 
-    <!-- NOTE: The following is a list of plugins that comes with the
-           standard release of Proxyma. You can add to these lists
-           your own plugins.. you only have to implement them using
-           the proper interface. ;O) -->
+    <!-- The following is a list of plugins that comes with the
+         standard release of Proxyma. You can add to these lists
+         your own plugins.. you only have to implement them using
+         the proper interface. ;O)
+         NOTE: Plugins are applyed into the folders in registration order -->
     <plugins>
         <!-- List of chache Providers that can be used by proxyma core engine
              These plugins implements the "CacheProvider" interface -->
@@ -98,12 +99,12 @@
              NOTE: these plugins extends the "AbstractTransformer" class overriding
              the "process" method. -->
         <avaliableTransformers>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
+            <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUrlRewriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlEmbedJSRewriter</resourceHandler>
             <resourceHandler>m.c.m.proxyma.plugins.transformers.JSLibraryRewriter</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUrlRewriter</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
         </avaliableTransformers>
 
         <!-- List of Serializer plugins that can be used by the proxyma engine.

@@ -3,6 +3,7 @@ package m.c.m.proxyma.core;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
@@ -115,7 +116,33 @@ public class ProxyEngine {
                 aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));
 
                 // *** NOW I know what the user has Just asked for ***
-                //Applying configured preprocessors to the resource
+                Iterator<String> configuredPlugins = null;
+                ResourceHandler plugin = null;
+                CacheProvider cache = null;
+                try {
+                    //Applying all the configured preprocessors to the resource in registration order
+                    configuredPlugins = folder.getPreprocessors();
+                    while (configuredPlugins.hasNext()) {
+                        plugin = availablePreprocessors.get(configuredPlugins.next());
+                        plugin.process(aResource);
+                    }
+
+                    //Use the configured cache provider to search for the resource into the cache
+                    cache = availableCacheProviders.get(folder.getCacheProvider());
+                    if (cache.getResponseData(aResource)) {
+                        //The resource was found into the cache provider
+                    } else {
+                        //The resource was not found into the cache
+                    }
+
+                } catch (Exception e) {
+                    //If an unexpected exception is thrown, send the back the error resource to the client.
+                    log.warning("Trhere was an error Processing the request \"" + aResource.getRequest().getRequestURI() +  "\" by the Proxy folder \"" + folder.getFolderName() + "\"");
+                    e.printStackTrace();
+                    ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_INTERNAL_SERVER_ERROR);
+                    aResource.getResponse().setResponseData(responseData);
+                    defaultSerializer.process(aResource);
+                }
             }
         }
     }
@@ -321,6 +348,11 @@ public class ProxyEngine {
      * Http status code for "Malformed requests"
      */
     private static final int STATUS_BAD_REQUEST = 400;
+
+    /**
+     * Http status code for "Internal Server Error
+     */
+    private static final int STATUS_INTERNAL_SERVER_ERROR = 500;
 
     /**
      * The default serializer to use for internal generated resources

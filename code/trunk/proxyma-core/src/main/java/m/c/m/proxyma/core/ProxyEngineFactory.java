@@ -73,6 +73,14 @@ public class ProxyEngineFactory {
         if (configValue != null)
             newEngine.setEnableShowFoldersListOnRootURI(configValue.equalsIgnoreCase("true")?true:false);
 
+        //Initialize all the available cache providers
+        Iterator<CacheProvider> caches = newEngine.getRegisteredCachePlugins().iterator();
+        while (caches.hasNext()) {
+            CacheProvider cache = caches.next();
+            if (cache.needInitialization())
+                cache.initialize(context);
+        }
+
         //return the builded object
         return newEngine;
     }
