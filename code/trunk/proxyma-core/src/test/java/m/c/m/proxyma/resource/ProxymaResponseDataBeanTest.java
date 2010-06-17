@@ -121,6 +121,12 @@ public class ProxymaResponseDataBeanTest extends TestCase {
 
         instance.addHeader("Name ", " Value");
         assertEquals("Name: Value", instance.getHeader("nAmE").toString());
+
+        instance.addHeader("integerValue", 120);
+        assertEquals("integerValue: 120", instance.getHeader("integervalue").toString());
+
+        instance.addHeader("longValue", 12345678990L);
+        assertEquals("longValue: 12345678990", instance.getHeader("Longvalue").toString());
     }
 
     /**

@@ -112,9 +112,7 @@ public class ProxymaHttpHeaderTest extends TestCase {
         ProxymaHttpHeader clone = (ProxymaHttpHeader) instance.clone();
 
         assertNotSame(instance, clone);
-        assertNotSame(instance.getName(), clone.getName());
         assertEquals(instance.getName(), clone.getName());
-        assertNotSame(instance.getValue(), clone.getValue());
         assertEquals(instance.getValue(), clone.getValue());
     }
 

@@ -30,6 +30,10 @@
                                                  temporary files. -->
         <byteBufferImplementation>m.c.m.proxyma.buffers.SmartBuffer</byteBufferImplementation>
 
+        <!-- It enabled (true) a list of the registered proxy folders will be
+             generated if the client requests the proxyma root URI -->
+        <showProxyFoldersOnRootPath>true</showProxyFoldersOnRootPath>
+
         <!-- Logging policy -->
         <logging>
             <!-- Log level.. set this to INFO in Production Environments

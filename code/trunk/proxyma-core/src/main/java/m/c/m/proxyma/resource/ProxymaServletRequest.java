@@ -164,6 +164,15 @@ public class ProxymaServletRequest implements ProxymaRequest {
     }
 
     /**
+     * Returns the sheme used by the client to send the request.
+     * @return http, http or ftp
+     */
+    @Override
+    public String getScheme() {
+        return theOriginalRequest.getScheme();
+    }
+
+    /**
      * Returns the fully qualified name of the client that sent the request.
      * @return the client host name
      */

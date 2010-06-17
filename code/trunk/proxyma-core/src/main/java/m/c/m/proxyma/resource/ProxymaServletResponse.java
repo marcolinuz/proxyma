@@ -69,8 +69,6 @@ public class ProxymaServletResponse extends ProxymaResponse {
         if (responseData == null) {
             log.warning("Response data are \"null\"!");
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-        } else if (responseData.isRedirect()) {
-            statusCode = serializeAndSendRedirect(responseData, this.theApplicationServerResponse);
         } else {
             statusCode = serializeAndSendResponseData(responseData, this.theApplicationServerResponse);
         }
@@ -89,11 +87,8 @@ public class ProxymaServletResponse extends ProxymaResponse {
      * @return the status code of the operation.
      */
     private int serializeAndSendResponseData (ProxymaResponseDataBean responseData, HttpServletResponse theResponse) {
-        //default exit status..
-        int exitStatus = HttpServletResponse.SC_OK;
-
         //set the returnCode
-        exitStatus = responseData.getStatus();
+        int exitStatus = responseData.getStatus();
         theResponse.setStatus(exitStatus);
 
         //set all the headers of the response data into the http servlet response..
@@ -127,61 +122,34 @@ public class ProxymaServletResponse extends ProxymaResponse {
         }
 
         //Serialize the data of the ByteBuffer into the servlet response..
-        BufferedOutputStream bos = null;
-        log.finest("Sending data..");
-        try {
-            bos = new BufferedOutputStream(theResponse.getOutputStream());
-            ByteBufferReader data = ByteBufferFactory.createNewByteBufferReader(responseData.getData());
-            byte[] buffer = new byte[WRITE_BUFFER_SIZE];
-            int count;
-            while ((count = data.readBytes(buffer, WRITE_BUFFER_SIZE)) >= 0)
-                bos.write(buffer, 0, count);
-        } catch (Exception e) {
-            log.severe("Error in writing buffer data into the response!");
-            e.printStackTrace();
-            exitStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-        } finally {
+        if (responseData.getData() != null) {
+            BufferedOutputStream bos = null;
+            log.finest("Sending data..");
             try {
-                if (bos != null) {
-                    bos.flush();
-                    bos.close();
-                }
-            } catch (IOException e) {
+                bos = new BufferedOutputStream(theResponse.getOutputStream());
+                ByteBufferReader data = ByteBufferFactory.createNewByteBufferReader(responseData.getData());
+                byte[] buffer = new byte[WRITE_BUFFER_SIZE];
+                int count;
+                while ((count = data.readBytes(buffer, WRITE_BUFFER_SIZE)) >= 0)
+                    bos.write(buffer, 0, count);
+            } catch (Exception e) {
+                log.severe("Error in writing buffer data into the response!");
                 e.printStackTrace();
                 exitStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            } finally {
+                try {
+                    if (bos != null) {
+                        bos.flush();
+                        bos.close();
+                    }
+                } catch (IOException e) {
+                    log.severe("Error closing response output buffer!");
+                    e.printStackTrace();
+                    exitStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                }
             }
         }
-
         return exitStatus;
-    }
-
-    /**
-     * On ServletResponses the redirect can be processed in a different way.
-     *
-     * @param responseData the response data that contains the redirect url
-     * @param theResponse the response implementation to use for to send the data
-     * @return the status code of the operation
-     */
-    private int serializeAndSendRedirect (ProxymaResponseDataBean responseData, HttpServletResponse theResponse) {
-        //set the status code.
-        int statusCode = responseData.getStatus();
-
-        try {
-            //check for redirect url
-            if (responseData.containsHeader(LOCATION_HEADER)) {
-                String theUrl = responseData.getHeader(LOCATION_HEADER).getValue();
-                log.finest("Redirecting client to: " + theUrl);
-                theResponse.setStatus(statusCode);
-                theResponse.sendRedirect(theUrl);
-            } else {
-                log.warning("The resource is trying to redirect without specify a Location.");
-                statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-            }
-        } catch (IOException x) {
-           log.severe("Unable to send the redirect!");
-           statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-        }
-        return statusCode;
     }
 
     /**
@@ -193,11 +161,6 @@ public class ProxymaServletResponse extends ProxymaResponse {
      * The logger for this response
      */
     private Logger log = null;
-
-    /**
-     * A constant value to retrive location headers
-     */
-    private static final String LOCATION_HEADER = "Location";
 
     /**
      * Size of the buffer to write data into the http response.

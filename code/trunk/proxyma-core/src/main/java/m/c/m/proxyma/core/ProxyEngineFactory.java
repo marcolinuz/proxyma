@@ -31,6 +31,7 @@ public class ProxyEngineFactory {
         //initialize the logger for this class.
         ProxyEngine newEngine = new ProxyEngine(context);
 
+        //Create the Maps for the available plugins
         HashMap<String, CacheProvider> availableCacheProviders = new HashMap();
         HashMap<String, ResourceHandler> availablePreprocessors = new HashMap();
         HashMap<String, ResourceHandler> availableRetrivers = new HashMap();
@@ -66,6 +67,11 @@ public class ProxyEngineFactory {
         newEngine.setAvailableRetrivers(availableRetrivers);
         newEngine.setAvailableSerializers(availableSerializers);
         newEngine.setAvailableTransformers(availableTransformers);
+
+        //Set the value for the "show folders on root uri" flag
+        String configValue = context.getSingleValueParameter(ProxymaTags.GLOBAL_SHOW_FOLDERS_LIST);
+        if (configValue != null)
+            newEngine.setEnableShowFoldersListOnRootURI(configValue.equalsIgnoreCase("true")?true:false);
 
         //return the builded object
         return newEngine;
