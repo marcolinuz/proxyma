@@ -1,16 +1,17 @@
 package m.c.m.proxyma.core;
 
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaRequest;
 import m.c.m.proxyma.resource.ProxymaResource;
+import m.c.m.proxyma.resource.ProxymaResponse;
+import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
@@ -51,34 +52,72 @@ public class ProxyEngine {
      * @param aResource a resource to masquerade by the proxy.
      */
     public void doProxy(ProxymaResource aResource) {
-        //A new resource request has come.. try to match it with a proxyfolder
+        //A new resource request has come.. 
         ProxymaContext context = aResource.getContext();
         ProxymaRequest request = aResource.getRequest();
+        ProxymaResponse response = aResource.getResponse();
+        ResourceHandler defaultSerializer = availableRetrivers.get(proxyDefaultSerializer);
+
+        //set proxyma root URI
+        aResource.setProxymaRootURI(getProxymaRootURI(request));
 
         // *** find if the request belongs to any proxyFolder ***
         String subPath = request.getRequestURI().replaceFirst(request.getBasePath(), EMPTY_STRING);
         if (EMPTY_STRING.equals(subPath)) {
-            //prepare a redirect response to the "basepath + /"
+            try {
+                //prepare a redirect response to the "Proxyma root uri"
+                log.fine("Requested the proxyma path without trailing \"/\".. Redirecting to root uri: " + aResource.getProxymaRootURI());
+                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createRedirectResponse(aResource.getProxymaRootURI());
+                aResource.getResponse().setResponseData(responseData);
+            } catch (MalformedURLException ex) {
+                //if the URL is malformed send back an error page.
+                log.severe("Malformed URL found (" + aResource.getProxymaRootURI() + ") for the proxyma root URI!");
+                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_BAD_REQUEST);
+                aResource.getResponse().setResponseData(responseData);
+            }
+            defaultSerializer.process(aResource);
         } else if (PATH_SEPARATOR.equals(subPath)) {
-            //prepare a response page with the list of the available proxyFolders
-            //with destinations..(if provided by confguration, else prepare an error response)
+            if (isEnableShowFoldersListOnRootURI()) {
+                //prepare the response with the list of the rules
+                log.fine("Requested the \"registered folders page\", generating it..");
+                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createFoldersListResponse(context);
+                aResource.getResponse().setResponseData(responseData);
+                defaultSerializer.process(aResource);
+            } else {
+                // list view denied by configuration, send a 404 error response
+                log.fine("Requested the proxyma root uri but the \"registered folders page\" is denyed by configuration.");
+                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
+                aResource.getResponse().setResponseData(responseData);
+                defaultSerializer.process(aResource);
+            }
         } else {
-            //Searching for a matching proxyFolderURLEncoded into the ..
+            //Searching for a matching proxyFolderURLEncoded into the context
             String URLEncodedProxyFolder = subPath.split("/")[1];
             ProxyFolderBean folder = context.getProxyFolderByURLEncodedName(URLEncodedProxyFolder);
 
             if (folder == null) {
-                //If the proxyFolder doesn't exists
-                //prepare a reponse with not found error
+                //If the proxyFolder doesn't exists, (send a 404 error response)
+                log.fine("Requested an unexistent or proxy folder (" + folder.getFolderName() + "), sending error response..");
+                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
+                aResource.getResponse().setResponseData(responseData);
+                defaultSerializer.process(aResource);
+            } else if (!folder.isEnabled()) {
+                //The requested proxy folder exixts but is disabled (send a 403 error response)
+                log.fine("Requested a disabled or proxy folder (" + folder.getFolderName() + "), sending error response..");
+                ProxymaResponseDataBean responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_FORBIDDEN);
+                aResource.getResponse().setResponseData(responseData);
+                defaultSerializer.process(aResource);
             } else {
+                log.fine("Requested an available and enabled proxy folder content, go to process it");
                 //Set the proxyFolder into the resource
                 aResource.setProxyFolder(folder);
                 //Set the destination subpath
                 aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));
+
+                // *** NOW I know what the user has Just asked for ***
+                //Applying configured preprocessors to the resource
             }
         }
-
-        // *** NOW I know what the user has Just asked for ***
     }
 
     /**
@@ -175,6 +214,43 @@ public class ProxyEngine {
     }
 
     /**
+     * Get the new value for the flag<br/>
+     * If true, proxyma will show the list of the registered folders
+     * if the client access to the root uri of the proxy.
+     * @return true or false
+     */
+    protected boolean isEnableShowFoldersListOnRootURI() {
+        return enableShowFoldersListOnRootURI;
+    }
+
+    /**
+     * Sets  the new value for the flag.
+     * @param enableShowFoldersListOnRootURI
+     * @see isShowFoldersListOnRootURI
+     */
+    protected void setEnableShowFoldersListOnRootURI(boolean showFoldersListOnRootURI) {
+        this.enableShowFoldersListOnRootURI = showFoldersListOnRootURI;
+    }
+
+
+
+    private String getProxymaRootURI (ProxymaRequest request) {
+        StringBuffer retVal = new StringBuffer();
+
+        retVal.append(request.getScheme()).append("://");
+        retVal.append(request.getServerName());
+
+        if ((request.getServerPort() == 80) && (HTTP_SCHEME.equals(request.getScheme()))) {
+        } else if ((request.getServerPort() == 443) && (HTTPS_SCHEME.equals(request.getScheme()))) {
+        } else {
+            retVal.append(":").append(request.getServerPort());
+        }
+        retVal.append("/");
+        
+        return retVal.toString();
+    }
+
+    /**
      * The collection of all available cache providers plugins
      */
     private HashMap<String, CacheProvider> availableCacheProviders = null;
@@ -204,8 +280,50 @@ public class ProxyEngine {
      */
     private Logger log = null;
 
+    /**
+     * flag that tells to proxyma to show the list of the registered folders
+     * if the client access to the root uri of the proxy.
+     */
+    private boolean enableShowFoldersListOnRootURI = false;
+
     /* SOME USEFUL CONSTANTS */
+    /**
+     * an empty string..
+     */
     private static final String EMPTY_STRING = "";
-    private static final String QUERY_STRING_SEPARATOR = "?";
+
+    /**
+     * The separator character for the URI paths
+     */
     private static final String PATH_SEPARATOR = "/";
+
+    /**
+     * http
+     */
+    private static final String HTTP_SCHEME = "http";
+
+    /**
+     * https
+     */
+    private static final String HTTPS_SCHEME = "https";
+    
+    /**
+     * Http status code for "not found" resources
+     */
+    private static final int STATUS_NOT_FOUND = 404;
+
+    /**
+     * Http status code for "forbidden" resources
+     */
+    private static final int STATUS_FORBIDDEN = 403;
+
+    /**
+     * Http status code for "Malformed requests"
+     */
+    private static final int STATUS_BAD_REQUEST = 400;
+
+    /**
+     * The default serializer to use for internal generated resources
+     */
+    private static final String proxyDefaultSerializer = "m.c.m.proxyma.plugins.serializers.SimpleSerializer";
 }

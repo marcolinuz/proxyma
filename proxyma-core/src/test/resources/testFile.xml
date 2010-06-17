@@ -13,6 +13,7 @@
     <global>
         <defaultEncoding>UTF-8</defaultEncoding>
         <byteBufferImplementation>m.c.m.proxyma.buffers.SmartBuffer</byteBufferImplementation>
+        <showProxyFoldersOnRootPath>true</showProxyFoldersOnRootPath>
         <logging>
             <level>INFO</level>
             <filePrefix>/tmp/proxyma</filePrefix>

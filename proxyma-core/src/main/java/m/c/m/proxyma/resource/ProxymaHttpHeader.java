@@ -87,8 +87,6 @@ public class ProxymaHttpHeader implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         ProxymaHttpHeader clone = (ProxymaHttpHeader)super.clone();
-        clone.name = new String(name);
-        clone.value = new String(value);
         return clone;
     }
 

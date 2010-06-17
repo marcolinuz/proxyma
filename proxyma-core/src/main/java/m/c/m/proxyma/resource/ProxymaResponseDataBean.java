@@ -94,6 +94,32 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
      * @throws NullArgumentException is raised if the header name is null
      * @see ProxymaHttpHeader
      */
+    public void addHeader(String headerName, int headerValue) {
+        String stringValue = Integer.toString(headerValue);
+        addHeader(headerName, stringValue);
+    }
+
+    /**
+     * Adds an header to the response headers using the given name and value to create it.<br/>
+     * This method allows to set multiple values for the same headerName.<br/>
+     * You can use the containsHeader method if you want to test for the presence
+     * of a an existing header before setting its value.
+     * @throws NullArgumentException is raised if the header name is null
+     * @see ProxymaHttpHeader
+     */
+    public void addHeader(String headerName, long headerValue) {
+        String stringValue = Long.toString(headerValue);
+        addHeader(headerName, stringValue);
+    }
+
+    /**
+     * Adds an header to the response headers using the given name and value to create it.<br/>
+     * This method allows to set multiple values for the same headerName.<br/>
+     * You can use the containsHeader method if you want to test for the presence
+     * of a an existing header before setting its value.
+     * @throws NullArgumentException is raised if the header name is null
+     * @see ProxymaHttpHeader
+     */
     public void addHeader(String headerName, String headerValue) throws NullArgumentException {
         if (headerName == null)
             throw new NullArgumentException("You can't set a null-named header");
@@ -262,10 +288,11 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
     }
 
     /**
-     * Returns the size in bytes of the raw binary data stored into the response
+     * Returns the size in bytes of the raw binary data stored into the response<br/>
+     * ..or in other words, the value to set for the Content-Length header.
      * @return the size of the response binary data.
      */
-    public long getBufferSize() {
+    public long getContentLenght() {
         return this.data.getSize();
     }
 

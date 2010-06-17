@@ -19,7 +19,6 @@ import m.c.m.proxyma.ProxymaFacade;
 import m.c.m.proxyma.TestServlet;
 import m.c.m.proxyma.buffers.ByteBuffer;
 import m.c.m.proxyma.buffers.ByteBufferFactory;
-import m.c.m.proxyma.buffers.RamBuffer;
 import m.c.m.proxyma.context.ProxymaContext;
 
 /**
@@ -101,7 +100,7 @@ public class ProxymaServletResponseTest extends TestCase {
         ProxymaServletResponse anotherResponse = new ProxymaServletResponse(response, context);
         anotherResponse.setResponseData(clone);
         result = anotherResponse.sendDataToClient();
-        assertEquals(result, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        assertEquals(result, HttpServletResponse.SC_OK);
     }
 
     private HttpServletRequest request;

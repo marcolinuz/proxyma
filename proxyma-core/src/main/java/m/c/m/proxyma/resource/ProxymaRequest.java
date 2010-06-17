@@ -101,6 +101,13 @@ public interface ProxymaRequest {
     public Cookie[] getCookies();
 
     /**
+     * Returns the sheme used by the client to send the request.
+     * @return http, http or ftp
+     */
+    public String getScheme();
+
+
+    /**
      * Returns the host name of the server that received the request.
      * @return the server host name.
      */

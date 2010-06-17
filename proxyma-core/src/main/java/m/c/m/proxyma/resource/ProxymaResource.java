@@ -108,6 +108,22 @@ public class ProxymaResource {
     }
 
     /**
+     * Returns the complete URI where proxyma is deployed
+     *
+     * @return http://host[:port]/
+     */
+    public String getProxymaRootURI() {
+        return proxymaRootURI;
+    }
+
+    /**
+     * Sets the complete URI where proxyma is deployed
+     */
+    public void setProxymaRootURI(String uri) {
+        this.proxymaRootURI = uri;
+    }
+
+    /**
      * Set the proxy foder that matched the requested URI.
      *
      * @return the response for the client.
@@ -217,6 +233,11 @@ public class ProxymaResource {
      * The subpath relative to the destination of the proxy folder.
      */
     private String destinationSubPath = null;
+
+    /**
+     * The subpath relative to the destination of the proxy folder.
+     */
+    private String proxymaRootURI = null;
 
     /**
      * A general purpose container for intra-plugins communication using key-value pairs.

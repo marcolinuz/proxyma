@@ -20,6 +20,7 @@ public class ProxymaTags {
     public static final String GLOBAL_DEFAULT_ENCODING = "global/defaultEncoding";
     public static final String CONFIG_FILE_VERSION = "global/version";
     public static final String GLOBAL_BUFFERS_IMPLEMENTATION = "global/byteBufferImplementation";
+    public static final String GLOBAL_SHOW_FOLDERS_LIST = "global/showProxyFoldersOnRootPath";
     public static final String GLOBAL_LOGLEVEL = "global/logging/level";
     public static final String GLOBAL_LOGFILE_PREFIX = "global/logging/filePrefix";
     public static final String GLOBAL_LOGFILE_MAXSIZE = "global/logging/maxLinesPerFile";
