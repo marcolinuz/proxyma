@@ -57,16 +57,15 @@ public class ProxyEngine {
         int retValue = STATUS_OK;
         ProxymaContext context = aResource.getContext();
         ProxymaRequest request = aResource.getRequest();
-        ProxymaResponse response = aResource.getResponse();
-        ResourceHandler defaultSerializer = availableRetrivers.get(proxyDefaultSerializer);
+        ResourceHandler defaultSerializer = availableSerializers.get(proxyDefaultSerializer);
 
         //set proxyma root URI
         aResource.setProxymaRootURI(getProxymaRootURI(request));
 
         // *** Try to understand what kind of request was come and if it belongs to any proxyFolder ***
-        String subPath = request.getRequestURI().replaceFirst(request.getBasePath(), EMPTY_STRING);
+        String subPath = request.getRequestURI().replace(request.getContextPath(), EMPTY_STRING);
         ProxymaResponseDataBean responseData = null;
-        if (EMPTY_STRING.equals(subPath)) {
+        if (subPath == null || PATH_SEPARATOR.equals(subPath) || EMPTY_STRING.equals(subPath)) {
             //The path is not complete, redirect the client to proxyma root path
             try {
                 //prepare a redirect response to the "Proxyma root uri"
@@ -104,7 +103,7 @@ public class ProxyEngine {
 
             if (folder == null) {
                 //The proxyFolder doesn't exists, (send a 404 error response)
-                log.fine("Requested an unexistent or proxy folder (" + folder.getFolderName() + "), sending error response..");
+                log.fine("Requested an unexistent or proxy folder (" + URLEncodedProxyFolder + "), sending error response..");
                 responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
                 aResource.getResponse().setResponseData(responseData);
                 retValue = responseData.getStatus();
@@ -118,10 +117,11 @@ public class ProxyEngine {
                 defaultSerializer.process(aResource);
             } else {
                 //The requested proxy folder exists and is enabled.
-                log.fine("Requested an available and enabled proxy folder content, go to process it");
+                log.fine("Requested an available and enabled proxy folder content.. go to process it!");
                 
                 //Set the matched proxyFolder into the resource
                 aResource.setProxyFolder(folder);
+                log.finest("Destination URL: " + folder.getDestination());
 
                 //Set the destination subpath into the resource
                 aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));
@@ -135,15 +135,18 @@ public class ProxyEngine {
                     configuredPlugins = folder.getPreprocessors();
                     while (configuredPlugins.hasNext()) {
                         plugin = availablePreprocessors.get(configuredPlugins.next());
+                        log.finest("Applying preprocessor: " + plugin.getName());
                         plugin.process(aResource);
                     }
 
                     //Use the folder-specific cache provider to search for the wanted resource into the cache subsystem
                     cache = availableCacheProviders.get(folder.getCacheProvider());
                     if (!cache.getResponseData(aResource)) {
+                        log.fine("Resource not found into cache provider: " + cache.getName());
                         // *** The resource is not present into the cache **
                         //Go to retrive it using the folder-specific retriver
                         plugin = availableRetrivers.get(folder.getRetriver());
+                        log.finest("Getting resource with the "+ plugin.getName());
                         plugin.process(aResource);
 
                         //Inspect the response headers and set the cacheable flag.
@@ -153,22 +156,26 @@ public class ProxyEngine {
                         configuredPlugins = folder.getTransformers();
                         while (configuredPlugins.hasNext()) {
                             plugin = availableTransformers.get(configuredPlugins.next());
+                            log.finest("Applying transformer: " + plugin.getName());
                             plugin.process(aResource);
                         }
 
                         //Try to understand if the resource is cacheable
-                        if (aResource.getResponse().isCacheable())
+                        if (aResource.getResponse().isCacheable()) {
+                            log.finest("The resource is cacheable.. storing it into the cache");
                             cache.storeResponseData(aResource);
+                        }
                     }
 
                     //Finally pass the resource to the folder-specific serializer
                     plugin = availableSerializers.get(folder.getSerializer());
+                    log.finest("Serializing the resource with the " + plugin.getName());
                     retValue = aResource.getResponse().getResponseData().getStatus();
                     plugin.process(aResource);
 
                 } catch (Exception e) {
                     //If any unexpected exception is thrown, send the back the error resource to the client.
-                    log.warning("Trhere was an error Processing the request \"" + aResource.getRequest().getRequestURI() +  "\" by the Proxy folder \"" + folder.getFolderName() + "\"");
+                    log.warning("There was an error Processing the request \"" + aResource.getRequest().getRequestURI() +  "\" by the Proxy folder \"" + folder.getFolderName() + "\"");
                     e.printStackTrace();
                     responseData = ProxyStandardResponsesFactory.createErrorResponse(STATUS_INTERNAL_SERVER_ERROR);
                     aResource.getResponse().setResponseData(responseData);
@@ -312,6 +319,7 @@ public class ProxyEngine {
         } else {
             retVal.append(":").append(request.getServerPort());
         }
+        retVal.append(request.getContextPath());
         retVal.append("/");
         
         return retVal.toString();

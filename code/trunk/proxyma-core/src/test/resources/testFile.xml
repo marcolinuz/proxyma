@@ -37,8 +37,8 @@
             <preprocessors>
                 <resourceHandler />
             </preprocessors>
-            <cacheProvider>m.c.m.proxyma.plugins.caches.EhcacheCacheProvider</cacheProvider>
-            <retriver>m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver</retriver>
+            <cacheProvider>m.c.m.proxyma.plugins.caches.NullCacheProvider</cacheProvider>
+            <retriver>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</retriver>
             <transformers>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
                 <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUrlRewriter</resourceHandler>

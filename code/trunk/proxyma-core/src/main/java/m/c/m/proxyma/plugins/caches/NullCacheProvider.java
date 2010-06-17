@@ -33,7 +33,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
     public void initialize(ProxymaContext context) {
         //initialize the logger for this class.
         if (log == null)
-           context.getLogger();
+           log = context.getLogger();
         
         log.info("Null cache initialized..");
     }
@@ -92,7 +92,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      */
     @Override
     public boolean needInitialization() {
-        return false;
+        return true;
     };
 
     /**

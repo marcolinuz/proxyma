@@ -29,7 +29,6 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         }
 
         log.info("Not yet Implemented..");
-        throw new UnsupportedOperationException("Not Yet Implemented..");
     }
     
     /**

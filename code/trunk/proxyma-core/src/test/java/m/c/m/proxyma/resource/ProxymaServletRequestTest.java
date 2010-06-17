@@ -115,19 +115,32 @@ public class ProxymaServletRequestTest extends TestCase {
     }
 
     /**
-     * Test of getBasePath method, of class ProxymaServletRequest.
+     * Test of getContextPath method, of class ProxymaServletRequest.
      */
-    public void testGetPath() {
-        System.out.println("getHeader");
+    public void testGetSubPath() {
+        System.out.println("getSubPath");
+        ProxymaFacade proxyma = new ProxymaFacade();
+        ProxymaContext context = proxyma.getContextByName("default");
+
+        ProxymaServletRequest instance = new ProxymaServletRequest(request, context);
+        String expResult = request.getPathInfo();
+        String result = instance.getSubPath();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getContextPath method, of class ProxymaServletRequest.
+     */
+    public void testGetContextPath() {
+        System.out.println("getContextPath");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
 
         ProxymaServletRequest instance = new ProxymaServletRequest(request, context);
         String expResult = request.getContextPath();
-        String result = instance.getBasePath();
+        String result = instance.getContextPath();
         assertEquals(expResult, result);
     }
-
 
     /**
      * Test of getRequestURI method, of class ProxymaServletRequest.
