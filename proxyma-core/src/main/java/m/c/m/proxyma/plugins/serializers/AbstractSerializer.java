@@ -1,5 +1,6 @@
 package m.c.m.proxyma.plugins.serializers;
 
+import java.io.IOException;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.ProxymaTags.HandlerType;
 import m.c.m.proxyma.resource.ProxymaResource;
@@ -33,7 +34,7 @@ public abstract class AbstractSerializer implements m.c.m.proxyma.core.ResourceH
      * @param aResource any ProxymaResource
      */
     @Override
-    public abstract void process(ProxymaResource aResource);
+    public abstract void process(ProxymaResource aResource) throws IOException;
 
     /**
      * Implement this method to return the name of the plugin.

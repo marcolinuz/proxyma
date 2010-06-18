@@ -25,25 +25,12 @@ import m.c.m.proxyma.resource.ProxymaResource;
 public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
 
     /**
-     * This method does nothing.
-     *
-     * @param context the context for the logging initialization.
+     * The default constructor for all the plugins.
+     * @param context the context where the plugin is instantiated
      */
-    @Override
-    public void initialize(ProxymaContext context) {
-        //initialize the logger for this class.
-        if (log == null)
-           log = context.getLogger();
-        
+    public NullCacheProvider (ProxymaContext context) {
+        log = context.getLogger();
         log.info("Null cache initialized..");
-    }
-
-    /**
-     * This method does nothing.
-     */
-    @Override
-    public void shutdown() {
-        log.info("Null cache shutdown..");
     }
 
     /**
@@ -85,24 +72,6 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
         log.finest("Null cache doesn't provide statistics..");
         return "Null cache doesn't provide statistics..";
     }
-
-    /**
-     * Returns always false because this is not a real cache provuder.
-     * @return false
-     */
-    @Override
-    public boolean needInitialization() {
-        return true;
-    };
-
-    /**
-     * Returns always false because this is not a real cache provuder.
-     * @return false
-     */
-    @Override
-    public boolean needFinalization() {
-        return false;
-    };
 
     /*
      * Returns the name of the cache provider.

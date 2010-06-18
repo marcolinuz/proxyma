@@ -34,7 +34,7 @@ public class ProxymaTags {
     public static final String AVAILABLE_RETRIVERS = "plugins/availableRetrivers/resourceHandler";
 
     //Plugins sepcific configurations base "dotted" path
-    public static final String PLUGINS_SPECIFIC_BASE_XPATH = "plugins-specific";
+    public static final String PLUGINS_SPECIFIC_BASE_XPATH = "plugins-specific/";
 
 
     //Context configuration parameter names

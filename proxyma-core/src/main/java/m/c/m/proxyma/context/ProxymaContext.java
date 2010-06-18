@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
-import m.c.m.proxyma.util.ProxymaLogger;
+import m.c.m.proxyma.log.ProxymaLoggersUtil;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.lang.NullArgumentException;
@@ -43,7 +43,7 @@ public class ProxymaContext {
                 String level = getSingleValueParameter(ProxymaTags.GLOBAL_LOGLEVEL);
                 int maxSize = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILE_MAXSIZE));
                 int retention = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_RETENTION));
-                ProxymaLogger.initializeContextLogger(this.log, file, level, maxSize, retention);
+                ProxymaLoggersUtil.initializeContextLogger(this.log, file, level, maxSize, retention);
             }
             this.defaultEncoding = getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING);
         } catch (Exception ex) {
@@ -219,7 +219,7 @@ public class ProxymaContext {
            log.warning("Unknown log level \"" + logLevel + "\" setting it to " + ProxymaTags.UNSPECIFIED_LOGLEVEL);
            this.logLevel = ProxymaTags.UNSPECIFIED_LOGLEVEL;
         }
-        ProxymaLogger.updateLogLevel(log, logLevel);
+        ProxymaLoggersUtil.updateLogLevel(log, logLevel);
     }
 
     /**

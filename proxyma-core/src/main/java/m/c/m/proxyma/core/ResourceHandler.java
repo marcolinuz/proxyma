@@ -1,5 +1,6 @@
 package m.c.m.proxyma.core;
 
+import java.io.IOException;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.resource.ProxymaResource;
 
@@ -35,7 +36,7 @@ public interface ResourceHandler {
      *
      * @param aResource the resource to process.
      */
-    public void process(ProxymaResource aResource);
+    public void process(ProxymaResource aResource) throws IOException;
 
     /**
      * Returns the name of the plugin (only a name that characterize the plugin,

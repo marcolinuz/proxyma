@@ -4,6 +4,7 @@ import m.c.m.proxyma.plugins.serializers.*;
 import m.c.m.proxyma.plugins.retrivers.*;
 import m.c.m.proxyma.plugins.preprocessors.*;
 import java.util.logging.Logger;
+import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
@@ -22,7 +23,16 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
 public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.AbstractTransformer {
-
+    /**
+     * The default constructor for this class<br/>
+     * It prepares the context logger and the logger for the access-log.
+     *
+     * NOTE: Every plugin must have a constructor that takes a ProxymaContext as parameter.
+     */
+    public HtmlUrlRewriter (ProxymaContext context) {
+        //initialize the logger
+        this.log = context.getLogger();
+    }
 
     /**
      * It scans the HTML page contained into the response searching for any URL.<br/>
@@ -32,11 +42,6 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
      */
     @Override
     public void process(ProxymaResource aResource) {
-        //initialize the logger
-        if (this.log == null) {
-            log = aResource.getContext().getLogger();
-        }
-
         log.info("Not yet Implemented..");
         throw new UnsupportedOperationException("Not Yet Implemented..");
     }

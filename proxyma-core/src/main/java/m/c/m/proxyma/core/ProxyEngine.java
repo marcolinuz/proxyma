@@ -1,5 +1,6 @@
 package m.c.m.proxyma.core;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +12,6 @@ import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaRequest;
 import m.c.m.proxyma.resource.ProxymaResource;
-import m.c.m.proxyma.resource.ProxymaResponse;
 import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
@@ -52,7 +52,7 @@ public class ProxyEngine {
      *
      * @param aResource a resource to masquerade by the proxy.
      */
-    public int doProxy(ProxymaResource aResource) {
+    public int doProxy(ProxymaResource aResource) throws IOException {
         //A new resource request has come..
         int retValue = STATUS_OK;
         ProxymaContext context = aResource.getContext();
@@ -65,7 +65,7 @@ public class ProxyEngine {
         // *** Try to understand what kind of request was come and if it belongs to any proxyFolder ***
         String subPath = request.getRequestURI().replace(request.getContextPath(), EMPTY_STRING);
         ProxymaResponseDataBean responseData = null;
-        if (subPath == null || PATH_SEPARATOR.equals(subPath) || EMPTY_STRING.equals(subPath)) {
+        if (subPath == null || EMPTY_STRING.equals(subPath)) {
             //The path is not complete, redirect the client to proxyma root path
             try {
                 //prepare a redirect response to the "Proxyma root uri"

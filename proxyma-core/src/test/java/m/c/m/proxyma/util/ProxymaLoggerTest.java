@@ -5,6 +5,7 @@
 
 package m.c.m.proxyma.util;
 
+import m.c.m.proxyma.log.ProxymaLoggersUtil;
 import java.io.File;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -23,7 +24,7 @@ public class ProxymaLoggerTest extends TestCase {
     }
 
     /**
-     * Test of initializeContextLogger method, of class ProxymaLogger.
+     * Test of initializeContextLogger method, of class ProxymaLoggersUtil.
      */
     public void testInitializeContextLogger() {
         System.out.println("initializeContextLogger");
@@ -32,7 +33,7 @@ public class ProxymaLoggerTest extends TestCase {
         String logLevel = "ALL";
         int maxLogSize = 1000;
         int logRetention = 1;
-        ProxymaLogger.initializeContextLogger(logger, fileName, logLevel, maxLogSize, logRetention);
+        ProxymaLoggersUtil.initializeContextLogger(logger, fileName, logLevel, maxLogSize, logRetention);
         logger.info("logging test..");
 
         File theLogFile = new File(fileName);
@@ -42,7 +43,7 @@ public class ProxymaLoggerTest extends TestCase {
     }
 
     /**
-     * Test of updateLogLevel method, of class ProxymaLogger.
+     * Test of updateLogLevel method, of class ProxymaLoggersUtil.
      */
     public void testUpdateLogLevel() {
         System.out.println("updateLogLevel");
@@ -66,7 +67,7 @@ public class ProxymaLoggerTest extends TestCase {
             fail("unexpected Exception raised.");
         }
 
-        ProxymaLogger.updateLogLevel(logger, newLevel);
+        ProxymaLoggersUtil.updateLogLevel(logger, newLevel);
 
         try {
             Handler[] handlers = logger.getHandlers();

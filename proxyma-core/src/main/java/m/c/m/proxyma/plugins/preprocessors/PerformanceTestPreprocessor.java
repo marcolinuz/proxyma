@@ -1,6 +1,7 @@
 package m.c.m.proxyma.plugins.preprocessors;
 
 import java.util.logging.Logger;
+import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
@@ -16,7 +17,16 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
 public class PerformanceTestPreprocessor extends m.c.m.proxyma.plugins.preprocessors.AbstractPreprocessor {
-
+    /**
+     * The default constructor for this class<br/>
+     * It prepares the context logger and the logger for the access-log.
+     *
+     * NOTE: Every plugin must have a constructor that takes a ProxymaContext as parameter.
+     */
+    public PerformanceTestPreprocessor (ProxymaContext context) {
+        //initialize the logger
+        this.log = context.getLogger();
+    }
 
     /**
      * This plugin implements a performance test preprocessor.<br/>
@@ -28,11 +38,6 @@ public class PerformanceTestPreprocessor extends m.c.m.proxyma.plugins.preproces
      */
     @Override
     public void process(ProxymaResource aResource) {
-        //initialize the logger
-        if (this.log == null) {
-            log = aResource.getContext().getLogger();
-        }
-
         log.info("Not yet Implemented..");
         throw new UnsupportedOperationException("Not Yet Implemented..");
     }

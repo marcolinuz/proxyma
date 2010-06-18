@@ -1,5 +1,6 @@
 package m.c.m.proxyma.core;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -40,26 +41,26 @@ public class ProxyEngineFactory {
 
         // *** Load the available Cache Provider Plugins ***
         Iterator<String> availableCaches = context.getMultiValueParameter(ProxymaTags.AVAILABLE_CACHE_PROVIDERS).iterator();
-        loadCacheProviders(availableCaches, availableCacheProviders);
+        loadCacheProviders(availableCaches, availableCacheProviders, context);
         
         // *** Load the available Resource Handler Plugins ***
         Iterator<String> availablePlugins = null;
 
         //Load the preprocessors
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_PREPROCESSORS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.PREPROCESSOR, availablePreprocessors);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.PREPROCESSOR, availablePreprocessors, context);
 
         //Load the retrivers
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_RETRIVERS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.RETRIVER, availableRetrivers);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.RETRIVER, availableRetrivers, context);
 
         //Load the transformers
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_TRANSFORMERS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.TRANSFORMER, availableTransformers);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.TRANSFORMER, availableTransformers, context);
 
         //Load the serializers
         availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_SERIALIZERS).iterator();
-        loadPlugins(availablePlugins, ProxymaTags.HandlerType.SERIALIZER, availableSerializers);
+        loadPlugins(availablePlugins, ProxymaTags.HandlerType.SERIALIZER, availableSerializers, context);
 
         //set the values into the proxy engine
         newEngine.setAvailableCacheProviders(availableCacheProviders);
@@ -73,14 +74,6 @@ public class ProxyEngineFactory {
         if (configValue != null)
             newEngine.setEnableShowFoldersListOnRootURI(configValue.equalsIgnoreCase("true")?true:false);
 
-        //Initialize all the available cache providers
-        Iterator<CacheProvider> caches = newEngine.getRegisteredCachePlugins().iterator();
-        while (caches.hasNext()) {
-            CacheProvider cache = caches.next();
-            if (cache.needInitialization())
-                cache.initialize(context);
-        }
-
         //return the builded object
         return newEngine;
     }
@@ -93,12 +86,15 @@ public class ProxyEngineFactory {
      * @param availablePlugins an iterator of plugin class names to load
      * @param container the cache provider container to fill.
      */
-    private void loadCacheProviders(Iterator<String> availableCaches, HashMap<String, CacheProvider> availableCacheProviders) throws IllegalAccessException {
+    private void loadCacheProviders(Iterator<String> availableCaches, HashMap<String, CacheProvider> availableCacheProviders, ProxymaContext context) {
         String cachePluginName = "";
         while (availableCaches.hasNext()) {
             try {
                 cachePluginName = availableCaches.next();
-                Object cachePlugin = Class.forName(cachePluginName).newInstance();
+                Class contextClass = Class.forName("m.c.m.proxyma.context.ProxymaContext");
+                Class cachePluginClass = Class.forName(cachePluginName);
+                Constructor pluginConstructor = cachePluginClass.getConstructor(contextClass);
+                Object cachePlugin = pluginConstructor.newInstance(context);
                 if (cachePlugin instanceof CacheProvider) {
                     registerCacheProvider((CacheProvider)cachePlugin, availableCacheProviders);
                 } else {
@@ -106,7 +102,7 @@ public class ProxyEngineFactory {
                 }
             } catch (ClassNotFoundException ex) {
                 log.log(Level.WARNING, "Cache Provider \"" + cachePluginName  + "\" not found.. plugin not loaded.", ex);
-            } catch (InstantiationException ex) {
+            } catch (Exception ex) {
                 log.log(Level.WARNING, "Cache Provider \"" + cachePluginName  + "\" cannot be instantiated.. plugin not loaded.", ex);
             }
         }
@@ -117,12 +113,15 @@ public class ProxyEngineFactory {
      *
      * @param availablePlugins an iterator of plugin class names to load
      */
-    private void loadPlugins(Iterator<String> availablePlugins, ProxymaTags.HandlerType requiredType, HashMap<String, ResourceHandler> pluginContainer) throws IllegalAccessException {
+    private void loadPlugins(Iterator<String> availablePlugins, ProxymaTags.HandlerType requiredType, HashMap<String, ResourceHandler> pluginContainer, ProxymaContext context) {
         String pluginName = "";
         while (availablePlugins.hasNext()) {
             try {
                 pluginName = availablePlugins.next();
-                Object thePlugin = Class.forName(pluginName).newInstance();
+                Class contextClass = Class.forName("m.c.m.proxyma.context.ProxymaContext");
+                Class pluginClass = Class.forName(pluginName);
+                Constructor pluginConstructor = pluginClass.getConstructor(contextClass);
+                Object thePlugin = pluginConstructor.newInstance(context);
                 if ((thePlugin instanceof ResourceHandler) && ((ResourceHandler)thePlugin).getType() == requiredType) {
                     registerNewPlugin((ResourceHandler)thePlugin, pluginContainer);
                 } else {
@@ -130,7 +129,7 @@ public class ProxyEngineFactory {
                 } 
             } catch (ClassNotFoundException ex) {
                 log.log(Level.WARNING, "Plugin \"" + pluginName  + "\" not found, plugin not loaded.", ex);
-            } catch (InstantiationException ex) {
+            } catch (Exception ex) {
                 log.log(Level.WARNING, "Plugin \"" + pluginName  + "\" cannot be instantiated, plugin not loaded.", ex);
             }
         }
