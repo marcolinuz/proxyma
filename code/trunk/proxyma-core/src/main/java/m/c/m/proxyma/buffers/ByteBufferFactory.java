@@ -80,8 +80,6 @@ public class ByteBufferFactory {
     private static synchronized void initialize(ProxymaContext context) throws ClassNotFoundException, NoSuchMethodException {
         Class byteBuffer = Class.forName(context.getSingleValueParameter(ProxymaTags.GLOBAL_BUFFERS_IMPLEMENTATION));
         Class byteBufferReader = Class.forName(context.getSingleValueParameter(ProxymaTags.GLOBAL_BUFFERS_IMPLEMENTATION) + "Reader");
-
-
         byteBufferConstructor = byteBuffer.getConstructor();
         byteBufferReaderConstructor = byteBufferReader.getConstructor(byteBuffer);
         log = context.getLogger();

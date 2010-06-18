@@ -87,5 +87,10 @@
         <plugin name="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider">
 
         </plugin>
+        <plugin name="m.c.m.proxyma.plugins.serializers.SimpleSerializer">
+            <filePrefix>/tmp/proxyma</filePrefix>
+            <maxLinesPerFile>5000000</maxLinesPerFile>
+            <retention>5</retention>
+        </plugin>
     </plugins-specific>
 </test>

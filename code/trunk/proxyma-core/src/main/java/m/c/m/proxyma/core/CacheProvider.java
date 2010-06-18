@@ -1,7 +1,6 @@
 package m.c.m.proxyma.core;
 
 import java.util.Collection;
-import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
@@ -22,21 +21,6 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
 public interface CacheProvider {
-    /**
-     * Method provided to initialize the chache subsystem.
-     * You can use the proxyma configuration file to add specific parameters
-     * for each plugin you create under the <plugins-specific> element.
-     * Then, you can use the context methods to retrive the values.
-     *
-     * @param context the proxyma context
-     */
-    public void initialize (ProxymaContext context);
-
-    /**
-     * Method provided to finalize the cache subsystem
-     */
-    public void shutdown ();
-
     /**
      * Method provided to store the response of the passed resource into the cache subsystem.
      *
@@ -70,24 +54,6 @@ public interface CacheProvider {
      * @return some statistics data about the cache status and usage.
      */
     public String getStatistics();
-
-
-    /**
-     * Returns true if the chache subsystem need initialization before start
-     * to work.<br/>
-     * Note: This method is invoked any time a new request comes to the server.
-     * @return true if is needed to run the initialize() method
-     */
-    public boolean needInitialization();
-
-    /**
-     * Returns true if the cache subsystem need to cleanup its environment on
-     * server shutdown.<br/>
-     * Note: This metho is invoked more any time a reverse proxy instance
-     * is finalized.
-     * @return true if is needed to run the shutdown() method.
-     */
-    public boolean needFinalization();
 
     /**
      * Returns the name of the cache provider (only a name that characterize the plugin,

@@ -1,12 +1,15 @@
-package m.c.m.proxyma.util;
+package m.c.m.proxyma.log;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Formatter;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import m.c.m.proxyma.ProxymaTags;
-import m.c.m.proxyma.context.ProxymaContext;
 
 /**
  * <p>
@@ -22,7 +25,40 @@ import m.c.m.proxyma.context.ProxymaContext;
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
-public class ProxymaLogger {
+public class ProxymaLoggersUtil {
+    /**
+     * Initialize the logger to write on the passed file with the given log level.
+     *
+     * @param logger the logger to initialize
+     * @param logLevel the log level to set
+     * @param fileName the file where to write logs.
+     * @param maxLogSize the max number of lines in a single lo file
+     * @param logRetention the max number of old log files to keep on filesystem.
+     */
+    public static void initializeCustomLogger(Logger logger, String fileName, int maxLogSize, int logRetention) {
+        try {
+            Handler[] handlers = logger.getHandlers();
+            boolean foundFileHandler = false;
+            for (int index = 0; index < handlers.length; index++) {
+                // set console handler
+                if (handlers[index] instanceof FileHandler) {
+                    foundFileHandler = true;
+                }
+            }
+            if (!foundFileHandler) {
+                // no handler found
+                Logger.getLogger("").info("Setting up a new custom logger \"" + logger.getName() + "\" with output file " + fileName);
+                FileHandler fileHandler = new FileHandler(fileName, maxLogSize, logRetention);
+                fileHandler.setLevel(Level.INFO);
+                fileHandler.setFormatter(new OnlyTheMessageFormatter());
+                logger.addHandler(fileHandler);
+                logger.setLevel(Level.INFO);
+            }
+        } catch (Throwable t) {
+            Logger.getLogger("").severe("Unexpected Error setting up new log level for logger: " + logger.getName() + " \n" + t);
+            t.printStackTrace();
+        }
+    }
 
     /**
      * Initialize the logger to write on the passed file with the given log level.
@@ -51,7 +87,7 @@ public class ProxymaLogger {
                 logger.info("No fileHandler found for this logger, adding one.");
                 FileHandler fileHandler = new FileHandler(fileName, maxLogSize, logRetention);
                 fileHandler.setLevel(Level.parse(logLevel));
-                fileHandler.setFormatter(new SimpleFormatter());
+                fileHandler.setFormatter(new ProxymaFormatter());
                 logger.addHandler(fileHandler);
                 logger.setLevel(Level.parse(logLevel));
             }
@@ -66,7 +102,7 @@ public class ProxymaLogger {
      * @param logLevel the new logLevel
      */
     public static void updateLogLevel(Logger logger, String newLevel) {
-        logger.info("Setting the log level of logger \"" + logger.getName() + "\" to: " + newLevel);
+        Logger.getLogger("").info("Setting the log level of logger \"" + logger.getName() + "\" to: " + newLevel);
 
         try {
             Handler[] handlers = logger.getHandlers();
@@ -80,10 +116,10 @@ public class ProxymaLogger {
             }
             if (!foundFileHandler) {
                 // no console handler found
-                logger.info("No file handler found for this logger.. nothing done.");
+                Logger.getLogger("").info("No file handler found for this logger.. nothing done.");
             }
         } catch (Throwable t) {
-            logger.severe("Unexpected Error setting up new log level for logger: " + logger.getName() + " \n" + t);
+            Logger.getLogger("").severe("Unexpected Error setting up new log level for logger: " + logger.getName() + " \n" + t);
         }
     }
 }

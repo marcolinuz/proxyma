@@ -41,6 +41,10 @@ public class ProxyStandardResponsesFactory {
         //Add Server header
         redirect.addHeader(SERVER_HEADER, "Proxyma");
 
+        //Add headers for the cache providers to avoid to cache this resource
+        redirect.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
+        redirect.addHeader(PRAGMA_HEADER, NO_CACHE);
+
         //Add proxyma URI location header
         redirect.addHeader(LOCATION_HEADER, destination);
 
@@ -64,6 +68,10 @@ public class ProxyStandardResponsesFactory {
 
         //Add Server header
         error.addHeader(SERVER_HEADER, "Proxyma");
+
+        //Add headers for the cache providers to avoid to cache this resource
+        error.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
+        error.addHeader(PRAGMA_HEADER, NO_CACHE);
 
         return error;
     }
@@ -95,6 +103,10 @@ public class ProxyStandardResponsesFactory {
         //Add Content-Type header
         listPage.addHeader(CONTENT_TYPE_HEADER, "text/html;charset="+charsetEncoding);
 
+        //Add headers for the cache providers to avoid to cache this resource
+        listPage.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
+        listPage.addHeader(PRAGMA_HEADER, NO_CACHE);
+
         //Prepare the byte buffer with the page content.
         try {
             ByteBuffer out = ByteBufferFactory.createNewByteBuffer(context);
@@ -114,7 +126,7 @@ public class ProxyStandardResponsesFactory {
                 ruleRow = ruleRow.replaceAll(proxyDestination, folder.getDestination());
                 ruleRow = ruleRow.replaceFirst(status, folder.isEnabled() ? "Active" : "Locked");
                 ruleRow = ruleRow.replaceFirst(statusColor, folder.isEnabled() ? "black" : "red");
-                ruleRow = ruleRow.replaceFirst(bgcolor, even ?evenBgcolor:oddBgcolor);
+                ruleRow = ruleRow.replaceFirst(bgcolor, even?evenBgcolor:oddBgcolor);
                 even = !even;
 
                 //append data to the buffer
@@ -134,9 +146,6 @@ public class ProxyStandardResponsesFactory {
             listPage = createErrorResponse(STATUS_SERVER_ERROR);
         }
         log.finest("page creation done.");
-
-        //Add the Content-Lenght header
-        listPage.addHeader(CONTENT_LENGTH_HEADER, listPage.getContentLenght());
 
         return listPage;
     }
@@ -181,9 +190,19 @@ public class ProxyStandardResponsesFactory {
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
 
     /**
-     * The content length header name
+     * One of the headers that controls the behavior of the caches
      */
-    private static final String CONTENT_LENGTH_HEADER = "Content-Length";
+    private static final String CACHE_CONTROL_HEADER = "Cache-Control";
+
+    /**
+     * One of the headers that controls the behavior of the caches
+     */
+    private static final String PRAGMA_HEADER = "Pragma";
+
+    /**
+     * Directive to avoid chaching
+     */
+    private static final String NO_CACHE = "no-cache";
 
     /*********************************************************/
     /* String constants to build a row of the list page data */
