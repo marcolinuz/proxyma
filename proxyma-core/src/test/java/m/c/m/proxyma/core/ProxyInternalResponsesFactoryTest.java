@@ -21,14 +21,14 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  *
  * @author shad0w
  */
-public class ProxyStandardResponsesFactoryTest extends TestCase {
+public class ProxyInternalResponsesFactoryTest extends TestCase {
     
-    public ProxyStandardResponsesFactoryTest(String testName) {
+    public ProxyInternalResponsesFactoryTest(String testName) {
         super(testName);
     }
 
     /**
-     * Test of createRedirectResponse method, of class ProxyStandardResponsesFactory.
+     * Test of createRedirectResponse method, of class ProxyInternalResponsesFactory.
      */
     public void testCreateRedirectResponse() {
         System.out.println("createRedirectResponse");
@@ -38,7 +38,7 @@ public class ProxyStandardResponsesFactoryTest extends TestCase {
 
         String destination = "htpo:/inv,alid.url/";
         try {
-            instance = ProxyStandardResponsesFactory.createRedirectResponse(destination);
+            instance = ProxyInternalResponsesFactory.createRedirectResponse(destination);
             fail("expected exception not thrown");
         } catch (MalformedURLException ex) {
             assertTrue(true);
@@ -46,7 +46,7 @@ public class ProxyStandardResponsesFactoryTest extends TestCase {
 
         destination = "http://www.google.com/";
         try {
-            instance = ProxyStandardResponsesFactory.createRedirectResponse(destination);
+            instance = ProxyInternalResponsesFactory.createRedirectResponse(destination);
         } catch (MalformedURLException ex) {
             fail("unexpected malformed url exception thrown");
         }
@@ -65,7 +65,7 @@ public class ProxyStandardResponsesFactoryTest extends TestCase {
     }
 
     /**
-     * Test of createErrorResponse method, of class ProxyStandardResponsesFactory.
+     * Test of createErrorResponse method, of class ProxyInternalResponsesFactory.
      */
     public void testCreateErrorResponse() {
         System.out.println("createErrorResponse");
@@ -74,7 +74,7 @@ public class ProxyStandardResponsesFactoryTest extends TestCase {
         ProxymaResponseDataBean instance = null;
 
         int code = 500;
-        instance = ProxyStandardResponsesFactory.createErrorResponse(code);
+        instance = ProxyInternalResponsesFactory.createErrorResponse(code);
 
         assertNotNull(instance.getHeader("date"));
         assertEquals(instance.getHeader("Server").getValue(), "Proxyma");
@@ -90,7 +90,7 @@ public class ProxyStandardResponsesFactoryTest extends TestCase {
 
 
     /**
-     * Test of createFoldersListResponse method, of class ProxyStandardResponsesFactory.
+     * Test of createFoldersListResponse method, of class ProxyInternalResponsesFactory.
      */
     public void testcreateFoldersListResponse() throws IllegalArgumentException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException {
         System.out.println("createFoldersListResponse");
@@ -102,7 +102,7 @@ public class ProxyStandardResponsesFactoryTest extends TestCase {
         proxyma.registerProxyFolderIntoContext(folder, context);
         ProxymaResponseDataBean instance = null;
 
-        instance = ProxyStandardResponsesFactory.createFoldersListResponse(context);
+        instance = ProxyInternalResponsesFactory.createFoldersListResponse(context);
 
         assertNotNull(instance.getHeader("date"));
         assertEquals(instance.getHeader("Server").getValue(), "Proxyma");

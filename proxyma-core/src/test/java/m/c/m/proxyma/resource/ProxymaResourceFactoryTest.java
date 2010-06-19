@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
  *
  * @author shad0w
  */
-public class ResourceFactoryTest extends TestCase {
+public class ProxymaResourceFactoryTest extends TestCase {
 
     /**
      * Test of createNewResourceInstance method, of class ResourceFactory.

@@ -35,12 +35,17 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         //initialize the context logget
         log = context.getLogger();
 
-        //initialize the access log logger
-        accessLog = Logger.getLogger(ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + context.getName() + ".access");
+        //Find the specific-plugin section for this plugin xpath to retrive the directives from the configuration file.
         String configXpath = ProxymaTags.PLUGINS_SPECIFIC_BASE_XPATH + "plugin[@name='" + this.getClass().getName() + "']";
-        String logFilePath = context.getSingleValueParameter(configXpath+"/filePrefix") + "-" + context.getName() + "-access.log";
+             
+        //Get configuration files direxctives
+        String logFilePrefix = context.getSingleValueParameter(configXpath+"/filePrefix");
         int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/maxLinesPerFile"));
         int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/retention"));
+
+        //Set up the access-log logger
+        accessLog = Logger.getLogger(ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + context.getName() + ".access");
+        String logFilePath = logFilePrefix + "-" + context.getName() + "-access.log";
         ProxymaLoggersUtil.initializeCustomLogger(accessLog, logFilePath, maxLogSize, logRetention);
     }
 
@@ -188,6 +193,7 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
      */
     private static final String description = ""
             + "This plugin is a simple HTTP serializer.<br/>"
-            + "Its work is to send back to the client the response without modify it.<br/>"
-            + "It writes also an \"access log\" of in common logging format.";
+            + "Its work is to send back to the client the response adding to it "
+            + "only a few only useful headers.<br/>"
+            + "It writes also the \"access log\" in common logging format.";
 }

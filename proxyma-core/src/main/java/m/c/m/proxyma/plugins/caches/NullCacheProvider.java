@@ -22,7 +22,7 @@ import m.c.m.proxyma.resource.ProxymaResource;
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  */
-public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
+public class NullCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProvider {
 
     /**
      * The default constructor for all the plugins.
@@ -38,7 +38,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      * @param aResource
      */
     @Override
-    public void storeResponseData(ProxymaResource aResource) {
+    public void storeResponseDataIfCacheable(ProxymaResource aResource) {
         log.finest("Null cache cant't store responses..");
     }
 
@@ -49,7 +49,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      */
     @Override
     public boolean getResponseData(ProxymaResource aResource) {
-        log.finest("Null cache cant't get respones..");
+        log.finest("Null cache cant't get any respones..");
         return false;
     }
 
@@ -105,7 +105,7 @@ public class NullCacheProvider implements m.c.m.proxyma.core.CacheProvider {
      */
     private static final String description = "" +
             "This is a null cache provider.<br/>" +
-            "Use this plugin if you don't want to use a cache subsystem" +
-            "on the proxy-folder. It always force the proxy to retrive the" +
+            "Use this plugin if you don't want to use a cache subsystem " +
+            "on the proxy-folder. It always force the proxy to retrive the " +
             "resources from the original server";
 }

@@ -332,47 +332,6 @@ public class ProxymaResponseDataBeanTest extends TestCase {
     }
 
     /**
-     * Test of isRedirect method, of class ProxymaResponseDataBean.
-     */
-    public void testIsRedirect() {
-        System.out.println("isRedirect");
-        ProxymaResponseDataBean instance = new ProxymaResponseDataBean();
-
-        instance.setStatus(300);
-        assertTrue(instance.isRedirect());
-
-        instance.setStatus(301);
-        assertTrue(instance.isRedirect());
-
-        instance.setStatus(302);
-        assertTrue(instance.isRedirect());
-
-        instance.setStatus(303);
-        assertTrue(instance.isRedirect());
-
-        instance.setStatus(304);
-        assertFalse(instance.isRedirect());
-
-        instance.setStatus(305);
-        assertTrue(instance.isRedirect());
-
-        instance.setStatus(306);
-        assertFalse(instance.isRedirect());
-
-        instance.setStatus(307);
-        assertTrue(instance.isRedirect());
-
-        instance.setStatus(201);
-        assertFalse(instance.isRedirect());
-
-        instance.setStatus(404);
-        assertFalse(instance.isRedirect());
-
-        instance.setStatus(502);
-        assertFalse(instance.isRedirect());
-    }
-
-    /**
      * Test of clone method, of class ProxymaResponseDataBean.
      */
     public void testClone() throws CloneNotSupportedException {

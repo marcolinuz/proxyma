@@ -18,7 +18,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * It's used by the ProxyEngine to build internal responses as error pages,
  * redirects and the page that shows the registered proxy folders.
  */
-public class ProxyStandardResponsesFactory {
+public class ProxyInternalResponsesFactory {
     /**
      * Generates a listPage response to the specified destination.
      * @param destination the complete URL of the destination
