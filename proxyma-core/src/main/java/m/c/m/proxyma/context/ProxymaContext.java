@@ -46,6 +46,7 @@ public class ProxymaContext {
                 ProxymaLoggersUtil.initializeContextLogger(this.log, file, level, maxSize, retention);
             }
             this.defaultEncoding = getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING);
+            this.proxymaVersion = "Proxyma-Core Engine Rel. " + getSingleValueParameter(ProxymaTags.CONFIG_FILE_VERSION) + " (by MCM).";
         } catch (Exception ex) {
             Logger.getLogger("").log(Level.SEVERE, null, ex);
         }
@@ -251,6 +252,14 @@ public class ProxymaContext {
     }
 
     /**
+     * Get the curren relese nubler of Proxyma-core library
+     * @return the default encoding
+     */
+    public String getProxymaVersion() {
+        return proxymaVersion;
+    }
+
+    /**
      * Get the contextPath for this context
      * @return the contextURI as String
      */
@@ -294,6 +303,11 @@ public class ProxymaContext {
      * The default encodig to use to encode/decode URLs and for html parsing
      */
     private String defaultEncoding = null;
+
+    /**
+     * The current release of proxyma
+     */
+    private String proxymaVersion = null;
 
     /**
      * The log level to use on this context

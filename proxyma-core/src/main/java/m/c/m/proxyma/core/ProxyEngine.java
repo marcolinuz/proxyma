@@ -53,12 +53,12 @@ public class ProxyEngine {
      *
      * @param aResource a resource to masquerade by the proxy.
      */
-    public int doProxy(ProxymaResource aResource) throws IOException {
+    public int doProxy(ProxymaResource aResource) throws IOException, Exception {
         //A new resource request has come..
         int retValue = STATUS_OK;
         ProxymaContext context = aResource.getContext();
         ProxymaRequest request = aResource.getRequest();
-        ResourceHandler defaultSerializer = availableSerializers.get(proxyDefaultSerializer);
+        ResourceHandler defaultSerializer = availableSerializers.get(ProxymaTags.UNSPECIFIED_SERIALIZER);
 
         //set proxyma root URI
         aResource.setProxymaRootURI(getProxymaRootURI(request));
@@ -71,11 +71,11 @@ public class ProxyEngine {
             try {
                 //prepare a redirect response to the "Proxyma root uri"
                 log.fine("Requested the proxyma path without trailing \"/\".. Redirecting to root uri: " + aResource.getProxymaRootURI());
-                responseData = ProxyInternalResponsesFactory.createRedirectResponse(aResource.getProxymaRootURI());
+                responseData = ProxyInternalResponsesFactory.createRedirectResponse(aResource.getProxymaRootURI(), context);
             } catch (MalformedURLException ex) {
                 //if the URL is malformed send back an error page.
                 log.severe("Malformed URL found (" + aResource.getProxymaRootURI() + ") for the proxyma root URI!");
-                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_BAD_REQUEST);
+                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_BAD_REQUEST, context);
             }
 
             //Serialize the response with the default serializer
@@ -91,7 +91,7 @@ public class ProxyEngine {
             } else {
                 //The folders list page is disabled by configuration, send a 404 error response
                 log.fine("Requested the proxyma root uri but the \"registered folders page\" is denyed by configuration.");
-                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
+                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_NOT_FOUND, context);
             }
             //Serialize the response with the default serializer
             aResource.getResponse().setResponseData(responseData);
@@ -105,14 +105,14 @@ public class ProxyEngine {
             if (folder == null) {
                 //The proxyFolder doesn't exists, (send a 404 error response)
                 log.fine("Requested an unexistent or proxy folder (" + URLEncodedProxyFolder + "), sending error response..");
-                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_NOT_FOUND);
+                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_NOT_FOUND, context);
                 aResource.getResponse().setResponseData(responseData);
                 retValue = responseData.getStatus();
                 defaultSerializer.process(aResource);
             } else if (!folder.isEnabled()) {
                 //The requested proxy folder exixts but is disabled (send a 403 error response)
                 log.fine("Requested a disabled or proxy folder (" + folder.getFolderName() + "), sending error response..");
-                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_FORBIDDEN);
+                responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_FORBIDDEN, context);
                 aResource.getResponse().setResponseData(responseData);
                 retValue = responseData.getStatus();
                 defaultSerializer.process(aResource);
@@ -172,7 +172,7 @@ public class ProxyEngine {
                     //If any unexpected exception is thrown, send the back the error resource to the client.
                     log.warning("There was an error Processing the request \"" + aResource.getRequest().getRequestURI() +  "\" by the Proxy folder \"" + folder.getFolderName() + "\"");
                     e.printStackTrace();
-                    responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_INTERNAL_SERVER_ERROR);
+                    responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_INTERNAL_SERVER_ERROR, context);
                     aResource.getResponse().setResponseData(responseData);
                     retValue = responseData.getStatus();
                     defaultSerializer.process(aResource);
@@ -401,9 +401,4 @@ public class ProxyEngine {
      * Http status code for "Ok"
      */
     private static final int STATUS_OK = 200;
-
-    /**
-     * The default serializer to use for internal generated resources
-     */
-    private static final String proxyDefaultSerializer = "m.c.m.proxyma.plugins.serializers.SimpleSerializer";
 }

@@ -1,6 +1,5 @@
 package m.c.m.proxyma.context;
 
-import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import m.c.m.proxyma.ProxymaTags;

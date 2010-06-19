@@ -35,7 +35,7 @@ public class ProxyEngineTest extends TestCase {
     /**
      * Test of doProxy method, of class ProxyEngine.
      */
-    public void testDoProxy() throws IOException, SAXException, IllegalAccessException {
+    public void testDoProxy() throws IOException, SAXException, IllegalAccessException, Exception {
         System.out.println("doProxy");
 
         //Prepare the environment..
@@ -61,7 +61,7 @@ public class ProxyEngineTest extends TestCase {
 
         int retval = instance.doProxy(aResource);
         assertEquals(404, retval);
-        assertEquals("Proxyma", aResource.getResponse().getResponseData().getHeader("Server").getValue());
+        assertEquals(context.getProxymaVersion(), aResource.getResponse().getResponseData().getHeader("Server").getValue());
 
        
 

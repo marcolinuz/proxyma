@@ -24,7 +24,7 @@ public class ProxyInternalResponsesFactory {
      * @param destination the complete URL of the destination
      * @return a new response data bean ready to be sent to the client
      */
-    public static ProxymaResponseDataBean createRedirectResponse(String destination) throws MalformedURLException {
+    public static ProxymaResponseDataBean createRedirectResponse(String destination, ProxymaContext context) throws MalformedURLException {
         //Check if the passed destination is a valid url
         URL test = new URL(destination);
 
@@ -39,7 +39,7 @@ public class ProxyInternalResponsesFactory {
         redirect.addHeader(DATE_HEADER, format.format(new Date()));
 
         //Add Server header
-        redirect.addHeader(SERVER_HEADER, "Proxyma");
+        redirect.addHeader(SERVER_HEADER, context.getProxymaVersion());
 
         //Add headers for the cache providers to avoid to cache this resource
         redirect.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
@@ -56,7 +56,7 @@ public class ProxyInternalResponsesFactory {
      * @param the error status to report
      * @return a new response data bean ready to be sent to the client
      */
-    public static ProxymaResponseDataBean createErrorResponse(int errorCode) {
+    public static ProxymaResponseDataBean createErrorResponse(int errorCode, ProxymaContext context) {
         ProxymaResponseDataBean error = new ProxymaResponseDataBean();
 
         //Set response status
@@ -67,7 +67,7 @@ public class ProxyInternalResponsesFactory {
         error.addHeader(DATE_HEADER, format.format(new Date()));
 
         //Add Server header
-        error.addHeader(SERVER_HEADER, "Proxyma");
+        error.addHeader(SERVER_HEADER, context.getProxymaVersion());
 
         //Add headers for the cache providers to avoid to cache this resource
         error.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
@@ -98,7 +98,7 @@ public class ProxyInternalResponsesFactory {
         listPage.addHeader(DATE_HEADER, format.format(new Date()));
 
         //Add Server header
-        listPage.addHeader(SERVER_HEADER, "Proxyma");
+        listPage.addHeader(SERVER_HEADER, context.getProxymaVersion());
 
         //Add Content-Type header
         listPage.addHeader(CONTENT_TYPE_HEADER, "text/html;charset="+charsetEncoding);
@@ -143,7 +143,7 @@ public class ProxyInternalResponsesFactory {
         } catch (Exception e) {
             log.severe("Unable to generate the folder list page.");
             e.printStackTrace();
-            listPage = createErrorResponse(STATUS_SERVER_ERROR);
+            listPage = createErrorResponse(STATUS_SERVER_ERROR, context);
         }
         log.finest("page creation done.");
 
@@ -227,7 +227,7 @@ public class ProxyInternalResponsesFactory {
      * Header of the html page to show the list of the registered proxy-folders
      */
     private final static String html_head_template = "" +
-            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" http://www.w3.org/TR/html4/loose.dtd>" +
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
             "<html>\n" +
             "<head><title>Proxyma Available Resources:</title><style type=\"text/css\">td{font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small;}</style></head>\n" +
             "<body><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"medium\"><b>Available Rules:</b><hr/>\n" +

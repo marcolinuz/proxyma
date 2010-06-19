@@ -33,7 +33,7 @@ public abstract class AbstractRetriver implements m.c.m.proxyma.core.ResourceHan
      * @param aResource any ProxymaResource
      */
     @Override
-    public abstract void process(ProxymaResource aResource);
+    public abstract void process(ProxymaResource aResource) throws Exception;
 
     /**
      * Implement this method to return the name of the plugin.
