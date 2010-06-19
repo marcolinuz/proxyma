@@ -36,7 +36,7 @@ public interface ResourceHandler {
      *
      * @param aResource the resource to process.
      */
-    public void process(ProxymaResource aResource) throws IOException;
+    public void process(ProxymaResource aResource) throws Exception;
 
     /**
      * Returns the name of the plugin (only a name that characterize the plugin,

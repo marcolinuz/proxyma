@@ -11,6 +11,7 @@
 <test>
     <!-- Elements to test the loading of the configuration parameters -->
     <global>
+        <version>Test</version>
         <defaultEncoding>UTF-8</defaultEncoding>
         <byteBufferImplementation>m.c.m.proxyma.buffers.SmartBuffer</byteBufferImplementation>
         <showProxyFoldersOnRootPath>true</showProxyFoldersOnRootPath>

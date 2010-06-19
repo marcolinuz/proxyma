@@ -5,7 +5,6 @@
 
 package m.c.m.proxyma.log;
 
-import m.c.m.proxyma.log.ProxymaLoggersUtil;
 import java.io.File;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;

@@ -38,7 +38,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
 
         String destination = "htpo:/inv,alid.url/";
         try {
-            instance = ProxyInternalResponsesFactory.createRedirectResponse(destination);
+            instance = ProxyInternalResponsesFactory.createRedirectResponse(destination, context);
             fail("expected exception not thrown");
         } catch (MalformedURLException ex) {
             assertTrue(true);
@@ -46,13 +46,13 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
 
         destination = "http://www.google.com/";
         try {
-            instance = ProxyInternalResponsesFactory.createRedirectResponse(destination);
+            instance = ProxyInternalResponsesFactory.createRedirectResponse(destination, context);
         } catch (MalformedURLException ex) {
             fail("unexpected malformed url exception thrown");
         }
 
         assertNotNull(instance.getHeader("date"));
-        assertEquals(instance.getHeader("Server").getValue(), "Proxyma");
+        assertEquals(instance.getHeader("Server").getValue(), context.getProxymaVersion());
         assertEquals(instance.getHeader("Location").getValue(), destination);
         assertEquals(instance.getStatus(), 302);
 
@@ -74,10 +74,10 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
         ProxymaResponseDataBean instance = null;
 
         int code = 500;
-        instance = ProxyInternalResponsesFactory.createErrorResponse(code);
+        instance = ProxyInternalResponsesFactory.createErrorResponse(code, context);
 
         assertNotNull(instance.getHeader("date"));
-        assertEquals(instance.getHeader("Server").getValue(), "Proxyma");
+        assertEquals(instance.getHeader("Server").getValue(), context.getProxymaVersion());
         assertEquals(instance.getStatus(), code);
 
         //Cleanup pool
@@ -105,7 +105,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
         instance = ProxyInternalResponsesFactory.createFoldersListResponse(context);
 
         assertNotNull(instance.getHeader("date"));
-        assertEquals(instance.getHeader("Server").getValue(), "Proxyma");
+        assertEquals(instance.getHeader("Server").getValue(), context.getProxymaVersion());
         assertEquals(instance.getStatus(), 200);
         
         assertEquals(instance.getHeader("Content-type").getValue(), "text/html;charset="+context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
@@ -116,7 +116,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
         byte[] result = data.getWholeBufferAsByteArray();
         String resultString = new String(result,context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
 
-        assertTrue(resultString.startsWith("<!DOCTYPE HTML PUBLIC"));
+        assertTrue(resultString.startsWith("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""));
         assertTrue(resultString.contains("<td align=\"left\"><a href=\"./GoogleFolder/\">GoogleFolder</a></td>"));
         assertTrue(resultString.contains("<td align=\"left\"><a href=\"./AppleFolder/\">AppleFolder</a></td>"));
         assertTrue(resultString.endsWith("</html>\n"));
