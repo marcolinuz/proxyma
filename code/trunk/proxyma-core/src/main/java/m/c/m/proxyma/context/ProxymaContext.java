@@ -15,7 +15,7 @@ import org.apache.commons.lang.NullArgumentException;
  * This class is the main context for an instance of Proxyma.
  * Multiple instance of proxyma are allowed to run into a single VM.
  * It countains the logic to access and get parameters form a required
- * configuration file.
+ * configuration logFile.
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -39,11 +39,11 @@ public class ProxymaContext {
                 String name = ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + contextName;
                 this.log = Logger.getLogger(name);
 
-                String file = getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILE_PREFIX) + "-" + contextName + ".log";
+                String logFile = getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + contextName + ".log";
                 String level = getSingleValueParameter(ProxymaTags.GLOBAL_LOGLEVEL);
                 int maxSize = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILE_MAXSIZE));
                 int retention = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_RETENTION));
-                ProxymaLoggersUtil.initializeContextLogger(this.log, file, level, maxSize, retention);
+                ProxymaLoggersUtil.initializeContextLogger(this.log, logFile, level, maxSize, retention);
             }
             this.defaultEncoding = getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING);
             this.proxymaVersion = "Proxyma-Core Engine Rel. " + getSingleValueParameter(ProxymaTags.CONFIG_FILE_VERSION) + " (by MCM).";
@@ -226,7 +226,7 @@ public class ProxymaContext {
     /**
      * Get the logger for this context instance.
      * This function provides a simple way to allow any plugin to attach its
-     * own logs to the proxyma main log file.
+     * own logs to the proxyma main log logFile.
      *
      * @return the context logger
      */

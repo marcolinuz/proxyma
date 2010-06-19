@@ -22,9 +22,9 @@ public class ProxymaTags {
     public static final String GLOBAL_BUFFERS_IMPLEMENTATION = "global/byteBufferImplementation";
     public static final String GLOBAL_SHOW_FOLDERS_LIST = "global/showProxyFoldersOnRootPath";
     public static final String GLOBAL_LOGLEVEL = "global/logging/level";
-    public static final String GLOBAL_LOGFILE_PREFIX = "global/logging/filePrefix";
+    public static final String GLOBAL_LOGFILES_DIR = "global/logging/directoryPath";
     public static final String GLOBAL_LOGFILE_MAXSIZE = "global/logging/maxLinesPerFile";
-    public static final String GLOBAL_LOGFILES_RETENTION = "global/logging/retention";
+    public static final String GLOBAL_LOGFILES_RETENTION = "global/logging/retentionPolicy";
 
     //Plugins Parameter configuration names
     public static final String AVAILABLE_CACHE_PROVIDERS = "plugins/avaliableCacheProviders/cacheProvider";
@@ -33,18 +33,14 @@ public class ProxymaTags {
     public static final String AVAILABLE_SERIALIZERS = "plugins/availableSerializers/resourceHandler";
     public static final String AVAILABLE_RETRIVERS = "plugins/availableRetrivers/resourceHandler";
 
-    //Plugins sepcific configurations base "dotted" path
-    public static final String PLUGINS_SPECIFIC_BASE_XPATH = "plugins-specific/";
-
-
     //Context configuration parameter names
-    public static final String FOLDER_MAX_POST_SIZE = "defaultContext/folderSettings/maxPostSize";
-    public static final String FOLDER_ENABLED = "defaultContext/folderSettings/enabled";
-    public static final String FOLDER_PREPROCESSORS = "defaultContext/folderSettings/preprocessors/resourceHandler";
-    public static final String FOLDER_CACHEPROVIDER = "defaultContext/folderSettings/cacheProvider";
-    public static final String FOLDER_RETRIVER = "defaultContext/folderSettings/retriver";
-    public static final String FOLDER_TRANSFORMERS = "defaultContext/folderSettings/transformers/resourceHandler";
-    public static final String FOLDER_SERIALIZER = "defaultContext/folderSettings/serializer";
+    public static final String FOLDER_MAX_POST_SIZE = "defaultContext/folderSettings/@maxPostSize";
+    public static final String FOLDER_ENABLED = "defaultContext/folderSettings/@enabled";
+    public static final String FOLDER_PREPROCESSORS = "defaultContext/folderSettings/preprocessors/resourceHandler/@class";
+    public static final String FOLDER_CACHEPROVIDER = "defaultContext/folderSettings/cacheProvider/@class";
+    public static final String FOLDER_RETRIVER = "defaultContext/folderSettings/retriver/@class";
+    public static final String FOLDER_TRANSFORMERS = "defaultContext/folderSettings/transformers/resourceHandler/@class";
+    public static final String FOLDER_SERIALIZER = "defaultContext/folderSettings/serializer/@class";
 
     //Misc constants
     public static final int UNSPECIFIED_POST_SIZE = 5000;
