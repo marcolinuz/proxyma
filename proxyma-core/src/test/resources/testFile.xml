@@ -13,13 +13,14 @@
     <global>
         <version>Test</version>
         <defaultEncoding>UTF-8</defaultEncoding>
-        <byteBufferImplementation>m.c.m.proxyma.buffers.SmartBuffer</byteBufferImplementation>
+        <byteBufferImplementation writerClass="m.c.m.proxyma.buffers.SmartBuffer"
+                                  threadSafeReaderClass="m.c.m.proxyma.buffers.SmartBufferReader"/>
         <showProxyFoldersOnRootPath>true</showProxyFoldersOnRootPath>
         <logging>
             <level>INFO</level>
-            <filePrefix>/tmp/proxyma</filePrefix>
+            <directoryPath>/tmp/</directoryPath>
             <maxLinesPerFile>500000</maxLinesPerFile>
-            <retention>5</retention>
+            <retentionPolicy>5</retentionPolicy>
         </logging>
     </global>
     <singleParameter>single</singleParameter>
@@ -32,66 +33,54 @@
 
     <!-- Element to test the instantiation of a new proxy folder by ProxymaFacace -->
     <defaultContext>
-        <folderSettings>
-            <maxPostSize>5000</maxPostSize>
-            <enabled>true</enabled>
+        <folderSettings maxPostSize="5000" enabled="true" >
             <preprocessors>
-                <resourceHandler />
+                <resourceHandler/>
             </preprocessors>
-            <cacheProvider>m.c.m.proxyma.plugins.caches.NullCacheProvider</cacheProvider>
-            <retriver>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</retriver>
+            <cacheProvider class="m.c.m.proxyma.plugins.caches.NullCacheProvider" />
+            <retriver class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
             <transformers>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.CssUrlRewriter</resourceHandler>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter</resourceHandler>
-                <resourceHandler>m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter</resourceHandler>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriter"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter"/>
             </transformers>
-            <serializer>m.c.m.proxyma.plugins.serializers.SimpleSerializer</serializer>
+            <serializer class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"/>
         </folderSettings>
     </defaultContext>
 
     <!-- elements to test the instantiation of a new proxyengine -->
     <plugins>
         <avaliableCacheProviders>
-            <cacheProvider>m.c.m.proxyma.plugins.caches.NullCacheProvider</cacheProvider>
-            <cacheProvider>m.c.m.proxyma.plugins.caches.UnexistingCacheProvider</cacheProvider>
-            <cacheProvider>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</cacheProvider>
+            <cacheProvider class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
+            <cacheProvider class="m.c.m.proxyma.plugins.caches.UnexistingCacheProvider"/>
+            <cacheProvider class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
         </avaliableCacheProviders>
 
         <avaliablePreprocessors>
-            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.PerformanceTestPreprocessor</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.PerformanceTestPreprocessor"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliablePreprocessors>
 
         <avaliableTransformers>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.transformers.UnexistingTransformer</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.UnexistingTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliableTransformers>
 
         <availableSerializers>
-            <resourceHandler>m.c.m.proxyma.plugins.serializers.SimpleSerializer</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.serializers.UnexistingSerializer</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
+            <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"
+                             accessLogsDirectoryPath="/tmp/proxyma" maxLinesPerFile="5000000"
+                             filesRetentionPolicy="5"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.serializers.UnexistingSerializer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </availableSerializers>
 
         <availableRetrivers>
-            <resourceHandler>m.c.m.proxyma.plugins.retrivers.TestPageRetriver</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.retrivers.UnexistingRetriver</resourceHandler>
-            <resourceHandler>m.c.m.proxyma.plugins.caches.NullCacheProvider</resourceHandler>
+            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.UnexistingRetriver"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </availableRetrivers>
     </plugins>
-
-    <!-- Element to test plugin-specefic configuration loading -->
-    <plugins-specific>
-        <plugin name="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider">
-
-        </plugin>
-        <plugin name="m.c.m.proxyma.plugins.serializers.SimpleSerializer">
-            <filePrefix>/tmp/proxyma</filePrefix>
-            <maxLinesPerFile>5000000</maxLinesPerFile>
-            <retention>5</retention>
-        </plugin>
-    </plugins-specific>
 </test>

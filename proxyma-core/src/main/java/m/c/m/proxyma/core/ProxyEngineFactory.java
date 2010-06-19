@@ -41,26 +41,26 @@ public class ProxyEngineFactory {
         HashMap<String, ResourceHandler> availableSerializers = new HashMap();
 
         // *** Load the available Cache Provider Plugins ***
-        Iterator<String> availableCaches = context.getMultiValueParameter(ProxymaTags.AVAILABLE_CACHE_PROVIDERS).iterator();
+        Iterator<String> availableCaches = context.getMultiValueParameter(ProxymaTags.AVAILABLE_CACHE_PROVIDERS+"/@class").iterator();
         loadCacheProviders(availableCaches, availableCacheProviders, context);
         
         // *** Load the available Resource Handler Plugins ***
         Iterator<String> availablePlugins = null;
 
         //Load the preprocessors
-        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_PREPROCESSORS).iterator();
+        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_PREPROCESSORS+"/@class").iterator();
         loadPlugins(availablePlugins, ProxymaTags.HandlerType.PREPROCESSOR, availablePreprocessors, context);
 
         //Load the retrivers
-        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_RETRIVERS).iterator();
+        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_RETRIVERS+"/@class").iterator();
         loadPlugins(availablePlugins, ProxymaTags.HandlerType.RETRIVER, availableRetrivers, context);
 
         //Load the transformers
-        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_TRANSFORMERS).iterator();
+        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_TRANSFORMERS+"/@class").iterator();
         loadPlugins(availablePlugins, ProxymaTags.HandlerType.TRANSFORMER, availableTransformers, context);
 
         //Load the serializers
-        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_SERIALIZERS).iterator();
+        availablePlugins = context.getMultiValueParameter(ProxymaTags.AVAILABLE_SERIALIZERS+"/@class").iterator();
         loadPlugins(availablePlugins, ProxymaTags.HandlerType.SERIALIZER, availableSerializers, context);
 
         //set the values into the proxy engine

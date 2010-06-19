@@ -95,9 +95,10 @@ public class SimpleSerializerTest extends TestCase {
         assertTrue(dataBean.containsHeader("X-Forwarded-For"));
         assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
 
-        String configXpath = ProxymaTags.PLUGINS_SPECIFIC_BASE_XPATH + "plugin[@name='m.c.m.proxyma.plugins.serializers.SimpleSerializer']";
-        String logFilePath = context.getSingleValueParameter(configXpath+"/filePrefix") + "-" + context.getName() + "-access.log.0";
-        File log = new File(logFilePath);
+
+        String configXpath = ProxymaTags.AVAILABLE_SERIALIZERS + "[@class='m.c.m.proxyma.plugins.serializers.SimpleSerializer']";
+        String logsDirectory = context.getSingleValueParameter(configXpath+"/@accessLogsDirectoryPath") + context.getName() + "-access.log.0";
+        File log = new File(logsDirectory);
         assertTrue(log.exists());
     }
 

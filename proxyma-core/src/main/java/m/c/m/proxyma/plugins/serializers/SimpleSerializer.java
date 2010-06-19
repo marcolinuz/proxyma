@@ -36,16 +36,16 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         log = context.getLogger();
 
         //Find the specific-plugin section for this plugin xpath to retrive the directives from the configuration file.
-        String configXpath = ProxymaTags.PLUGINS_SPECIFIC_BASE_XPATH + "plugin[@name='" + this.getClass().getName() + "']";
+        String configXpath = ProxymaTags.AVAILABLE_SERIALIZERS + "[@class='" + this.getClass().getName() + "']";
              
         //Get configuration files direxctives
-        String logFilePrefix = context.getSingleValueParameter(configXpath+"/filePrefix");
-        int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/maxLinesPerFile"));
-        int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/retention"));
+        String logsDirectory = context.getSingleValueParameter(configXpath+"/@accessLogsDirectoryPath");
+        int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@maxLinesPerFile"));
+        int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@filesRetentionPolicy"));
 
         //Set up the access-log logger
         accessLog = Logger.getLogger(ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + context.getName() + ".access");
-        String logFilePath = logFilePrefix + "-" + context.getName() + "-access.log";
+        String logFilePath = logsDirectory + context.getName() + "-access.log";
         ProxymaLoggersUtil.initializeCustomLogger(accessLog, logFilePath, maxLogSize, logRetention);
     }
 

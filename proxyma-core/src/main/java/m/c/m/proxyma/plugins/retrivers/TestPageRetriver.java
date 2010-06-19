@@ -2,12 +2,10 @@ package m.c.m.proxyma.plugins.retrivers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.buffers.ByteBuffer;
 import m.c.m.proxyma.buffers.ByteBufferFactory;
-import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
 import m.c.m.proxyma.resource.ProxymaResponseDataBean;
