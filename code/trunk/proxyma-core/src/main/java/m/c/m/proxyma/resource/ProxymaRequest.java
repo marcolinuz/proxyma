@@ -80,6 +80,19 @@ public interface ProxymaRequest {
     public String getMethod();
 
     /**
+     * Returns the value of the asked parameter
+     * @param parameterName The namwe of the reqested paramenter
+     * @return its value or null if it doesn't exists.
+     */
+    public String getParameter(String parameterName);
+
+    /**
+     * Returns the names of the parameters into the request
+     * @return the parameter names.
+     */
+    public Enumeration getParameterNames();
+
+    /**
      * Returns the name and version of the protocol the request uses in the
      * form protocol/majorVersion.minorVersion, for example, HTTP/1.1.
      * @return the protocol

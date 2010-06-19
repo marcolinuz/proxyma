@@ -184,6 +184,21 @@ public class ProxymaServletRequestTest extends TestCase {
         assertEquals(expResult, result);
     }
 
+        /**
+     * Test of getMethod method, of class ProxymaServletRequest.
+     */
+    public void testParameterNames() {
+        System.out.println("getParameterNames");
+        ProxymaFacade proxyma = new ProxymaFacade();
+        ProxymaContext context = proxyma.getContextByName("default");
+
+        ProxymaServletRequest instance = new ProxymaServletRequest(request, context);
+        Enumeration expResult = request.getParameterNames();
+        Enumeration result = instance.getParameterNames();
+        assertEquals(expResult.hasMoreElements(), result.hasMoreElements());
+        assertEquals(expResult.nextElement(), result.nextElement());
+    }
+
     /**
      * Test of getProtocol method, of class ProxymaServletRequest.
      */
