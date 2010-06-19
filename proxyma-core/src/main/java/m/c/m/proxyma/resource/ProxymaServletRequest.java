@@ -116,6 +116,25 @@ public class ProxymaServletRequest implements ProxymaRequest {
     }
 
     /**
+     * Returns the value of the asked parameter
+     * @param parameterName The namwe of the reqested paramenter
+     * @return its value or null if it doesn't exists.
+     */
+    @Override
+    public String getParameter(String parameterName) {
+        return theOriginalRequest.getParameter(parameterName);
+    }
+
+    /**
+     * Returns the names of the parameters into the request
+     * @return the parameter names.
+     */
+    @Override
+    public Enumeration getParameterNames() {
+        return theOriginalRequest.getParameterNames();
+    }
+
+    /**
      * Returns the name and version of the protocol the request uses in the
      * form protocol/majorVersion.minorVersion, for example, HTTP/1.1.
      * @return the protocol
