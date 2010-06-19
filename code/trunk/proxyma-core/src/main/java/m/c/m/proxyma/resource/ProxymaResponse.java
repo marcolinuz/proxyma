@@ -43,22 +43,6 @@ public abstract class ProxymaResponse {
     }
 
     /**
-     * Returns true if the resource can be stored into the cache subsystem.
-     * @return true or false
-     */
-    public boolean isCacheable() {
-        return this.isCacheable;
-    }
-
-    /**
-     * Sets the new value for the flag that mark the resource as cacheable
-     * @param value the new flag value
-     */
-    public void setCacheable(boolean value) {
-        this.isCacheable = value;
-    }
-
-    /**
      * Return the value of the already-sent flag.<br/>
      * This method should be used by any implementation of "sendDataToClient"
      * to check if the data has already been sent.
@@ -94,11 +78,6 @@ public abstract class ProxymaResponse {
      * The data-object that countains the response for the client.
      */
     private ProxymaResponseDataBean responseData = null;
-
-    /**
-     * The flag that marks the resource as cacheable
-     */
-    private boolean isCacheable = false;
 
     /**
      * If set to true any changes to the response are denyed

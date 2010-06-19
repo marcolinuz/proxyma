@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package m.c.m.proxyma.util;
+package m.c.m.proxyma.log;
 
 import m.c.m.proxyma.log.ProxymaLoggersUtil;
 import java.io.File;
@@ -17,10 +17,28 @@ import junit.framework.TestCase;
  *
  * @author shad0w
  */
-public class ProxymaLoggerTest extends TestCase {
+public class ProxymaLoggersUtilTest extends TestCase {
     
-    public ProxymaLoggerTest(String testName) {
+    public ProxymaLoggersUtilTest(String testName) {
         super(testName);
+    }
+
+        /**
+     * Test of initializeContextLogger method, of class ProxymaLoggersUtil.
+     */
+    public void testInitializeCustomLogger() {
+        System.out.println("initializeCustomLogger");
+        Logger logger = Logger.getLogger("proxyma.custom.test");
+        String fileName = "/tmp/proxyma-custom-testlog.log";
+        int maxLogSize = 1000;
+        int logRetention = 1;
+        ProxymaLoggersUtil.initializeCustomLogger(logger, fileName, maxLogSize, logRetention);
+        logger.info("logging test..");
+
+        File theLogFile = new File(fileName);
+        assertTrue(theLogFile.exists());
+        assertTrue(theLogFile.length() > 0);
+        theLogFile.delete();
     }
 
     /**

@@ -297,26 +297,6 @@ public class ProxymaResponseDataBean implements Cloneable, Serializable {
     }
 
     /**
-     * Returns true if the response is a redirect.
-     *
-     * @return true if response is a redirect.
-     */
-    public boolean isRedirect() {
-        boolean retVal = false;
-        switch (this.status) {
-            case 300: //Multiple Choices
-            case 301: //Moved Permanently
-            case 302: //Found
-            case 303: //See Other
-            case 305: //Use Proxy
-            case 307: //Temporary Redirect
-                retVal = true;
-                break;
-        }
-        return retVal;
-    }
-
-    /**
      * This method clone the current response data into a new separated object.
      *
      * @return a new and separate instance of the object.

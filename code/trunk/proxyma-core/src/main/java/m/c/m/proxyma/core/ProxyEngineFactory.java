@@ -1,5 +1,6 @@
 package m.c.m.proxyma.core;
 
+import m.c.m.proxyma.plugins.caches.CacheProvider;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Iterator;

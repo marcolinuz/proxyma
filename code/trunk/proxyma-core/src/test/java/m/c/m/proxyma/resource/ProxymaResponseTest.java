@@ -32,24 +32,6 @@ public class ProxymaResponseTest extends TestCase {
         instance.setResponseData(null);
         assertNull(instance.getResponseData());
     }
-
-    /**
-     * Test of isCacheable method, of class ProxymaResponse.
-     */
-    public void testSetIsCacheable() {
-        System.out.println("set/is Cacheable");
-        ProxymaResponse instance = new ProxymaResponseImpl();
-
-        boolean expResult = false;
-        assertFalse(instance.isCacheable());
-
-        instance.setCacheable(true);
-        assertTrue(instance.isCacheable());
-
-        instance.setCacheable(false);
-        assertFalse(instance.isCacheable());
-    }
-
    
     /**
      * Test of hasBeenSent method, of class ProxymaResponse.

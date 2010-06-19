@@ -1,4 +1,4 @@
-package m.c.m.proxyma.core;
+package m.c.m.proxyma.plugins.caches;
 
 import java.util.Collection;
 import m.c.m.proxyma.resource.ProxymaResource;
@@ -22,11 +22,12 @@ import m.c.m.proxyma.resource.ProxymaResource;
  */
 public interface CacheProvider {
     /**
-     * Method provided to store the response of the passed resource into the cache subsystem.
+     * Method provided to check if the resource is cacheable and store it
+     * into the cache subsystem.
      *
      * @param aResource the resource countaining the response to store.
      */
-    public void storeResponseData(ProxymaResource aResource);
+    public void storeResponseDataIfCacheable(ProxymaResource aResource);
 
     /**
      * Method provided to search into the cache a responseData suitable for the passed resource.
