@@ -5,8 +5,16 @@ import junit.framework.TestCase;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
+ * <p>
+ * Test the functionality of the ProxymaContextPool
  *
- * @author mcm
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxymaContextPoolTest extends TestCase {
     
@@ -36,7 +44,7 @@ public class ProxymaContextPoolTest extends TestCase {
         System.out.println("registerNewContext");
         String contextName = "default";
         String contextURI = "/";
-        String configurationFile = "src/test/resources/testFile.xml";
+        String configurationFile = "src/test/resources/test-config.xml";
         ProxymaContextPool instance = ProxymaContextPool.getInstance();
         ProxymaContext result = instance.registerNewContext(contextName, contextURI, configurationFile);
 
@@ -66,7 +74,7 @@ public class ProxymaContextPoolTest extends TestCase {
         System.out.println("unregisterContext");
         String contextName = "default";
         String contextPath = "/";
-        String configurationFile = "src/test/resources/testFile.xml";
+        String configurationFile = "src/test/resources/test-config.xml";
         ProxymaContextPool instance = ProxymaContextPool.getInstance();
         ProxymaContext result = instance.registerNewContext(contextName, contextPath, configurationFile);
         ProxyFolderBean bean = null;
@@ -120,7 +128,7 @@ public class ProxymaContextPoolTest extends TestCase {
         System.out.println("getContext");
         String contextName = "default";
         String contextPath = "/";
-        String configurationFile = "src/test/resources/testFile.xml";
+        String configurationFile = "src/test/resources/test-config.xml";
         ProxymaContextPool instance = ProxymaContextPool.getInstance();
         ProxymaContext newContext = instance.registerNewContext(contextName, contextPath, configurationFile);
 

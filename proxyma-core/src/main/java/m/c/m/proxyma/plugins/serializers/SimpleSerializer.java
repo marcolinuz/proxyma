@@ -22,6 +22,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.AbstractSerializer {
 

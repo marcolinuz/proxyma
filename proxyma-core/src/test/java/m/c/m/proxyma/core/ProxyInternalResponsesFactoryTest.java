@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package m.c.m.proxyma.core;
 
 import java.io.IOException;
@@ -18,8 +13,16 @@ import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
+ * <p>
+ * Test the functionality of the ProxyInternalResponseFactory
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxyInternalResponsesFactoryTest extends TestCase {
     
@@ -33,7 +36,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
     public void testCreateRedirectResponse() {
         System.out.println("createRedirectResponse");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxymaResponseDataBean instance = null;
 
         String destination = "htpo:/inv,alid.url/";
@@ -70,7 +73,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
     public void testCreateErrorResponse() {
         System.out.println("createErrorResponse");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxymaResponseDataBean instance = null;
 
         int code = 500;
@@ -95,7 +98,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
     public void testcreateFoldersListResponse() throws IllegalArgumentException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException {
         System.out.println("createFoldersListResponse");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean folder =  proxyma.createNewProxyFolder("GoogleFolder", "http://www.google.com", context);
         proxyma.registerProxyFolderIntoContext(folder, context);
         folder = proxyma.createNewProxyFolder("AppleFolder", "http://www.apple.com", context);

@@ -8,8 +8,16 @@ import m.c.m.proxyma.ProxymaFacade;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
+ * <p>
+ * Test the functionality of the ProxymaContext
  *
- * @author mcm
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxymaContextTest extends TestCase {
     
@@ -25,7 +33,7 @@ public class ProxymaContextTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {
@@ -61,7 +69,7 @@ public class ProxymaContextTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {
@@ -97,7 +105,7 @@ public class ProxymaContextTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {
@@ -147,7 +155,7 @@ public class ProxymaContextTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {
@@ -199,7 +207,7 @@ public class ProxymaContextTest extends TestCase {
         String folderName = "test";
         String destination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
 
         context.setLogLevel("UNEXISTENT");
         assertEquals(context.getLogLevel(), ProxymaTags.UNSPECIFIED_LOGLEVEL);
@@ -223,7 +231,7 @@ public class ProxymaContextTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {
@@ -260,7 +268,7 @@ public class ProxymaContextTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {
@@ -291,7 +299,7 @@ public class ProxymaContextTest extends TestCase {
     public void testLoadAndGetConfigurationParameters() throws Exception {
         System.out.println("loadAndGetConfigurationParameters");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
 
         // Test Single value loading
         assertEquals("Single attribute load failed.", "single", instance.getSingleValueParameter("singleParameter"));

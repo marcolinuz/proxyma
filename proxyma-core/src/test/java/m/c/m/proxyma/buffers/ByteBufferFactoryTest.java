@@ -10,8 +10,16 @@ import m.c.m.proxyma.ProxymaFacade;
 import m.c.m.proxyma.context.ProxymaContext;
 
 /**
+ * <p>
+ * Test the functionality of the ByteBufferFactory
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ByteBufferFactoryTest extends TestCase {
     
@@ -23,7 +31,7 @@ public class ByteBufferFactoryTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
 
         ByteBuffer instance = ByteBufferFactory.createNewByteBuffer(context);
         assertNotNull(instance);
@@ -46,7 +54,7 @@ public class ByteBufferFactoryTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
 
         try {
             ByteBufferReader instance = ByteBufferFactory.createNewByteBufferReader(null);

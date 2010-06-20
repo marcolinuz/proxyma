@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package m.c.m.proxyma.resource;
 
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -21,8 +16,16 @@ import m.c.m.proxyma.context.ProxymaContext;
 import org.xml.sax.SAXException;
 
 /**
+ * <p>
+ * Test the functionality of the ProxymaResourceFactory
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxymaResourceFactoryTest extends TestCase {
 
@@ -34,7 +37,7 @@ public class ProxymaResourceFactoryTest extends TestCase {
 
          //Prepare the environment..
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ServletRunner sr = new ServletRunner();
         sr.registerServlet( "myServlet", TestServlet.class.getName() );
         ServletUnitClient sc = sr.newClient();

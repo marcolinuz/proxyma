@@ -10,6 +10,7 @@ package m.c.m.proxyma;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  *
  */
 public class Main

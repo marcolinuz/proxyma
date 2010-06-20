@@ -8,8 +8,16 @@ package m.c.m.proxyma.buffers;
 import junit.framework.TestCase;
 
 /**
+ * <p>
+ * Test the functionality of the RamBuffer
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class RamBufferTest extends TestCase {
     

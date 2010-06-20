@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
-    Document   : testFile.xml.xml
-    Created on : 4 giugno 2010, 22.41
-    Author     : Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+    Document   : test-config.xml
     Description:
-        This is a minimal configuration file useful to run the test cases on junit.
--->
+        This is a minimal configuration file useful to run the test cases. 
 
+    NOTE: 
+       this software is released under GPL License.
+       See the LICENSE of this distribution for more informations.
+	
+       @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+       @version $Id$ 
+-->
 <test>
     <!-- Elements to test the loading of the configuration parameters -->
     <global>

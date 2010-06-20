@@ -13,6 +13,7 @@ import java.io.*;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [ICQ UIN: 245662445]
+ * @version $Id$
  */
 public class FileBufferReader implements ByteBufferReader {
     /**

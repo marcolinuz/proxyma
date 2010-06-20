@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package m.c.m.proxyma.log;
 
 import java.io.File;
@@ -13,8 +8,16 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 /**
+ * <p>
+ * Test the functionality of the ProxymaLoggersUtil
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxymaLoggersUtilTest extends TestCase {
     

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public class TestServlet extends HttpServlet {
     @Override

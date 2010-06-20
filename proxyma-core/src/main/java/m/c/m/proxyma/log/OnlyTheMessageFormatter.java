@@ -5,10 +5,13 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
-     * This custom formatter that "doesn't format" anything.
-     * In othed words the messages received from this formatter have to be
-     * pre formatted externally.
-     */
+ * This custom formatter that "doesn't format" anything.
+ * In othed words the messages received from this formatter have to be
+ * pre formatted externally.
+ *
+ * TOTO: Add author and note
+ * @version $Id$
+ */
 public class OnlyTheMessageFormatter extends Formatter {
 
     /**

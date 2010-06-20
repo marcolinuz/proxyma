@@ -18,6 +18,7 @@ import m.c.m.proxyma.context.ProxymaContext;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public class ProxyEngineFactory {
     /**

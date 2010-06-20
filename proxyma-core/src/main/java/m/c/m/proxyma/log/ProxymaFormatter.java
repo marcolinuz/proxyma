@@ -7,8 +7,17 @@ import java.util.logging.Handler;
 import java.util.logging.SimpleFormatter;
 
 /**
+ * <p>
  * This custom formatter introduce startup and shutdoen messages
  * to the standard simple formatter.
+ *
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxymaFormatter extends SimpleFormatter {
 

@@ -34,6 +34,7 @@ import net.sf.ehcache.Statistics;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProvider {
 
