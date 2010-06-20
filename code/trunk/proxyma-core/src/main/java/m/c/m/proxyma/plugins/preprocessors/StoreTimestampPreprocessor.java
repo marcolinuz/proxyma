@@ -1,5 +1,6 @@
 package m.c.m.proxyma.plugins.preprocessors;
 
+import java.util.Date;
 import java.util.logging.Logger;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
@@ -7,8 +8,9 @@ import m.c.m.proxyma.resource.ProxymaResource;
 /**
  * <p>
  * This preprocessor realize a component that registers into a resource attribute
- * the time when the request has come to the server. Working in conjunction with
- * the PerformanceTestSerializer it is useful to test the performances of the server.
+ * the time when the request has come to the server. <br/>
+ * It works in conjunction with the PerformanceTestSerializer and it could be
+ * useful to test the performances of the server.
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -17,30 +19,30 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  * @version $Id$
  */
-public class PerformanceTestPreprocessor extends m.c.m.proxyma.plugins.preprocessors.AbstractPreprocessor {
+public class StoreTimestampPreprocessor extends m.c.m.proxyma.plugins.preprocessors.AbstractPreprocessor {
     /**
      * The default constructor for this class<br/>
      * It prepares the context logger and the logger for the access-log.
      *
      * NOTE: Every plugin must have a constructor that takes a ProxymaContext as parameter.
      */
-    public PerformanceTestPreprocessor (ProxymaContext context) {
+    public StoreTimestampPreprocessor (ProxymaContext context) {
         //initialize the logger
         this.log = context.getLogger();
     }
 
     /**
-     * This plugin implements a performance test preprocessor.<br/>
-     * Its puropse is to write into a resource attribute the time when a
-     * new request comes to the server.
-     * It works in conjunction with the PerformanceTestSerializer
+     * This adds a resource attribute to the current resource in order to
+     * memorize the instant when the new request has come to the server.
+     * It can be used to verfy the performances of the server.
      * @param aResource any ProxymaResource
      * @see PerformanceTestSerializer
      */
     @Override
     public void process(ProxymaResource aResource) {
-        log.info("Not yet Implemented..");
-        throw new UnsupportedOperationException("Not Yet Implemented..");
+        Date now = new  Date();
+        aResource.addAttibute(timestampAttribute, now);
+        log.fine("Added the timestamp to the resource attributes.");
     }
     
     /**
@@ -71,16 +73,20 @@ public class PerformanceTestPreprocessor extends m.c.m.proxyma.plugins.preproces
     private Logger log = null;
 
     /**
+     * This is the name of the attribute that will be set into the resource.
+     */
+    private static final String timestampAttribute = "Timestamp";
+
+    /**
      * The name of this plugin.
      */
-    private static final String name = "Performance Test Preprocessor";
+    private static final String name = "Store Timestamp Preprocessor";
 
     /**
      * A short html description of what it does.
      */
     private static final String description = "" +
-            "This Preprocessor register the time when the request<br/>" +
-            "has come to the server. It works in conjunction with the" +
-            "Performance Test Serializer.<br/>" +
-            "It is a nonsense to enable this plugin without his companion.";
+            "This Preprocessor register a timestamp into the incoming resources.<br/>" +
+            "The atribute name is \"Timestamp\" and it can be used to check the performances of the server.<br/>" +
+            "You don't really need it into a production environment.";
 }

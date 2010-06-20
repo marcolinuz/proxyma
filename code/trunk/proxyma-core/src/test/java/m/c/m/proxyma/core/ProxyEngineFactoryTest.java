@@ -73,7 +73,7 @@ public class ProxyEngineFactoryTest extends TestCase {
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.SERIALIZER);
-        assertEquals(1, plugins.size());
+        assertEquals(2, plugins.size());
         iter=plugins.iterator();
         assertTrue(iter.next() instanceof  AbstractSerializer);
 

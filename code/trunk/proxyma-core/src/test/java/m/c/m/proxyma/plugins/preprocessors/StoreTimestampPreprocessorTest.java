@@ -1,4 +1,4 @@
-package m.c.m.proxyma.plugins.serializers;
+package m.c.m.proxyma.plugins.preprocessors;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebRequest;
@@ -6,24 +6,18 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.InvocationContext;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
-import java.io.File;
-import javax.servlet.http.Cookie;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
 import m.c.m.proxyma.ProxymaFacade;
-import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.TestServlet;
-import m.c.m.proxyma.buffers.ByteBuffer;
-import m.c.m.proxyma.buffers.ByteBufferFactory;
 import m.c.m.proxyma.context.ProxymaContext;
-import m.c.m.proxyma.core.ResourceHandler;
 import m.c.m.proxyma.resource.ProxymaResource;
-import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * Test the functionality of the SimpleSerializer
+ * Test the functionality of the StoreTimestampPreprocessor
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -33,15 +27,16 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class SimpleSerializerTest extends TestCase {
+public class StoreTimestampPreprocessorTest extends TestCase {
     
-    public SimpleSerializerTest(String testName) {
+    public StoreTimestampPreprocessorTest(String testName) {
         super(testName);
     }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
         //Prepare the environment..
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
@@ -71,36 +66,22 @@ public class SimpleSerializerTest extends TestCase {
     }
 
     /**
-     * Test of process method, of class SimpleSerializer.
+     * Test of process method, of class StoreTimestampPreprocessor.
      */
-    public void testProcess() throws Exception {
+    public void testProcess() {
         System.out.println("process");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
-
-        ProxymaResponseDataBean dataBean = new ProxymaResponseDataBean();
-        ByteBuffer data = ByteBufferFactory.createNewByteBuffer(context);
-        data.appendBytes("Hello World!".getBytes(), "Hello World!".getBytes().length);
-
-        dataBean.addHeader("Content-Type", "text/plain");
-        dataBean.addHeader("Age", "1");
-        dataBean.addCookie(new Cookie("test", "TestCookie"));
-        dataBean.addCookie(new Cookie("Session", "TestSession"));
-        dataBean.setStatus(200);
-
-        dataBean.setData(data);
         ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
-        aResource.getResponse().setResponseData(dataBean);
+        StoreTimestampPreprocessor instance = new StoreTimestampPreprocessor(context);
 
-        ResourceHandler serializer = new SimpleSerializer(context);
-        serializer.process(aResource);
+        //Create a testpage for the tests..
+        instance.process(aResource);
 
-        assertTrue(dataBean.containsHeader("X-Forwarded-For"));
-        assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
-
-        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-access.log.0";
-        File log = new File(logsDirectory);
-        assertTrue(log.exists());
+        //Check for the timestamp..
+        Object theAttribute = aResource.getAttribute("Timestamp");
+        assertNotNull(theAttribute);
+        assertTrue(theAttribute instanceof Date);
     }
 
     private HttpServletRequest request;

@@ -5,11 +5,17 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
+ * <p>
  * This custom formatter that "doesn't format" anything.
  * In othed words the messages received from this formatter have to be
  * pre formatted externally.
  *
- * TOTO: Add author and note
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  * @version $Id$
  */
 public class OnlyTheMessageFormatter extends Formatter {

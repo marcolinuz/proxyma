@@ -72,7 +72,7 @@
         </avaliableCacheProviders>
 
         <avaliablePreprocessors>
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.PerformanceTestPreprocessor"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliablePreprocessors>
@@ -85,8 +85,9 @@
 
         <availableSerializers>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"
-                             accessLogsDirectoryPath="/tmp/proxyma" maxLinesPerFile="5000000"
-                             filesRetentionPolicy="5"/>
+                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"
+                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.UnexistingSerializer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </availableSerializers>
