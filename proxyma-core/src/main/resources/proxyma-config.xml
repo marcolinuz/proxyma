@@ -45,7 +45,8 @@
             <level>INFO</level>
 
             <!-- The proxyma log files directory.
-             The file names will be composed as: "<directoryPath><contextName>.log" -->
+                 All the log files for the context will be written there.
+                 PS: Do not forget the tailing slash "/" -->
             <directoryPath>/tmp/</directoryPath>
 
             <!-- Max number of lines per log file -->
@@ -106,8 +107,16 @@
              NOTE: these plugins extends the "AbstractPreprocessor" class overriding
              the "process" method. -->
         <avaliablePreprocessors>
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.PerformanceTestPreprocessor"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
         </avaliablePreprocessors>
+
+        <!-- List of Retriver plugins that can be used by the proxyma engine.
+             NOTE: these plugins extends the "AbstractRetriver" class overriding
+             the "process" method. -->
+        <availableRetrivers>
+            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
+        </availableRetrivers>
 
         <!-- List of Transformer plugins that can be used by the proxyma engine
              NOTE: these plugins extends the "AbstractTransformer" class overriding
@@ -126,18 +135,10 @@
              the "process" method. -->
         <availableSerializers>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"
-                             accessLogsDirectoryPath="/tmp/proxyma" maxLinesPerFile="5000000"
-                             filesRetentionPolicy="5"/>
+                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.DebugSerializer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"
+                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
         </availableSerializers>
-
-        <!-- List of Retriver plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "AbstractRetriver" class overriding
-             the "process" method. -->
-        <availableRetrivers>
-            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
-        </availableRetrivers>
     </plugins>
 </proxyma-configuration>

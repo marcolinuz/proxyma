@@ -99,6 +99,7 @@ public class EhcacheCacheProviderTest extends TestCase {
         instance.storeResponseDataIfCacheable(aResource);
         assertTrue(instance.getResponseData(aResource));
         assertNotNull(aResource.getResponse().getResponseData());
+        assertNotNull(aResource.getAttribute("Cache-Hit"));
 
         values = instance.getCachedURIs();
         assertEquals(1, values.size());

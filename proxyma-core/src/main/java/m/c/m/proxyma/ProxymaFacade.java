@@ -22,7 +22,7 @@ import org.apache.commons.lang.NullArgumentException;
  *       See the LICENSE of this distribution for more informations.
  * </p>
  *
- * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  * @version $Id$
  */
 public class ProxymaFacade {

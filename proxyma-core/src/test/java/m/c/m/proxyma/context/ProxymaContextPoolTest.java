@@ -92,7 +92,7 @@ public class ProxymaContextPoolTest extends TestCase {
 
         //Testing remove unregistered context
         try {
-            ProxymaContext unregistered = new ProxymaContext ("unregistered", contextPath, configurationFile);
+            ProxymaContext unregistered = new ProxymaContext ("testContext", contextPath, configurationFile);
             instance.unregisterContext(unregistered);
             fail("Exception not thrown");
         } catch (IllegalArgumentException ex){

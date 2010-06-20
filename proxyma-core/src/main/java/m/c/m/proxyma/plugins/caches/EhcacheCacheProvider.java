@@ -79,9 +79,9 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
     @Override
     public boolean getResponseData(ProxymaResource aResource) {
         boolean retValue = false;
-        ProxymaRequest theRequest = aResource.getRequest();
         Element elem = theCache.get(calculateKey(aResource));
         if (elem != null) {
+            aResource.addAttibute(cacheHitAttribute, "Cache Hit!");
             aResource.getResponse().setResponseData((ProxymaResponseDataBean) elem.getValue());
             retValue = true;
         }
@@ -309,14 +309,28 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
 
         return ehcacheConfig.toString().getBytes(context.getDefaultEncoding());
     }
+    
     /**
      * The logger for this class
      */
     private Logger log = null;
-    //The ehcache cache manager for this instance of Proxyma
+    
+    /**
+     * The ehcache cache manager singleton.
+     */
     private static CacheManager ehCacheManager = null;
-    //The ehcache store for pages requested by this context
+
+    /**
+     * The ehcache store for pages requested by the context
+     */
     private Cache theCache = null;
+
+    /**
+     * The attribute name that will be stored into the resource
+     * on every cache-hit.
+     */
+    private static final String cacheHitAttribute = "Cache-Hit";
+
     /**
      * an empty string..
      */
@@ -366,8 +380,10 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
      */
     private static final String description = ""
             + "This is a wrapper for the famouns Ehcache subsystem.<br/>"
-            + "Use this plugin uses the Ecache engine to implement a robust and fast "
-            + "cache on the proxy-folder retrived data.<br/>"
-            + "It costs in terms of RAM utilization, but it can give a great speed up "
-            + "to your proxy operations.";
+            + "This plugin uses the Ecache engine to implement a robust and fast "
+            + "cache for the reverse proxy.<br/>"
+            + "It costs in terms of RAM and disk utilization, but it can give "
+            + "a great speed up the proxy operations.<br/>"
+            + "NOTE: It register an attribute into the resource if thhere is a cache hit. "
+            + "The attribute name is \"Cache-Hit\".";
 }

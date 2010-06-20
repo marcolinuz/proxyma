@@ -7,6 +7,7 @@ import com.meterware.servletunit.InvocationContext;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
 import java.io.File;
+import java.util.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * Test the functionality of the SimpleSerializer
+ * Test the functionality of the PerformanceTestSerializer
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -33,9 +34,9 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class SimpleSerializerTest extends TestCase {
+public class PerformanceTestSerializerTest extends TestCase {
     
-    public SimpleSerializerTest(String testName) {
+    public PerformanceTestSerializerTest(String testName) {
         super(testName);
     }
 
@@ -77,6 +78,7 @@ public class SimpleSerializerTest extends TestCase {
         System.out.println("process");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
+        Date previous = new Date();
 
         ProxymaResponseDataBean dataBean = new ProxymaResponseDataBean();
         ByteBuffer data = ByteBufferFactory.createNewByteBuffer(context);
@@ -91,14 +93,16 @@ public class SimpleSerializerTest extends TestCase {
         dataBean.setData(data);
         ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
         aResource.getResponse().setResponseData(dataBean);
+        aResource.addAttibute("Timestamp", previous);
+        Thread.sleep(100);
 
-        ResourceHandler serializer = new SimpleSerializer(context);
+        ResourceHandler serializer = new PerformanceTestSerializer(context);
         serializer.process(aResource);
 
         assertTrue(dataBean.containsHeader("X-Forwarded-For"));
         assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
 
-        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-access.log.0";
+        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-performance.log.0";
         File log = new File(logsDirectory);
         assertTrue(log.exists());
     }

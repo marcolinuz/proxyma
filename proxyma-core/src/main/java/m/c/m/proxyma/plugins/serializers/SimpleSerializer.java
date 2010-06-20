@@ -10,6 +10,7 @@ import m.c.m.proxyma.buffers.ByteBuffer;
 import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.log.ProxymaLoggersUtil;
+import m.c.m.proxyma.resource.ProxymaRequest;
 import m.c.m.proxyma.resource.ProxymaResource;
 import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
@@ -40,7 +41,7 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         String configXpath = ProxymaTags.AVAILABLE_SERIALIZERS + "[@class='" + this.getClass().getName() + "']";
              
         //Get configuration files direxctives
-        String logsDirectory = context.getSingleValueParameter(configXpath+"/@accessLogsDirectoryPath");
+        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR);
         int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@maxLinesPerFile"));
         int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@filesRetentionPolicy"));
 
@@ -108,50 +109,51 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
      */
     private String generateExtendedAccessLog(ProxymaResource aResource, int statusCode) {
         //Create a line in common-log-format into the access.log
-        StringBuffer theLRecord = new StringBuffer(1024);
+        StringBuffer theRecord = new StringBuffer(1024);
+        ProxymaRequest request = aResource.getRequest();
 
         //write the remote ip address
-        theLRecord.append(aResource.getRequest().getRemoteAddress());
-        theLRecord.append(" - ");
+        theRecord.append(request.getRemoteAddress());
+        theRecord.append(" - ");
 
         //write the remote user
-        String remoteUser = aResource.getRequest().getRemoteUser();
-        theLRecord.append(remoteUser == null ? "-" : remoteUser);
+        String remoteUser = request.getRemoteUser();
+        theRecord.append(remoteUser == null ? "-" : remoteUser);
 
         //formatting the date
-        theLRecord.append(dateFormatter.format(new Date()));
+        theRecord.append(dateFormatter.format(new Date()));
 
         //get the remote requested resource
-        theLRecord.append("\"");
-        theLRecord.append(aResource.getRequest().getMethod());
-        theLRecord.append(" ");
-        theLRecord.append(aResource.getRequest().getRequestURI());
-        theLRecord.append(" ");
-        theLRecord.append(aResource.getRequest().getProtocol());
-        theLRecord.append("\" ");
+        theRecord.append("\"");
+        theRecord.append(request.getMethod());
+        theRecord.append(" ");
+        theRecord.append(request.getRequestURI());
+        theRecord.append(" ");
+        theRecord.append(request.getProtocol());
+        theRecord.append("\" ");
 
         //get the return code
-        theLRecord.append(statusCode);
+        theRecord.append(statusCode);
 
         //get the content size
         ByteBuffer data = aResource.getResponse().getResponseData().getData();
-        theLRecord.append(" ");
-        theLRecord.append(data==null?0:data.getSize());
-        theLRecord.append(" ");
+        theRecord.append(" ");
+        theRecord.append(data==null?0:data.getSize());
+        theRecord.append(" ");
 
         //write the remote masqueraded resource into the referrer field
         ProxyFolderBean folder = aResource.getProxyFolder();
-        theLRecord.append("\"");
-        theLRecord.append(folder==null?aResource.getProxymaRootURI():folder.getDestination());
-        theLRecord.append(aResource.getDestinationSubPath()==null?EMPTY_STRING:aResource.getDestinationSubPath());
-        theLRecord.append("\" \"");
+        theRecord.append("\"");
+        theRecord.append(folder==null?aResource.getProxymaRootURI():folder.getDestination());
+        theRecord.append(aResource.getDestinationSubPath()==null?EMPTY_STRING:aResource.getDestinationSubPath());
+        theRecord.append("\" \"");
 
         //Add informations about the client browser
-        String userAgent = aResource.getRequest().getHeader("User-Agent");
-        theLRecord.append(userAgent == null ? "User-Agent not provided." : userAgent);
-        theLRecord.append("\"");
+        String userAgent = request.getHeader("User-Agent");
+        theRecord.append(userAgent == null ? "User-Agent not provided." : userAgent);
+        theRecord.append("\"");
 
-        return theLRecord.toString();
+        return theRecord.toString();
     }
 
     /**
