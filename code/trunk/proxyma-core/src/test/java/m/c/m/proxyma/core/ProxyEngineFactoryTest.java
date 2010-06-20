@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package m.c.m.proxyma.core;
 
 import java.util.Collection;
@@ -20,8 +15,16 @@ import m.c.m.proxyma.plugins.serializers.AbstractSerializer;
 import m.c.m.proxyma.plugins.transformers.AbstractTransformer;
 
 /**
+ * <p>
+ * Test the functionality of the ProxyEngineFactory
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxyEngineFactoryTest extends TestCase {
     
@@ -39,7 +42,7 @@ public class ProxyEngineFactoryTest extends TestCase {
         Iterator iter = null;
         System.out.println("ProxyEngineFactory");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         try {
             instance = proxyma.createNewProxyEngine(context);
         } catch (IllegalAccessException ex) {

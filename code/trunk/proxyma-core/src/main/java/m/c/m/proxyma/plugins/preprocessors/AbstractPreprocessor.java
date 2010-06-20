@@ -15,6 +15,7 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public abstract class AbstractPreprocessor implements m.c.m.proxyma.core.ResourceHandler {
 

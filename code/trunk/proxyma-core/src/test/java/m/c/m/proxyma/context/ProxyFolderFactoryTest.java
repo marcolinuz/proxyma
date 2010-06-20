@@ -11,8 +11,16 @@ import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.ProxymaFacade;
 
 /**
+ * <p>
+ * Test the functionality of the ProxyFolderFactory
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxyFolderFactoryTest extends TestCase {
 
@@ -24,7 +32,7 @@ public class ProxyFolderFactoryTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/testFile.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
 
         try {

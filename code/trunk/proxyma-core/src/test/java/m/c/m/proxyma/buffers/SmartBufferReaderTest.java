@@ -10,8 +10,16 @@ import java.io.IOException;
 import junit.framework.TestCase;
 
 /**
+ * <p>
+ * Test the functionality of the SmartBufferReader
  *
- * @author shad0w
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class SmartBufferReaderTest extends TestCase {
     

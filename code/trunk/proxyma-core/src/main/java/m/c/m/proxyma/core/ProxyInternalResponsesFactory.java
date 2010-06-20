@@ -14,9 +14,18 @@ import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
+ * <p>
  * This Class ifs a factory of standard responses.<br/>
  * It's used by the ProxyEngine to build internal responses as error pages,
  * redirects and the page that shows the registered proxy folders.
+ *
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @version $Id$
  */
 public class ProxyInternalResponsesFactory {
     /**

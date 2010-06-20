@@ -17,6 +17,7 @@ import javax.servlet.http.Cookie;
  * </p>
  *
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public interface ProxymaRequest {
     /**
