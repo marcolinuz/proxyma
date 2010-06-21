@@ -99,7 +99,7 @@ public class PerformanceTestSerializerTest extends TestCase {
         ResourceHandler serializer = new PerformanceTestSerializer(context);
         serializer.process(aResource);
 
-        assertTrue(dataBean.containsHeader("X-Forwarded-For"));
+        assertFalse(dataBean.containsHeader("X-Forwarded-For"));
         assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
 
         String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-performance.log.0";

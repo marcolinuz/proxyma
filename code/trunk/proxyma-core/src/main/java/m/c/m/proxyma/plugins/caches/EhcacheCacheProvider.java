@@ -51,6 +51,10 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
             initializeCacheManager(context);
         }
         theCache = ehCacheManager.getCache(context.getName());
+
+        //Set the maximum size of a cached resource
+        String ecacheConfigurationsXPath = ProxymaTags.AVAILABLE_CACHE_PROVIDERS + "[@class='" + this.getClass().getName() + "']";
+        maxCacheableResourceSize = Integer.parseInt(context.getSingleValueParameter(ecacheConfigurationsXPath + "/@maxSizeOfCacheableResource"));
     }
 
     /**
@@ -156,7 +160,9 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
         ProxymaHttpHeader cacheControlHeader = responseData.getHeader(CACHE_CONTROL_HEADER);
 
         //If there are no directives we can cache it
-        if ((pragmaHeader == null) && (cacheControlHeader == null)) {
+        if ((maxCacheableResourceSize > 0) && (responseData.getData().getSize() > maxCacheableResourceSize)) {
+            cacheableFlag = false;
+        } else if ((pragmaHeader == null) && (cacheControlHeader == null)) {
             //No directives found: we can cache it!!!
             cacheableFlag = true;
         } else {
@@ -319,6 +325,11 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
      * The ehcache cache manager singleton.
      */
     private static CacheManager ehCacheManager = null;
+
+    /**
+     * Max size of a cacheable resource (0 == unlimited)
+     */
+    private static int maxCacheableResourceSize = 0;
 
     /**
      * The ehcache store for pages requested by the context

@@ -14,6 +14,7 @@ import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.TestServlet;
 import m.c.m.proxyma.buffers.ByteBufferFactory;
 import m.c.m.proxyma.buffers.ByteBufferReader;
+import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.core.ResourceHandler;
 import m.c.m.proxyma.resource.ProxymaResource;
@@ -21,7 +22,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * Test the functionality of the TestPageRetriver
+ * Test the functionality of the SimpleHttpRetriver
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -31,9 +32,9 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class TestPageRetriverTest extends TestCase {
+public class SimpleHttpRetriverTest extends TestCase {
     
-    public TestPageRetriverTest(String testName) {
+    public SimpleHttpRetriverTest(String testName) {
         super(testName);
     }
 
@@ -47,7 +48,7 @@ public class TestPageRetriverTest extends TestCase {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet( "myServlet", TestServlet.class.getName() );
         ServletUnitClient sc = sr.newClient();
-        WebRequest wreq   = new GetMethodWebRequest( "http://test.meterware.com/myServlet?a=1&b=2" );
+        WebRequest wreq   = new GetMethodWebRequest( "http://test.meterware.com/myServlet" );
         wreq.setParameter( "color", "red" );
         WebResponse wres = sc.getResponse( wreq );
         InvocationContext ic = sc.newInvocation( wreq );
@@ -70,34 +71,31 @@ public class TestPageRetriverTest extends TestCase {
     }
 
     /**
-     * Test of process method, of class TestPageRetriver.
+     * Test of process method, of class SimpleHttpRetriver.
      */
     public void testProcess() throws Exception {
         System.out.println("process");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
         ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxyFolderBean folder = proxyma.createNewProxyFolder("testFolder", "http://proxyma.sourceforge.net", context);
+        aResource.setProxyFolder(folder);
+        aResource.setDestinationSubPath("/");
 
-        ResourceHandler instance = new TestPageRetriver(context);
+        ResourceHandler instance = new SimpleHttpRetriver(context);
         instance.process(aResource);
 
         ProxymaResponseDataBean data = aResource.getResponse().getResponseData();
-        assertNotNull(data);
 
-        assertNotNull(data.getHeader("date"));
-        assertEquals(data.getHeader("Server").getValue(), context.getProxymaVersion());
-        assertEquals(data.getStatus(), 200);
 
-        assertEquals(data.getHeader("Content-type").getValue(), "text/html;charset="+context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
-        assertTrue(data.getContentLenght() > 0);
 
         ByteBufferReader thepage = ByteBufferFactory.createNewByteBufferReader(data.getData());
-
         byte[] result = thepage.getWholeBufferAsByteArray();
         String resultString = new String(result,context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
 
-        assertTrue(resultString.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""));
-        assertTrue(resultString.endsWith("</body>\n</html>\n"));
+        assertTrue(resultString.startsWith("<?xml version='1.0'?>\n"));
+        assertTrue(resultString.contains("<title>Proxyma - HomePage</title>"));
+        assertTrue(resultString.endsWith("</html><!-- Content End -->"));
     }
 
     private HttpServletRequest request;

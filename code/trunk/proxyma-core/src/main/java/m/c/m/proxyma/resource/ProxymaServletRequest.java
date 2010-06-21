@@ -1,5 +1,7 @@
 package m.c.m.proxyma.resource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
@@ -172,6 +174,15 @@ public class ProxymaServletRequest implements ProxymaRequest {
     @Override
     public Cookie[] getCookies() {
         return theOriginalRequest.getCookies();
+    }
+
+    /**
+     * Returns the input stream for read the request's data sent by the client
+     * @return the request InputStream.
+     */
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return theOriginalRequest.getInputStream();
     }
 
     /**

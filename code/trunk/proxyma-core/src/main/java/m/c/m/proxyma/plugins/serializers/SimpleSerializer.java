@@ -17,6 +17,9 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 /**
  * <p>
  * This plugin implements a simple serializer.<br/>
+ * Its work is to send back to the client the response adding to it
+ * only a few only useful headers.<br/>
+ * It writes also the "access log" in common logging format."
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -65,10 +68,6 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         //Sets the content-lenght header to the real value of the content size.
         if (response.getData() != null)
             response.addHeader(CONTENT_LENGTH_HEADER, response.getData().getSize());
-
-        //Set the special header that is a de facto standard for identifying the
-        //originating IP address of a client connecting to a web server through an HTTP proxy
-        response.addHeader(X_FORWARDED_FOR_HEADER, aResource.getRequest().getRemoteAddress());
 
         //Send the resource back to the client
         int statusCode = aResource.getResponse().sendDataToClient();
@@ -180,11 +179,6 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
      * The content length header name
      */
     private static final String CONTENT_LENGTH_HEADER = "Content-Length";
-
-    /**
-     * The special header that tells to the real servers for who the proxy is working
-     */
-    private static final String X_FORWARDED_FOR_HEADER = "X-Forwarded-For";
 
     /**
      * An empty string..

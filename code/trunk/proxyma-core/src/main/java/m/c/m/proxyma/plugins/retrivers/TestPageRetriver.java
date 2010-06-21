@@ -12,9 +12,8 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * This preprocessor realize a component that registers into a resource attribute
- * the time when the request has come to the server. Working in conjunction with
- * the PerformanceTestSerializer it is useful to test the performances of the server.
+ * This retriver simply generates a test page.<br/>
+ * It's useful only for testing puropses.
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -36,9 +35,8 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
     }
 
     /**
-     * This method register the time when it runs into a resource attribute.
+     * This method creates a test page to sent back to the client.
      * @param aResource any ProxymaResource
-     * @see PerformanceTestSerializer for more info.
      */
     @Override
     public void process(ProxymaResource aResource) throws Exception {
@@ -156,7 +154,11 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
             "This retriver simply generates a test page.<br/>" +
             "It's useful only for testing puropses.";
 
+    /**
+     * The body of the generated test page.
+     */
     private static final String testPageData = "" +
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
             "<html>\n" +
             "<head><title>Proxyma Test Page</title>\n" +

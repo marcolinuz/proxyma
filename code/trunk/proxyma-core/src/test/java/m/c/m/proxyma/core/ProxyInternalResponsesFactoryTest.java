@@ -119,7 +119,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
         byte[] result = data.getWholeBufferAsByteArray();
         String resultString = new String(result,context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
 
-        assertTrue(resultString.startsWith("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""));
+        assertTrue(resultString.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""));
         assertTrue(resultString.contains("<td align=\"left\"><a href=\"./GoogleFolder/\">GoogleFolder</a></td>"));
         assertTrue(resultString.contains("<td align=\"left\"><a href=\"./AppleFolder/\">AppleFolder</a></td>"));
         assertTrue(resultString.endsWith("</html>\n"));
