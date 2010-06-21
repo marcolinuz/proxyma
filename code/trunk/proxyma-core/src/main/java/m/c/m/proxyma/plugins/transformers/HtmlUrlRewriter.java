@@ -1,8 +1,5 @@
 package m.c.m.proxyma.plugins.transformers;
 
-import m.c.m.proxyma.plugins.serializers.*;
-import m.c.m.proxyma.plugins.retrivers.*;
-import m.c.m.proxyma.plugins.preprocessors.*;
 import java.util.logging.Logger;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;

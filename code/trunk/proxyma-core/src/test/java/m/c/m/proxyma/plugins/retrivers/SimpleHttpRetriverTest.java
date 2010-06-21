@@ -87,7 +87,7 @@ public class SimpleHttpRetriverTest extends TestCase {
 
         ProxymaResponseDataBean data = aResource.getResponse().getResponseData();
 
-
+        assertSame(data, aResource.getAttribute("Original-Response"));
 
         ByteBufferReader thepage = ByteBufferFactory.createNewByteBufferReader(data.getData());
         byte[] result = thepage.getWholeBufferAsByteArray();
