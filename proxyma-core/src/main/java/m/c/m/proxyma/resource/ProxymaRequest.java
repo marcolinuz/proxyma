@@ -1,5 +1,7 @@
 package m.c.m.proxyma.resource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import javax.servlet.http.Cookie;
 
@@ -119,6 +121,12 @@ public interface ProxymaRequest {
      * @return an array of cookies
      */
     public Cookie[] getCookies();
+
+    /**
+     * Returns the input stream for read the request's data sent by the client
+     * @return the request InputStream.
+     */
+    public InputStream getInputStream() throws IOException;
 
     /**
      * Returns the sheme used by the client to send the request.

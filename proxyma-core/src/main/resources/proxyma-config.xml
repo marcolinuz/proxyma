@@ -88,7 +88,8 @@
              These plugins implements the "CacheProvider" interface -->
         <avaliableCacheProviders>
             <cacheProvider class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
-            <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider">
+            <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider"
+                           maxSizeOfCacheableResource="20971520"> <!-- 20MB (0 == unlimited) -->
                 <!-- These are the ehcache specific configuration parameters
                      that will be used to create the cache manager. -->
                 <diskStore path="java.io.tmpdir"/>

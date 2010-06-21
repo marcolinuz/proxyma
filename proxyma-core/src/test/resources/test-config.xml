@@ -56,7 +56,8 @@
     <plugins>
         <avaliableCacheProviders>
             <cacheProvider class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
-            <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider">
+            <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider"
+                           maxSizeOfCacheableResource="20971520">
                 <diskStore path="java.io.tmpdir"/>
                 <defaultCache maxElementsInMemory="10000"
                               eternal="false"

@@ -16,7 +16,7 @@ import java.util.logging.SimpleFormatter;
  *       See the LICENSE of this distribution for more informations.
  * </p>
  *
- * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  * @version $Id$
  */
 public class ProxymaFormatter extends SimpleFormatter {
@@ -33,7 +33,7 @@ public class ProxymaFormatter extends SimpleFormatter {
     public String getHead(Handler h) {
         Date now = new Date();
         Format dateFormatter = new SimpleDateFormat(" [dd/MMM/yyyy:HH:mm:ss Z] ");
-        String message = " ******* Proxyma Started" + dateFormatter.format(now) + "*******";
+        String message = " ******* Proxyma Started" + dateFormatter.format(now) + "*******\n";
         return message;
     }
     // This method is called just after the handler using this formatter is closed
@@ -42,7 +42,7 @@ public class ProxymaFormatter extends SimpleFormatter {
     public String getTail(Handler h) {
         Date now = new Date();
         Format dateFormatter = new SimpleDateFormat(" [dd/MMM/yyyy:HH:mm:ss Z] ");
-        String message = " ******* Proxyma Shutdown" + dateFormatter.format(now) + "*******";
+        String message = " ******* Proxyma Shutdown" + dateFormatter.format(now) + "*******\n";
         return message;
     }
 }
