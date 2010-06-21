@@ -28,7 +28,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * This plugin uses an URLConnection to retrive the data form the real server
+ * This plugin uses an URLConnection to retrive the remoteData form the real server
  * and build a ResponseResourceDataBean that can be managed by transformers and
  * serializers for further elaborations.
  * </p><p>
@@ -62,8 +62,9 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
         HttpURLConnection conn = connectToServer(aResource);
         if (conn != null) {
             try {
-                ProxymaResponseDataBean data = createResponseDataBeanFromServerReply(conn, aResource);
-                aResource.getResponse().setResponseData(data);
+                ProxymaResponseDataBean remoteData = createResponseDataBeanFromServerReply(conn, aResource);
+                aResource.getResponse().setResponseData(remoteData);
+                aResource.addAttibute(ORIGINAL_RESPONSE_ATTRIBUTE, remoteData);
             } catch (IOException ex) {
                log.severe("Unable to get data from remote server.. abort");
                throw new IOException("Unable to get data from remote server.. abort");
@@ -168,7 +169,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                 BufferedOutputStream writer = new BufferedOutputStream(retVal.getOutputStream());
                 byte[] buffer = new byte[BUF_SIZE];
                 int count;
-                int upstreamSize = 0; //size of the POST data
+                int upstreamSize = 0; //size of the POST remoteData
                 while ((count = reader.read(buffer, 0, BUF_SIZE)) > -1) {
                     writer.write(buffer, 0, count);
                     upstreamSize += count;
@@ -359,7 +360,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
             }
         }
 
-        //Load all data as binary into a ByteBuffer
+        //Load all remoteData as binary into a ByteBuffer
         log.fine("Loading response data..");
         BufferedInputStream reader = null;
         try {
@@ -482,6 +483,12 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
     private static final String X_FORWARDED_FOR_HEADER = "X-Forwarded-For";
 
     /**
+     * Attribute setted by this plugin into the resource to allof further inspections
+     * on the original retrived tata from subsequent plugins.
+     */
+    private static final String ORIGINAL_RESPONSE_ATTRIBUTE = "Original-Response";
+
+    /**
      * The name of this plugin.
      */
     private static final String name = "Simple Http Retriver";
@@ -491,5 +498,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
      */
     private static final String description = "" +
             "This plugin retrives the requested data from the remote " +
-            "hosts (real servers) using the HTTP Protocol.<br/>";
+            "hosts (real servers) using the HTTP Protocol.<br/>" +
+            "Note: it sets a resource attribute \"Original-Response\" with a" +
+            "reference to the original retrived response.";
 }
