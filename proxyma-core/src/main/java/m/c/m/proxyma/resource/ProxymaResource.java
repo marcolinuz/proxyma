@@ -1,8 +1,11 @@
 package m.c.m.proxyma.resource;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
@@ -113,15 +116,30 @@ public class ProxymaResource {
      *
      * @return http://host[:port]/
      */
-    public String getProxymaRootURI() {
-        return proxymaRootURI;
+    public String getProxymaRootURLAsString() {
+        return proxymaRootURL;
+    }
+
+    /**
+     * Returns the URI where proxyma is deployed
+     *
+     * @return the URI where proxyma is deployed
+     */
+    public URL getProxymaRootURL() {
+        URL retVal = null;
+        try {
+            retVal = new URL(proxymaRootURL);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ProxymaResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retVal;
     }
 
     /**
      * Sets the complete URI where proxyma is deployed
      */
     public void setProxymaRootURI(String uri) {
-        this.proxymaRootURI = uri;
+        this.proxymaRootURL = uri;
     }
 
     /**
@@ -238,7 +256,7 @@ public class ProxymaResource {
     /**
      * The subpath relative to the destination of the proxy folder.
      */
-    private String proxymaRootURI = null;
+    private String proxymaRootURL = null;
 
     /**
      * A general purpose container for intra-plugins communication using key-value pairs.

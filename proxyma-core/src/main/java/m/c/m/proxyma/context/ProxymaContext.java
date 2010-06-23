@@ -1,11 +1,15 @@
 package m.c.m.proxyma.context;
 
+import java.net.URL;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.log.ProxymaLoggersUtil;
+import m.c.m.proxyma.rewrite.URLUtils;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.lang.NullArgumentException;
@@ -32,7 +36,7 @@ public class ProxymaContext {
             this.contextName = contextName;
             this.contextBasePath = contextBaseURI;
             proxyFoldersByName = new ConcurrentHashMap<String, ProxyFolderBean>();
-            proxyFoldersByDestination = new ConcurrentHashMap<String, ProxyFolderBean>();
+            proxyFoldersByDestinationHost = new ConcurrentHashMap<String, LinkedList<ProxyFolderBean>>();
             config = new XMLConfiguration(configurationFile);
             config.setExpressionEngine(new XPathExpressionEngine());
             if (this.log == null) {
@@ -78,15 +82,15 @@ public class ProxymaContext {
      * @param proxyFolderURLEncodedName the wanted ProxyFolderBean
      * @return null if the proxyFolder doesn't exists.
      */
-    public ProxyFolderBean getProxyFolderByDestination(String proxyFolderDestination) {
-       ProxyFolderBean retVal = null;
-       log.finest("Searching for Proxy folder destination " + proxyFolderDestination);
-       if (proxyFolderDestination == null) {
+    public Collection<ProxyFolderBean> getProxyFolderByDestinationHost(String proxyFolderDestinationHost) {
+       LinkedList retVal = null;
+       log.finest("Searching for Proxy folder destination host " + proxyFolderDestinationHost);
+       if (proxyFolderDestinationHost == null) {
            log.warning("Null proxyFolderDestination parameter.. Ignoring operation");
-       } else if (proxyFoldersByDestination.containsKey(proxyFolderDestination)) {
-           retVal = proxyFoldersByDestination.get(proxyFolderDestination);
+       } else if (proxyFoldersByDestinationHost.containsKey(proxyFolderDestinationHost)) {
+           retVal = proxyFoldersByDestinationHost.get(proxyFolderDestinationHost);
        } else {
-           log.finest("Proxy folder destination for " + proxyFolderDestination + " not found.");
+           log.finest("Proxy folder destination host " + proxyFolderDestinationHost + " not found.");
        }
        return retVal;
     }
@@ -110,7 +114,18 @@ public class ProxymaContext {
             } else {
                 log.finest("Adding Proxy folder " + proxyFolder.getFolderName());
                 proxyFoldersByName.put(proxyFolder.getFolderName(), proxyFolder);
-                proxyFoldersByDestination.put(proxyFolder.getDestination(), proxyFolder);
+
+                //add the proxy-folder to the second indexing map.
+                String destinationHost = URLUtils.getDestinationHost(proxyFolder.getDestinationAsURL());
+                LinkedList<ProxyFolderBean> currentSlot = null;
+                if (proxyFoldersByDestinationHost.containsKey(destinationHost)) {
+                    currentSlot = proxyFoldersByDestinationHost.get(destinationHost);
+                    currentSlot.add(proxyFolder);
+                } else {
+                    currentSlot = new LinkedList();
+                    currentSlot.add(proxyFolder);
+                    proxyFoldersByDestinationHost.put(destinationHost, currentSlot);
+                }
             }
         }
     }
@@ -133,7 +148,22 @@ public class ProxymaContext {
             } else {
                 log.finest("Deleting existing Proxy folder " + proxyFolder.getFolderName());
                 proxyFoldersByName.remove(proxyFolder.getFolderName());
-                proxyFoldersByDestination.remove(proxyFolder.getDestination());
+
+                //Delete the proxy-folder from the second indexing map.
+                String destinationHost = URLUtils.getDestinationHost(proxyFolder.getDestinationAsURL());
+                LinkedList<ProxyFolderBean> currentSlot = null;
+                currentSlot = proxyFoldersByDestinationHost.get(destinationHost);
+                if (currentSlot.size() == 1) {
+                    currentSlot.remove(proxyFolder);
+                    proxyFoldersByDestinationHost.remove(destinationHost);
+                } else {
+                    Iterator<ProxyFolderBean> iterator = currentSlot.iterator();
+                    while (iterator.hasNext()) {
+                        ProxyFolderBean curFolder = iterator.next();
+                        if (curFolder == proxyFolder)
+                            iterator.remove();
+                    }
+                }
             }
         }
     }
@@ -288,7 +318,7 @@ public class ProxymaContext {
      * The registered ProxyFolders for this context indexed by destination
      * @see ProxyFolder
      */
-    private ConcurrentHashMap<String, ProxyFolderBean> proxyFoldersByDestination = null;
+    private ConcurrentHashMap<String, LinkedList<ProxyFolderBean>> proxyFoldersByDestinationHost = null;
 
     /**
      * The Global Configuration managed by "Commons Configuration" component.

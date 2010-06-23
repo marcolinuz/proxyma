@@ -213,7 +213,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
      */
     private String composeURL(ProxymaResource aResource) {
         ProxymaRequest theRequest = aResource.getRequest();
-        StringBuffer retVal = new StringBuffer(aResource.getProxyFolder().getDestination());
+        StringBuffer retVal = new StringBuffer(aResource.getProxyFolder().getDestinationAsString());
         retVal.append(aResource.getDestinationSubPath());
 
         if (theRequest.getQueryString() != null) {

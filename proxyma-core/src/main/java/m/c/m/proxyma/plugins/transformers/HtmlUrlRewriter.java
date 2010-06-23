@@ -7,10 +7,10 @@ import m.c.m.proxyma.resource.ProxymaResource;
 /**
  * <p>
  * This plugin implements an URL Rewriter.<br/>
- * It scans the HTML page contained into the response searching for any URL.<br/>
+ * It scans the HTML page contained into the response-data searching for any URL.<br/>
  * When it finds an URL relative to the path of the current configured proxy folders,
  * it uses the UrlRewriterEngine to modify the URL.<br/>
- * Its purpose is to make pages link relative only to proxyma in order to fully
+ * Its purpose is to make pages and link relative only to proxyma URI in order to fully
  * masquerde the real source of the resources.
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -81,6 +81,6 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
      */
     private static final String description = "" +
             "This plugin is an HTML Transformer.<br/>" +
-            "Its work is to scan the pages and modify any link in order to " +
-            "masquerde the real source of the resources.";
+            "Its work is to scan the pages seraching fot links and modify them " +
+            "in order to masquerde the real source of the page resources.";
 }

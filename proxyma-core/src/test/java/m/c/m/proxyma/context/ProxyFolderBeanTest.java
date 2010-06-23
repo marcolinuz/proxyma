@@ -439,7 +439,8 @@ public class ProxyFolderBeanTest extends TestCase {
             e.printStackTrace();
             fail("unexpected exception thrown");
         }
-        assertEquals(instance.getDestination(), expected);
+        assertEquals(instance.getDestinationAsString(), expected);
+        assertNotNull(instance.getDestinationAsURL());
         
 
         try {
@@ -450,7 +451,8 @@ public class ProxyFolderBeanTest extends TestCase {
             e.printStackTrace();
             fail("unexpected exception thrown");
         }
-        assertEquals(instance.getDestination(), expected);
+        assertEquals(instance.getDestinationAsString(), expected);
+        assertNotNull(instance.getDestinationAsURL());
 
         //Cleanup pool
         try {

@@ -71,11 +71,11 @@ public class ProxyEngine {
             //The path is not complete, redirect the client to proxyma root path
             try {
                 //prepare a redirect response to the "Proxyma root uri"
-                log.fine("Requested the proxyma path without trailing \"/\".. Redirecting to root uri: " + aResource.getProxymaRootURI());
-                responseData = ProxyInternalResponsesFactory.createRedirectResponse(aResource.getProxymaRootURI(), context);
+                log.fine("Requested the proxyma path without trailing \"/\".. Redirecting to root uri: " + aResource.getProxymaRootURLAsString());
+                responseData = ProxyInternalResponsesFactory.createRedirectResponse(aResource.getProxymaRootURLAsString(), context);
             } catch (MalformedURLException ex) {
                 //if the URL is malformed send back an error page.
-                log.severe("Malformed URL found (" + aResource.getProxymaRootURI() + ") for the proxyma root URI!");
+                log.severe("Malformed URL found (" + aResource.getProxymaRootURLAsString() + ") for the proxyma root URI!");
                 responseData = ProxyInternalResponsesFactory.createErrorResponse(STATUS_BAD_REQUEST, context);
             }
 
@@ -123,7 +123,7 @@ public class ProxyEngine {
                 
                 //Set the matched proxyFolder into the resource
                 aResource.setProxyFolder(folder);
-                log.finest("Destination URL: " + folder.getDestination());
+                log.finest("Destination URL: " + folder.getDestinationAsString());
 
                 //Set the destination subpath into the resource
                 aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));

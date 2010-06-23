@@ -5,6 +5,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.ProxymaFacade;
+import m.c.m.proxyma.rewrite.URLUtils;
 import org.apache.commons.lang.NullArgumentException;
 
 /**
@@ -64,13 +65,16 @@ public class ProxymaContextTest extends TestCase {
     /**
      * Test of getProxyFolder method, of class ProxymaContext.
      */
-    public void testGetProxyFolderByDestination() {
-        System.out.println("getProxyFolderByDestination");
+    public void testGetProxyFolderByDestinationHost() {
+        System.out.println("getProxyFolderByDestinationHost");
         String proxyFolderName = "default";
-        String proxyFolderDestination = "http://www.google.com";
+        String proxyFolderDestination = "http://www.google.com/default/it";
+        String proxyFolderName2 = "default2";
+        String proxyFolderDestination2 = "http://www.google.com/default/en";
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext instance = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ProxyFolderBean expResult = null;
+        ProxyFolderBean expResult2 = null;
 
         try {
             expResult = proxyma.createNewProxyFolder(proxyFolderName, proxyFolderDestination, instance);
@@ -80,14 +84,39 @@ public class ProxymaContextTest extends TestCase {
         }
         proxyma.registerProxyFolderIntoContext(expResult, instance);
 
-        ProxyFolderBean result = instance.getProxyFolderByDestination(expResult.getDestination());
-        assertSame(expResult, result);
+        Collection hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
+        assertEquals(1, hostList.size());
+        assertEquals(hostList.iterator().next(), expResult);
 
-        result = instance.getProxyFolderByDestination("notExists");
-        assertNull(result);
+        try {
+            expResult2 = proxyma.createNewProxyFolder(proxyFolderName2, proxyFolderDestination2, instance);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("ProxyFolderBean creation failed");
+        }
 
-        //clean up the context for further tests
+        proxyma.registerProxyFolderIntoContext(expResult2, instance);
+
+        hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
+        Iterator iterator = hostList.iterator();
+        assertEquals(2, hostList.size());
+        assertEquals(iterator.next(), expResult);
+        assertEquals(iterator.next(), expResult2);
+        
+
+        //clean up the remove tests
         proxyma.unregisterProxyFolderFromContext(expResult, instance);
+
+        hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
+        assertEquals(hostList.size(), 1);
+        assertEquals(hostList.iterator().next(), expResult2);
+
+        //clean up the remove tests
+        proxyma.unregisterProxyFolderFromContext(expResult2, instance);
+
+        hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
+        assertNull(hostList);
+
 
         //Cleanup pool
         try {

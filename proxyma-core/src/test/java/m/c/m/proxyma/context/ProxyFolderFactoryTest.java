@@ -43,7 +43,7 @@ public class ProxyFolderFactoryTest extends TestCase {
         }
         
         assertEquals(expResult.getFolderName(), proxyFolderName);
-        assertEquals(expResult.getDestination(), proxyFolderDestination);
+        assertEquals(expResult.getDestinationAsString(), proxyFolderDestination);
         assertEquals(expResult.getMaxPostSize(), Integer.parseInt(context.getSingleValueParameter(ProxymaTags.FOLDER_MAX_POST_SIZE)));
         assertEquals(expResult.isEnabled(), context.getSingleValueParameter(ProxymaTags.FOLDER_ENABLED).equalsIgnoreCase("true")?true:false);
         assertEquals(expResult.getCacheProvider(), context.getSingleValueParameter(ProxymaTags.FOLDER_CACHEPROVIDER));
