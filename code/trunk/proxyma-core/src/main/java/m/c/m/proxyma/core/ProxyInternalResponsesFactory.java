@@ -15,7 +15,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * This Class ifs a factory of standard responses.<br/>
+ * This Class its a factory of standard responses.<br/>
  * It's used by the ProxyEngine to build internal responses as error pages,
  * redirects and the page that shows the registered proxy folders.
  *
@@ -132,7 +132,7 @@ public class ProxyInternalResponsesFactory {
                 log.finest("   adding folder \"" + folder.getFolderName() + "\" to the page..");
                 String ruleRow = html_resource_row_template.replaceAll(proxyFolderName, folder.getFolderName());
                 ruleRow = ruleRow.replaceAll(proxyFolderURI, folder.getURLEncodedFolderName());
-                ruleRow = ruleRow.replaceAll(proxyDestination, folder.getDestination());
+                ruleRow = ruleRow.replaceAll(proxyDestination, folder.getDestinationAsString());
                 ruleRow = ruleRow.replaceFirst(status, folder.isEnabled() ? "Active" : "Locked");
                 ruleRow = ruleRow.replaceFirst(statusColor, folder.isEnabled() ? "black" : "red");
                 ruleRow = ruleRow.replaceFirst(bgcolor, even?evenBgcolor:oddBgcolor);

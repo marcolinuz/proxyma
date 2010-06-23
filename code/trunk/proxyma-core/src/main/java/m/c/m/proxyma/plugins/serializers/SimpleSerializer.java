@@ -143,7 +143,7 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         //write the remote masqueraded resource into the referrer field
         ProxyFolderBean folder = aResource.getProxyFolder();
         theRecord.append("\"");
-        theRecord.append(folder==null?aResource.getProxymaRootURI():folder.getDestination());
+        theRecord.append(folder==null?aResource.getProxymaRootURLAsString():folder.getDestinationAsString());
         theRecord.append(aResource.getDestinationSubPath()==null?EMPTY_STRING:aResource.getDestinationSubPath());
         theRecord.append("\" \"");
 

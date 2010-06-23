@@ -5,9 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
@@ -15,7 +13,7 @@ import org.apache.commons.lang.NullArgumentException;
 
 /**
  * <p>
- * This class is the bean that represents a remote destination for the
+ * This class is the bean that represents a remote destinationAsString for the
  * reverse proxy engine.
  * It is a data-object that counteins all the configuration needed by the
  * ProxymaCore to achieve its work.
@@ -30,16 +28,16 @@ import org.apache.commons.lang.NullArgumentException;
 public class ProxyFolderBean implements Serializable {
 
     /**
-     * Default constructor for this class it builds a destination.
+     * Default constructor for this class it builds a destinationAsString.
      * NOTE: The folder is not ready to work as it is created.
      * Actually, it needs to be configured with at least a valid
      * resource retriver and a valid serializer.
      *
      * @param FolderName the path (and name) of the proxy folder.
-     * @param destination the destination URI to masquerade
+     * @param destinationAsString the destinationAsString URI to masquerade
      * @param context the proxyma context where to get logger settings.
      * @throws NullArgumentException if some parameter is null
-     * @throws IllegalArgumentException if the folder name or the destination parameter are invalid or malformed
+     * @throws IllegalArgumentException if the folder name or the destinationAsString parameter are invalid or malformed
      * @throws UnsupportedEncodingException if the default encoding charset specified on the configuration is not supported.
      */
     public ProxyFolderBean (String folderName, String destination, ProxymaContext context) throws NullArgumentException, IllegalArgumentException, UnsupportedEncodingException {
@@ -97,25 +95,32 @@ public class ProxyFolderBean implements Serializable {
                 } else {
                     //check for the last character presence
                     this.URLEncodedName = URLEncoder.encode(this.folderName, defaultEncoding);
-                    this.folderName = this.folderName;
                 }
             }
         }
     }
  
     /**
-     * Standard getter method for the destination
-     * @return the destination
+     * Standard getter method for the destination as String
+     * @return the destinationAsString
      */
-    public String getDestination() {
-        return destination;
+    public String getDestinationAsString() {
+        return destinationAsString;
     }
 
     /**
-     * Standard setter method for destination
-     * @param destination the remote destination for this folder
+     * Standard getter method for the destination as URL
+     * @return the destinationAsString
+     */
+    public URL getDestinationAsURL() {
+        return destinationAsURL;
+    }
+
+    /**
+     * Standard setter method for destinationAsString
+     * @param destinationAsString the remote destinationAsString for this folder
      * @throws NullArgumentException if some parameter is null
-     * @throws IllegalArgumentException if the destination parameter is a malformed URL
+     * @throws IllegalArgumentException if the destinationAsString parameter is a malformed URL
      */
     public synchronized void setDestination(String destination) {
         if (destination == null) {
@@ -131,10 +136,10 @@ public class ProxyFolderBean implements Serializable {
                 try {
                     //remove tailing "/" if any
                     if (destination.endsWith("/"))
-                        this.destination = destination.substring(0, destination.length()-1);
+                        this.destinationAsString = destination.substring(0, destination.length()-1);
                     else
-                        this.destination = destination;
-                    URL url = new URL(this.destination);
+                        this.destinationAsString = destination;
+                    destinationAsURL = new URL(this.destinationAsString);
                 } catch (MalformedURLException ex) {
                     log.warning("Destination \"" + destination + "\" is an Invalid URL.");
                     throw new IllegalArgumentException("Destination \"" + destination + "\" is an Invalid URL.");
@@ -364,9 +369,14 @@ public class ProxyFolderBean implements Serializable {
     private String URLEncodedName = null;
 
     /**
-     * The proxy folder destination
+     * The proxy folder destination as String
      */
-    private String destination = null;
+    private String destinationAsString = null;
+
+    /**
+     * The proxy folder destination as URL
+     */
+    private URL destinationAsURL = null;
 
     /**
      * Max content length accepted for a single POST operation.
