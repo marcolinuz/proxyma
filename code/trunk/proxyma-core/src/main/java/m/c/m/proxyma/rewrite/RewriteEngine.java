@@ -41,21 +41,24 @@ public class RewriteEngine {
      * @param aResource the resource that is currently processed by the ProxyEngine.
      * @return the rewritten URL.
      */
-    public String rewriteURL (String theURL, ProxyFolderBean folder, ProxymaResource aResource) {
+    public String masqueradeURL (String theURL, ProxyFolderBean folder, ProxymaResource aResource) {
         String retVal = null;
         //guess if it'an absolute or relative URL
         Matcher matcher = netAbsouleURLPattern.matcher(theURL);
         if (matcher.matches()) {
             //This is an absolute URL with schema://host[:potr]/and/path
             retVal = rewriteNetAbsoluteURL(theURL, folder, aResource);
+            log.finest("Rewritten net absolute URL: " + theURL + " -> " + retVal);
         } else {
             matcher = siteAbsoulteURLPattern.matcher(theURL);
             if(matcher.matches()) {
                 //This is a site absolute URL
                 retVal = rewriteSiteAbsoluteURL(theURL, folder, aResource);
+                 log.finest("Rewritten site absolute URL: " + theURL + " -> " + retVal);
             } else {
                 //This is a relative URL no rewriting is needed..
                 retVal = theURL;
+                log.finest("Relative URL: " + theURL + " not rewritten");
             }
         }
 
@@ -63,10 +66,59 @@ public class RewriteEngine {
     }
 
     /**
+     * Masquerade to the client a cookie that comes froma a remote host by
+     * setting its domain to the domain of proxyma and the path to the path
+     * of the  current proxy-folder.
+     *
+     * @param cookie the cookie to masquerade
+     * @param aResource the resource that owns the Cookie
+     */
+    public void masqueradeCookie(Cookie cookie, ProxyFolderBean folder, ProxymaResource aResource) {
+        //calculate the new Path of the cookie
+        URL proxymaRootURL = aResource.getProxymaRootURL();
+        StringBuffer newPath = new StringBuffer(proxymaRootURL.getPath());
+        newPath.append("/").append(aResource.getProxyFolder().getURLEncodedFolderName());
+
+        //calculate the old domain of the  cookie
+        StringBuffer originalDomainAndPath = null;
+        if (cookie.getDomain() == null)
+            originalDomainAndPath = new StringBuffer(folder.getDestinationAsURL().getHost()).append(COMMENT_FIELDS_SEPARATOR);
+        else
+            originalDomainAndPath = new StringBuffer(cookie.getDomain()).append(COMMENT_FIELDS_SEPARATOR);
+        
+        // calculate old path of the cookie
+        if (cookie.getPath() == null)
+            originalDomainAndPath.append("/");
+        else
+            originalDomainAndPath.append(cookie.getPath());
+
+        //Set the new cookie values for the client
+        cookie.setDomain(proxymaRootURL.getHost());
+        cookie.setPath(newPath.toString());
+        cookie.setComment(originalDomainAndPath.toString());
+
+        log.finest("Masqueraded Cookie, old Host/domain=" + originalDomainAndPath.toString() +
+                   " New Host/Domain=" + proxymaRootURL.getHost() + COMMENT_FIELDS_SEPARATOR + newPath.toString());
+    }
+
+    /**
+     * Rebuilds the original cookie from a masqueraded one.
+     * @param cookie the cookie to unmasquerade
+     * @param aResource the resource that owns the Cookie
+     */
+    public void unmasqueradeCookie (Cookie cookie) {
+        String[] originalValues = cookie.getComment().split (COMMENT_FIELDS_SEPARATOR);
+        cookie.setDomain(originalValues[0]);
+        cookie.setPath(originalValues[1]);
+
+        log.finest("Unmasqueraded Cookie, original Host/domain " + cookie.getComment() + " restored."); 
+    }
+
+        /**
      * This method rewrites the full URLs<br/>
      * In other words it parses and rewrites complete URLS like
      * "http://site.host[:port]/path/to/resource.ext"
-     * 
+     *
      * @param theURL the URL that have to be rewritten
      * @param aResource the resource that is currently processed by the ProxyEngine.
      * @return the rewritten URL.
@@ -99,7 +151,7 @@ public class RewriteEngine {
             } else {
                 //Searches into the context for a matching destination
                 ProxyFolderBean matchingFolder = searchMatchingProxyFolderIntoContext(urlToRewrite, aResource.getContext());
-                
+
                 //Rewrite the URL based upon the matched folder.
                 if (matchingFolder != null)
                     retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), matchingFolder, aResource);
@@ -109,32 +161,6 @@ public class RewriteEngine {
             log.fine("Malformed URL \"" + theURL + "\"not Rewritten");
         }
         return retVal;
-    }
-
-    /**
-     * Masquerade to the client a cookie that comes froma a remote host by
-     * setting its domain to the domain of proxyma and the path to the path
-     * of the  current proxy-folder.
-     *
-     * @param cookie the cookie to masquerade
-     * @param aResource the resource that owns the Cookie
-     */
-    public void masqueradeCookie(Cookie cookie, ProxymaResource aResource) {
-        URL proxymaRootURL = aResource.getProxymaRootURL();
-        StringBuffer newPath = new StringBuffer(proxymaRootURL.getPath());
-        newPath.append("/").append(aResource.getProxyFolder().getURLEncodedFolderName());
-        cookie.setDomain(proxymaRootURL.getHost());
-        cookie.setPath(newPath.toString());
-    }
-
-    /**
-     * Rebuilds the original cookie from a masqueraded one.
-     * @param cookie the cookie to unmasquerade
-     * @param aResource the resource that owns the Cookie
-     */
-    public void unmasqueradeCookie (Cookie cookie, ProxymaResource aResource) {
-        cookie.setPath("/");
-        cookie.setDomain(aResource.getProxyFolder().getDestinationAsURL().getHost());
     }
 
     /**
@@ -203,4 +229,10 @@ public class RewriteEngine {
      * that belongs only to the masqueraded site.
      */
     private Pattern siteAbsoulteURLPattern = Pattern.compile("^/.*$");
+
+    /**
+     * The separator used into the cookie comment to store the original
+     * domain and path fields.
+     */
+    private static final String COMMENT_FIELDS_SEPARATOR = "@";
 }
