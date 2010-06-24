@@ -69,10 +69,10 @@ public class RewriteEngineTest extends TestCase {
     }
 
     /**
-     * Test of rewriteURL method, of class RewriteEngine.
+     * Test of masqueradeURL method, of class RewriteEngine.
      */
-    public void testRewriteURL() throws NullArgumentException, IllegalArgumentException, UnsupportedEncodingException {
-        System.out.println("rewriteURL");
+    public void testMasqueradeURL() throws NullArgumentException, IllegalArgumentException, UnsupportedEncodingException {
+        System.out.println("masqueradeURL");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
         ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
@@ -85,35 +85,35 @@ public class RewriteEngineTest extends TestCase {
 
         String theUrl = "http://www.yahoo.it/profile/it.html";
         String expected = "http://www.yahoo.it/profile/it.html";
-        String result = instance.rewriteURL(theUrl, folder1, aResource);
+        String result = instance.masqueradeURL(theUrl, folder1, aResource);
         assertEquals(expected, result);
 
         theUrl = "http://www.google.com:80/it/profile/io.html";
         expected = "/proxyma/host1/profile/io.html";
-        result = instance.rewriteURL(theUrl, folder1, aResource);
+        result = instance.masqueradeURL(theUrl, folder1, aResource);
         assertEquals(expected, result);
 
         theUrl = "/it/profile/io.html";
         expected = "/proxyma/host1/profile/io.html";
-        result = instance.rewriteURL(theUrl, folder1, aResource);
+        result = instance.masqueradeURL(theUrl, folder1, aResource);
         assertEquals(expected, result);
 
         theUrl = "profile/io.html";
         expected = "profile/io.html";
-        result = instance.rewriteURL(theUrl, folder1, aResource);
+        result = instance.masqueradeURL(theUrl, folder1, aResource);
         assertEquals(expected, result);
 
 
         theUrl = "https://www.apple.com:443/en/macbook/new.html";
         expected = "/proxyma/host2/macbook/new.html";
-        result = instance.rewriteURL(theUrl, folder1, aResource);
+        result = instance.masqueradeURL(theUrl, folder1, aResource);
         assertEquals(expected, result);
 
         proxyma.unregisterProxyFolderFromContext(folder2, context);
 
         theUrl = "https://www.apple.com/en/macbook/new.html";
         expected = "https://www.apple.com/en/macbook/new.html";
-        result = instance.rewriteURL(theUrl, folder1, aResource);
+        result = instance.masqueradeURL(theUrl, folder1, aResource);
         assertEquals(expected, result);
 
 
@@ -136,7 +136,7 @@ public class RewriteEngineTest extends TestCase {
         Cookie theCookie = new Cookie("cookie1", "Value1");
         theCookie.setDomain("google.com");
         theCookie.setPath("/it");
-        instance.masqueradeCookie(theCookie, aResource);
+        instance.masqueradeCookie(theCookie, folder1, aResource);
 
         String expected = "localhost";
         assertEquals(expected, theCookie.getDomain());
@@ -145,14 +145,30 @@ public class RewriteEngineTest extends TestCase {
         assertEquals(expected, theCookie.getPath());
 
 
-        instance.unmasqueradeCookie(theCookie, aResource);
+        instance.unmasqueradeCookie(theCookie);
+
+        expected = "google.com";
+        assertEquals(expected, theCookie.getDomain());
+
+        expected = "/it";
+        assertEquals(expected, theCookie.getPath());
+
+        theCookie = new Cookie("cookie2", "Value2");
+        instance.masqueradeCookie(theCookie, folder1, aResource);
+
+        expected = "localhost";
+        assertEquals(expected, theCookie.getDomain());
+
+        expected = "/proxyma/host1";
+        assertEquals(expected, theCookie.getPath());
+
+        instance.unmasqueradeCookie(theCookie);
 
         expected = "www.google.com";
         assertEquals(expected, theCookie.getDomain());
 
         expected = "/";
         assertEquals(expected, theCookie.getPath());
-        
 
         proxyma.unregisterProxyFolderFromContext(folder2, context);
         proxyma.unregisterProxyFolderFromContext(folder1, context);
