@@ -34,7 +34,7 @@ public abstract class AbstractTransformer implements m.c.m.proxyma.core.Resource
      * @param aResource any ProxymaResource
      */
     @Override
-    public abstract void process(ProxymaResource aResource);
+    public abstract void process(ProxymaResource aResource) throws Exception;
 
     /**
      * Implement this method to return the name of the plugin.

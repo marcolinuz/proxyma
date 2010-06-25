@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.http.Cookie;
 import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
@@ -25,8 +24,8 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class RewriteEngine {
-    public RewriteEngine (ProxymaContext context) {
+public class URLRewriteEngine {
+    public URLRewriteEngine (ProxymaContext context) {
         //initialize the logger for this class.
         log = context.getLogger();
     }
@@ -66,55 +65,6 @@ public class RewriteEngine {
     }
 
     /**
-     * Masquerade to the client a cookie that comes froma a remote host by
-     * setting its domain to the domain of proxyma and the path to the path
-     * of the  current proxy-folder.
-     *
-     * @param cookie the cookie to masquerade
-     * @param aResource the resource that owns the Cookie
-     */
-    public void masqueradeCookie(Cookie cookie, ProxyFolderBean folder, ProxymaResource aResource) {
-        //calculate the new Path of the cookie
-        URL proxymaRootURL = aResource.getProxymaRootURL();
-        StringBuffer newPath = new StringBuffer(proxymaRootURL.getPath());
-        newPath.append("/").append(aResource.getProxyFolder().getURLEncodedFolderName());
-
-        //calculate the old domain of the  cookie
-        StringBuffer originalDomainAndPath = null;
-        if (cookie.getDomain() == null)
-            originalDomainAndPath = new StringBuffer(folder.getDestinationAsURL().getHost()).append(COMMENT_FIELDS_SEPARATOR);
-        else
-            originalDomainAndPath = new StringBuffer(cookie.getDomain()).append(COMMENT_FIELDS_SEPARATOR);
-        
-        // calculate old path of the cookie
-        if (cookie.getPath() == null)
-            originalDomainAndPath.append("/");
-        else
-            originalDomainAndPath.append(cookie.getPath());
-
-        //Set the new cookie values for the client
-        cookie.setDomain(proxymaRootURL.getHost());
-        cookie.setPath(newPath.toString());
-        cookie.setComment(originalDomainAndPath.toString());
-
-        log.finest("Masqueraded Cookie, old Host/domain=" + originalDomainAndPath.toString() +
-                   " New Host/Domain=" + proxymaRootURL.getHost() + COMMENT_FIELDS_SEPARATOR + newPath.toString());
-    }
-
-    /**
-     * Rebuilds the original cookie from a masqueraded one.
-     * @param cookie the cookie to unmasquerade
-     * @param aResource the resource that owns the Cookie
-     */
-    public void unmasqueradeCookie (Cookie cookie) {
-        String[] originalValues = cookie.getComment().split (COMMENT_FIELDS_SEPARATOR);
-        cookie.setDomain(originalValues[0]);
-        cookie.setPath(originalValues[1]);
-
-        log.finest("Unmasqueraded Cookie, original Host/domain " + cookie.getComment() + " restored."); 
-    }
-
-        /**
      * This method rewrites the full URLs<br/>
      * In other words it parses and rewrites complete URLS like
      * "http://site.host[:port]/path/to/resource.ext"
@@ -174,17 +124,32 @@ public class RewriteEngine {
      * @return the rewritten URL.
      */
     private String rewriteSiteAbsoluteURL(String theURL, ProxyFolderBean folder, ProxymaResource aResource) {
-        //Get the path of the masqueraded destination
+        String retVal = null;
+
+        //Get the path of the masqueraded destination path
         String masqueradedPath = folder.getDestinationAsURL().getPath();
 
-        //Get the Proxyma root path
-        StringBuffer newPrefixURL = new StringBuffer(aResource.getProxymaRootURL().getPath());
+        if (theURL.startsWith(masqueradedPath)) { 
+            //Get the Proxyma root path
+            StringBuffer newPrefixURL = new StringBuffer(aResource.getProxymaRootURL().getPath());
 
-        //Add the proxyFolder to the proxyma path and obtaining the new prefix
-        newPrefixURL.append("/").append(folder.getURLEncodedFolderName());
-        
-        //return the new url to the invoker.
-        return theURL.replaceFirst(masqueradedPath, newPrefixURL.toString());
+            //Add the proxyFolder to the proxyma path and obtaining the new prefix
+            newPrefixURL.append("/").append(folder.getURLEncodedFolderName());
+
+            //return the new url to the invoker.
+            retVal = theURL.replaceFirst(masqueradedPath, newPrefixURL.toString());
+        } else {
+            //This is an absolute path external form the masqueraded path,
+            //so the method have to return a net absolute link.
+            URL destinationURL = folder.getDestinationAsURL();
+            StringBuffer netAbsoluteDestination = new StringBuffer(destinationURL.getProtocol()).append("://");
+            netAbsoluteDestination.append(destinationURL.getHost());
+            if (destinationURL.getPort() > 0)
+                netAbsoluteDestination.append(":").append(destinationURL.getPort());
+
+            retVal = netAbsoluteDestination.append(theURL).toString();
+        }
+        return retVal;
     }
 
     /**
