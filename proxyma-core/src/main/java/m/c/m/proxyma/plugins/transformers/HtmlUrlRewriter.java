@@ -1,8 +1,23 @@
 package m.c.m.proxyma.plugins.transformers;
 
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import m.c.m.proxyma.buffers.ByteBuffer;
+import m.c.m.proxyma.buffers.ByteBufferFactory;
+import m.c.m.proxyma.buffers.ByteBufferReader;
+import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
+import m.c.m.proxyma.resource.ProxymaHttpHeader;
 import m.c.m.proxyma.resource.ProxymaResource;
+import m.c.m.proxyma.resource.ProxymaResponseDataBean;
+import m.c.m.proxyma.rewrite.URLRewriteEngine;
+import org.htmlparser.Parser;
+import org.htmlparser.Tag;
+import org.htmlparser.lexer.Lexer;
+import org.htmlparser.lexer.Page;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.visitors.NodeVisitor;
 
 /**
  * <p>
@@ -21,15 +36,17 @@ import m.c.m.proxyma.resource.ProxymaResource;
  * @version $Id$
  */
 public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.AbstractTransformer {
+
     /**
      * The default constructor for this class<br/>
      * It prepares the context logger and the logger for the access-log.
      *
      * NOTE: Every plugin must have a constructor that takes a ProxymaContext as parameter.
      */
-    public HtmlUrlRewriter (ProxymaContext context) {
+    public HtmlUrlRewriter(ProxymaContext context) {
         //initialize the logger
         this.log = context.getLogger();
+        this.rewriter = new URLRewriteEngine(context);
     }
 
     /**
@@ -39,11 +56,185 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
      * @param aResource any ProxymaResource
      */
     @Override
-    public void process(ProxymaResource aResource) {
-        log.info("Not yet Implemented..");
-        throw new UnsupportedOperationException("Not Yet Implemented..");
+    public void process(ProxymaResource aResource) throws Exception {
+        ProxymaResponseDataBean originalResponse = aResource.getResponse().getResponseData();
+        ProxymaHttpHeader contentType = originalResponse.getHeader(CONTENT_TYPE_HEADER);
+        ProxyFolderBean folder = aResource.getProxyFolder();
+
+        // The plugin works only on text/html documents
+        if ((contentType != null) && (contentType.getValue().startsWith(ALLOWED_CONTENT_TYPE))) {
+            /**
+             * Inner Class for the html analisys.
+             */
+             final NodeVisitor linkVisitor = new NodeVisitor() {
+                @Override
+                public void visitTag(Tag tag) {
+                    String name = tag.getTagName();
+                    String tagValue = null;
+
+                    //selects the appropriate action based upon the tag and the attribute types
+                    //NOTE: probably this method will be improoved in the future because it doesn't handles
+                    //      all the Javascript events. I have also found some problem in the htmlparser
+                    //      library with pages that uses lot of javascript.
+                    if (A.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(HREF);
+                        if (tagValue != null) {
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (IMG.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(SRC);
+                        if (tagValue != null) {
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(ISMAP);
+                        if (tagValue != null) {
+                            tag.setAttribute(ISMAP, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(USEMAP);
+                        if (tagValue != null) {
+                            tag.setAttribute(USEMAP, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(LONGDESC);
+                        if (tagValue != null) {
+                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (LINK.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(HREF);
+                        if (tagValue != null) {
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (FORM.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(ACTION);
+                        if (tagValue != null) {
+                            tag.setAttribute(ACTION, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (INPUT.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(SRC);
+                        if (tagValue != null) {
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (TD.equalsIgnoreCase(name)) {
+                        //NOTE: This is a NON-Standard attribute for this TAG but MSIE, Netscape and Firefox supports it.
+                        //..so I added this statements.
+                        tagValue = tag.getAttribute(BACKGROUND);
+                        if (tagValue != null) {
+                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (TABLE.equalsIgnoreCase(name)) {
+                        //NOTE: This is a NON-Standard attribute for this TAG but MSIE, Netscape and Firefox supports it.
+                        //..so I added this statements.
+                        tagValue = tag.getAttribute(BACKGROUND);
+                        if (tagValue != null) {
+                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (SCRIPT.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(SRC);
+                        if (tagValue != null) {
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        } 
+                    } else if (BODY.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(BACKGROUND);
+                        if (tagValue != null) {
+                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (BASE.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(HREF);
+                        if (tagValue != null) {
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (FRAME.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(SRC);
+                        if (tagValue != null) {
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(LONGDESC);
+                        if (tagValue != null) {
+                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (IFRAME.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(SRC);
+                        if (tagValue != null) {
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(LONGDESC);
+                        if (tagValue != null) {
+                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (APPLET.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(ARCHIVE);
+                        if (tagValue != null) {
+                            tag.setAttribute(ARCHIVE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(CODE);
+                        if (tagValue != null) {
+                            tag.setAttribute(CODE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(CODEBASE);
+                        if (tagValue != null) {
+                            tag.setAttribute(CODEBASE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (OBJECT.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(ARCHIVE);
+                        if (tagValue != null) {
+                            tag.setAttribute(ARCHIVE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(CODEBASE);
+                        if (tagValue != null) {
+                            tag.setAttribute(CODEBASE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(DATA);
+                        if (tagValue != null) {
+                            tag.setAttribute(DATA, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                        tagValue = tag.getAttribute(USEMAP);
+                        if (tagValue != null) {
+                            tag.setAttribute(USEMAP, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (AREA.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(HREF);
+                        if (tagValue != null) {
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (DEL.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(CITE);
+                        if (tagValue != null) {
+                            tag.setAttribute(CITE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    } else if (INS.equalsIgnoreCase(name)) {
+                        tagValue = tag.getAttribute(CITE);
+                        if (tagValue != null) {
+                            tag.setAttribute(CITE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                        }
+                    }
+                }
+            };
+
+
+            //Generates a parser for the given page
+            String encoding = aResource.getContext().getDefaultEncoding();
+            Matcher charsetMatcher = charsetPattern.matcher(contentType.getValue());
+            if (charsetMatcher.find())
+                encoding = charsetMatcher.replaceFirst(EMPTY_STRING);
+
+            ByteBufferReader reader = ByteBufferFactory.createNewByteBufferReader(originalResponse.getData());
+            String content = new String(reader.getWholeBufferAsByteArray(), encoding);
+            Parser parser = new Parser(new Lexer(new Page(content, encoding)));
+
+            //Generate a linkvisitor for the url rewriting
+            NodeList myPage = parser.parse(null);
+            currentFolder = folder; currentResource = aResource;
+            myPage.visitAllNodesWith(linkVisitor);
+
+            //Add to the response the rewritten data
+            byte[] rewrittenContent = myPage.toHtml(true).getBytes(encoding);
+            ByteBuffer rewrittenData = ByteBufferFactory.createNewByteBuffer(aResource.getContext());
+            rewrittenData.appendBytes(rewrittenContent, rewrittenContent.length);
+
+            //Substitute the page data with the rewritten data
+            originalResponse.setData(rewrittenData);
+        }
     }
-    
+
     /**
      * Returns the name of the plugin.
      * @return the name of the plugin.
@@ -65,22 +256,85 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
     public String getHtmlDescription() {
         return description;
     }
-
     /**
      * The logger of the context..
      */
     private Logger log = null;
+    /**
+     * The rewriter engine capable to rewrite URLs and Cookies.
+     */
+    private URLRewriteEngine rewriter = null;
 
+    /**
+     * The only way to share variable between this class and its nested companion
+     * is to have private attributes with the wanted values.
+     */
+    private ProxymaResource currentResource = null;
+
+    /**
+     * The only way to share variable between this class and its nested companion
+     * is to have private attributes with the wanted values.
+     */
+    private ProxyFolderBean currentFolder = null;
+
+    /**
+     * Charset match Pattern
+     */
+    private static final Pattern charsetPattern = Pattern.compile("^.*; *[Cc]harset *= *");
+
+    /**
+     * The content type header
+     */
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    /**
+     * The expected value for the content type header for this plugin.
+     */
+    private static final String ALLOWED_CONTENT_TYPE = "text/html";
     /**
      * The name of this plugin.
      */
     private static final String name = "Html URL Rewriter";
-
     /**
      * A short html description of what it does.
      */
-    private static final String description = "" +
-            "This plugin is an HTML Transformer.<br/>" +
-            "Its work is to scan the pages seraching fot links and modify them " +
-            "in order to masquerde the real source of the page resources.";
+    private static final String description = ""
+            + "This plugin is an HTML Transformer.<br/>"
+            + "Its work is to scan the pages seraching for links and modify them "
+            + "in order to masquerde the real source of the page resources.";
+
+    //INSPECTED TAG NAMES
+    private final static String A = "a";
+    private final static String APPLET = "applet";
+    private final static String AREA = "area";
+    private final static String IMG = "img";
+    private final static String LINK = "link";
+    private final static String FORM = "form";
+    private final static String INPUT = "input";
+    private final static String SCRIPT = "script";
+    private final static String BODY = "body";
+    private final static String BASE = "base";
+    private final static String FRAME = "frame";
+    private final static String IFRAME = "iframe";
+    private final static String INS = "ins";
+    private final static String DEL = "del";
+    private final static String OBJECT = "del";
+    private final static String TD = "td";
+    private final static String TABLE = "table";
+
+    //INSPECTED TAG ATTRIBUTES
+    private final static String HREF = "href";
+    private final static String SRC = "src";
+    private final static String ACTION = "action";
+    private final static String ARCHIVE = "archive";
+    private final static String CODE = "code";
+    private final static String CODEBASE = "codebase";
+    private final static String LONGDESC = "longdesc";
+    private final static String ISMAP = "ismap";
+    private final static String USEMAP = "usemap";
+    private final static String CITE = "cite";
+    private final static String DATA = "data";
+    private final static String BACKGROUND = "background";
+
+    //Only an empty string.
+    private final static String EMPTY_STRING = "";
 }
