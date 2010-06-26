@@ -35,9 +35,9 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class HtmlUrlRewriterTest extends TestCase {
+public class HtmlUrlRewriteTransformerTest extends TestCase {
     
-    public HtmlUrlRewriterTest(String testName) {
+    public HtmlUrlRewriteTransformerTest(String testName) {
         super(testName);
     }
 

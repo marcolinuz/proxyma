@@ -275,12 +275,12 @@ public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformer
     /**
      * The value for the content type header that activates this plugin.
      */
-    private static final Pattern processedContentType = Pattern.compile("^[Tt]ext/[Hh]tml.*$");
+    private static final Pattern processedContentType = Pattern.compile("^text/html.*$", Pattern.CASE_INSENSITIVE);
 
     /**
      * Charset match Pattern
      */
-    private static final Pattern charsetPattern = Pattern.compile("^.*; *[Cc]harset *= *");
+    private static final Pattern charsetPattern = Pattern.compile("^.*; *charset *= *", Pattern.CASE_INSENSITIVE);
 
     /**
      * The content type header
