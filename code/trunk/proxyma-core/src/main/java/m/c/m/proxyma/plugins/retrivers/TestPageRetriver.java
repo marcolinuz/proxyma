@@ -45,7 +45,7 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
         ProxymaResponseDataBean listPage = new ProxymaResponseDataBean();
         String charsetEncoding = aResource.getContext().getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING);
 
-        log.fine("Generating folders list page..");
+        log.fine("Generating Test page..");
 
         //Set response status
         listPage.setStatus(STATUS_OK);
@@ -77,7 +77,7 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
         //add the response data to the resource
         aResource.getResponse().setResponseData(listPage);
 
-        log.finest("test page creation completed.");
+        log.finest("Test page creation completed.");
     }
     
     /**

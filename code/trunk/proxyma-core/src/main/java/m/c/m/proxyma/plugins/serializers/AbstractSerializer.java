@@ -35,7 +35,7 @@ public abstract class AbstractSerializer implements m.c.m.proxyma.core.ResourceH
      * @param aResource any ProxymaResource
      */
     @Override
-    public abstract void process(ProxymaResource aResource) throws IOException;
+    public abstract void process(ProxymaResource aResource) throws Exception;
 
     /**
      * Implement this method to return the name of the plugin.
