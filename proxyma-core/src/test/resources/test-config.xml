@@ -70,13 +70,17 @@
 
         <avaliablePreprocessors>
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" />
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliablePreprocessors>
 
         <avaliableTransformers>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.UnexistingTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliableTransformers>
@@ -85,13 +89,15 @@
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"
                              accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"
-                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
+                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"
+                             performanceLogMaxLinesPerFile="5000000" performanceLogRetentionPolicy="1"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.UnexistingSerializer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </availableSerializers>
 
         <availableRetrivers>
             <resourceHandler class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
             <resourceHandler class="m.c.m.proxyma.plugins.retrivers.UnexistingRetriver"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </availableRetrivers>
