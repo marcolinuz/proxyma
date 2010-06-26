@@ -33,7 +33,7 @@ public class CookiesRewritePreprocessorTest extends TestCase {
         super(testName);
     }
 
-     @Override
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
 

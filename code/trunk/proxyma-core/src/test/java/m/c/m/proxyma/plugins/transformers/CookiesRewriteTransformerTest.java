@@ -1,12 +1,14 @@
-package m.c.m.proxyma.rewrite;
+package m.c.m.proxyma.plugins.transformers;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.WebResponse;;
+import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.InvocationContext;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
-import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Iterator;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
@@ -15,11 +17,12 @@ import m.c.m.proxyma.TestServlet;
 import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
-import org.apache.commons.lang.NullArgumentException;
+import m.c.m.proxyma.resource.ProxymaResponseDataBean;
+import m.c.m.proxyma.rewrite.CookieRewriteEngine;
 
 /**
  * <p>
- * Test the functionality of the RewriterEngine
+ * Test the functionality of the CookiesRewriterTransformer
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -29,9 +32,9 @@ import org.apache.commons.lang.NullArgumentException;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class URLRewriteEngineTest extends TestCase {
+public class CookiesRewriteTransformerTest extends TestCase {
     
-    public URLRewriteEngineTest(String testName) {
+    public CookiesRewriteTransformerTest(String testName) {
         super(testName);
     }
 
@@ -47,6 +50,7 @@ public class URLRewriteEngineTest extends TestCase {
         ServletUnitClient sc = sr.newClient();
         WebRequest wreq   = new GetMethodWebRequest( "http://test.meterware.com/myServlet?a=1&b=2" );
         wreq.setParameter( "color", "red" );
+        wreq.setHeaderField("Cookie", "rewritten=value1");
         WebResponse wres = sc.getResponse( wreq );
         InvocationContext ic = sc.newInvocation( wreq );
         request = ic.getRequest();
@@ -68,64 +72,57 @@ public class URLRewriteEngineTest extends TestCase {
     }
 
     /**
-     * Test of masqueradeURL method, of class URLRewriteEngine.
+     * Test of process method, of class CookiesRewriteTransformer.
      */
-    public void testMasqueradeURL() throws NullArgumentException, IllegalArgumentException, UnsupportedEncodingException {
-        System.out.println("masqueradeURL");
+    public void testProcess() throws Exception {
+       System.out.println("process");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
         ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
-        aResource.setProxymaRootURI("http://localhost:8080/proxyma");
+        CookiesRewriteTransformer instance = new CookiesRewriteTransformer(context);
+
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/en", context);
         proxyma.registerProxyFolderIntoContext(folder1, context);
         proxyma.registerProxyFolderIntoContext(folder2, context);
+        ProxymaResponseDataBean responseData = new ProxymaResponseDataBean();
+        aResource.getResponse().setResponseData(responseData);
         aResource.setProxyFolder(folder1);
-        URLRewriteEngine instance = new URLRewriteEngine(context);
+        aResource.setProxymaRootURI("http://localhost:8080/proxyma");
 
-        String theUrl = "http://www.yahoo.it/profile/it.html";
-        String expected = "http://www.yahoo.it/profile/it.html";
-        String result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
+        Cookie aCookie = new Cookie("cookie1", "value1");
+        aCookie.setDomain("google.com");
+        aCookie.setPath("/en/goofy");
+        responseData.addCookie(aCookie);
 
-        theUrl = "http://www.google.com:80/it/profile/io.html";
-        expected = "/proxyma/host1/profile/io.html";
-        result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
+        aCookie = new Cookie("cookie2", "value2");
+        responseData.addCookie(aCookie);
 
-        theUrl = "/it/profile/io.html";
-        expected = "/proxyma/host1/profile/io.html";
-        result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
+        //Create a testpage for the tests..
+        instance.process(aResource);
 
-        theUrl = "/anotherRoot/it/profile/io.html";
-        expected = "http://www.google.com/anotherRoot/it/profile/io.html";
-        result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
+        Collection<Cookie> responseCookies = aResource.getResponse().getResponseData().getCookies();
+        assertEquals(2,responseCookies.size());
 
-        theUrl = "profile/io.html";
-        expected = "profile/io.html";
-        result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
-
-
-        theUrl = "https://www.apple.com:443/en/macbook/new.html";
-        expected = "/proxyma/host2/macbook/new.html";
-        result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
-
-        proxyma.unregisterProxyFolderFromContext(folder2, context);
-
-        theUrl = "https://www.apple.com/en/macbook/new.html";
-        expected = "https://www.apple.com/en/macbook/new.html";
-        result = instance.masqueradeURL(theUrl, aResource);
-        assertEquals(expected, result);
-
+        Iterator<Cookie> iterator = responseCookies.iterator();
+        while (iterator.hasNext()) {
+            aCookie = iterator.next();
+            if ("cookie1".equals(aCookie.getName())) {
+                assertEquals("localhost", aCookie.getDomain());
+                assertEquals("/proxyma/host1", aCookie.getPath());
+                assertEquals("google.com" + CookieRewriteEngine.COMMENT_FIELDS_SEPARATOR + "/en/goofy", aCookie.getComment());
+            } else {
+                assertEquals("localhost", aCookie.getDomain());
+                assertEquals("/proxyma/host1", aCookie.getPath());
+                assertEquals("www.google.com" + CookieRewriteEngine.COMMENT_FIELDS_SEPARATOR + "/", aCookie.getComment());
+            }
+        }
 
         proxyma.unregisterProxyFolderFromContext(folder1, context);
+        proxyma.unregisterProxyFolderFromContext(folder2, context);
     }
 
-   
     private HttpServletRequest request;
     private HttpServletResponse response;
+
 }

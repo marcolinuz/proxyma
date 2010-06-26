@@ -36,23 +36,23 @@ public class URLRewriteEngine {
      * If not, it tryes to match any other configured fproxy-folder to keep the
      * client into the reverse proxy if possible.
      *
-     * @param theURL the URL that have to be rewritten
+     * @param theURLPath the URL that have to be rewritten
      * @param aResource the resource that is currently processed by the ProxyEngine.
      * @return the rewritten URL.
      */
-    public String masqueradeURL (String theURL, ProxyFolderBean folder, ProxymaResource aResource) {
+    public String masqueradeURL (String theURL, ProxymaResource aResource) {
         String retVal = null;
         //guess if it'an absolute or relative URL
         Matcher matcher = netAbsouleURLPattern.matcher(theURL);
         if (matcher.matches()) {
             //This is an absolute URL with schema://host[:potr]/and/path
-            retVal = rewriteNetAbsoluteURL(theURL, folder, aResource);
+            retVal = rewriteNetAbsoluteURL(theURL, aResource);
             log.finest("Rewritten net absolute URL: " + theURL + " -> " + retVal);
         } else {
             matcher = siteAbsoulteURLPattern.matcher(theURL);
             if(matcher.matches()) {
                 //This is a site absolute URL
-                retVal = rewriteSiteAbsoluteURL(theURL, folder, aResource);
+                retVal = rewriteSiteAbsoluteURL(theURL, aResource.getProxyFolder(), aResource.getProxymaRootURL().getPath());
                  log.finest("Rewritten site absolute URL: " + theURL + " -> " + retVal);
             } else {
                 //This is a relative URL no rewriting is needed..
@@ -69,11 +69,11 @@ public class URLRewriteEngine {
      * In other words it parses and rewrites complete URLS like
      * "http://site.host[:port]/path/to/resource.ext"
      *
-     * @param theURL the URL that have to be rewritten
+     * @param theURLPath the URL that have to be rewritten
      * @param aResource the resource that is currently processed by the ProxyEngine.
      * @return the rewritten URL.
      */
-    private String  rewriteNetAbsoluteURL(String theURL, ProxyFolderBean folder, ProxymaResource aResource) {
+    private String  rewriteNetAbsoluteURL(String theURL, ProxymaResource aResource) {
         String retVal = theURL;
         try {
             //Transform the URLs into jav.net.URL
@@ -97,14 +97,14 @@ public class URLRewriteEngine {
 
             if (siteMatches) {
                 //Rewrites the url using the site relative method
-                retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), folder, aResource);
+                retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), aResource.getProxyFolder(), proxymaRootURL.getPath());
             } else {
                 //Searches into the context for a matching destination
                 ProxyFolderBean matchingFolder = searchMatchingProxyFolderIntoContext(urlToRewrite, aResource.getContext());
 
                 //Rewrite the URL based upon the matched folder.
                 if (matchingFolder != null)
-                    retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), matchingFolder, aResource);
+                    retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), matchingFolder, proxymaRootURL.getPath());
             }
 
         } catch (MalformedURLException ex) {
@@ -118,26 +118,26 @@ public class URLRewriteEngine {
      * In other words it parses and rewrites complete URLS like
      * "/path/to/resource.ext"
      *
-     * @param theURL the URL that have to be rewritten
+     * @param theURLPath the URL that have to be rewritten
      * @param folder the proxy folder that "captured" the URL
      * @param context the current proxyma context.
      * @return the rewritten URL.
      */
-    private String rewriteSiteAbsoluteURL(String theURL, ProxyFolderBean folder, ProxymaResource aResource) {
+    private String rewriteSiteAbsoluteURL(String theURLPath, ProxyFolderBean folder, String proxymaRootURLPath) {
         String retVal = null;
 
         //Get the path of the masqueraded destination path
         String masqueradedPath = folder.getDestinationAsURL().getPath();
 
-        if (theURL.startsWith(masqueradedPath)) { 
+        if (theURLPath.startsWith(masqueradedPath)) {
             //Get the Proxyma root path
-            StringBuffer newPrefixURL = new StringBuffer(aResource.getProxymaRootURL().getPath());
+            StringBuffer newPrefixURL = new StringBuffer(proxymaRootURLPath);
 
             //Add the proxyFolder to the proxyma path and obtaining the new prefix
             newPrefixURL.append("/").append(folder.getURLEncodedFolderName());
 
             //return the new url to the invoker.
-            retVal = theURL.replaceFirst(masqueradedPath, newPrefixURL.toString());
+            retVal = theURLPath.replaceFirst(masqueradedPath, newPrefixURL.toString());
         } else {
             //This is an absolute path external form the masqueraded path,
             //so the method have to return a net absolute link.
@@ -147,14 +147,14 @@ public class URLRewriteEngine {
             if (destinationURL.getPort() > 0)
                 netAbsoluteDestination.append(":").append(destinationURL.getPort());
 
-            retVal = netAbsoluteDestination.append(theURL).toString();
+            retVal = netAbsoluteDestination.append(theURLPath).toString();
         }
         return retVal;
     }
 
     /**
      * Search into the context for a proxy-folder that matches the passed URL.
-     * @param theURL the url to search into the destinations
+     * @param theURLPath the url to search into the destinations
      * @param context the context to inspect
      * @return the matching proxy-folder if found.. else it returns null.
      */

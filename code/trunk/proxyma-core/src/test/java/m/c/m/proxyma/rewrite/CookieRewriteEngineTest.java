@@ -84,7 +84,7 @@ public class CookieRewriteEngineTest extends TestCase {
         Cookie theCookie = new Cookie("cookie1", "Value1");
         theCookie.setDomain("google.com");
         theCookie.setPath("/it");
-        instance.masqueradeCookie(theCookie, folder1, aResource);
+        instance.masqueradeCookie(theCookie, aResource);
 
         String expected = "localhost";
         assertEquals(expected, theCookie.getDomain());
@@ -102,7 +102,7 @@ public class CookieRewriteEngineTest extends TestCase {
         assertEquals(expected, theCookie.getPath());
 
         theCookie = new Cookie("cookie2", "Value2");
-        instance.masqueradeCookie(theCookie, folder1, aResource);
+        instance.masqueradeCookie(theCookie, aResource);
 
         expected = "localhost";
         assertEquals(expected, theCookie.getDomain());
