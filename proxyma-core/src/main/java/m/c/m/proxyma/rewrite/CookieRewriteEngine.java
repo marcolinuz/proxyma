@@ -84,5 +84,5 @@ public class CookieRewriteEngine {
      * The separator used into the cookie comment to store the original
      * domain and path fields.
      */
-    private static final String COMMENT_FIELDS_SEPARATOR = "@";
+    public static final String COMMENT_FIELDS_SEPARATOR = "@";
 }

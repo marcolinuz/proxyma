@@ -45,8 +45,8 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
              
         //Get configuration files direxctives
         String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR);
-        int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@maxLinesPerFile"));
-        int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@filesRetentionPolicy"));
+        int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@accessLogMaxLinesPerFile"));
+        int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@accessLogRetentionPolicy"));
 
         //Set up the access-log logger
         accessLog = Logger.getLogger(ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + context.getName() + ".access");

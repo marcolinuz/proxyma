@@ -19,12 +19,8 @@
         <byteBufferImplementation writerClass="m.c.m.proxyma.buffers.SmartBuffer"
                                   threadSafeReaderClass="m.c.m.proxyma.buffers.SmartBufferReader"/>
         <showProxyFoldersOnRootPath>true</showProxyFoldersOnRootPath>
-        <logging>
-            <level>INFO</level>
-            <directoryPath>/tmp/</directoryPath>
-            <maxLinesPerFile>500000</maxLinesPerFile>
-            <retentionPolicy>5</retentionPolicy>
-        </logging>
+        <logging level="INFO" directoryPath="/tmp/"
+                 maxLinesPerFile="500000" retentionPolicy="5" />
     </global>
     <singleParameter>single</singleParameter>
     <loadAttribute value="attribute"/>
@@ -43,10 +39,10 @@
             <cacheProvider class="m.c.m.proxyma.plugins.caches.NullCacheProvider" />
             <retriver class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
             <transformers>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriter"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"/>
             </transformers>
             <serializer class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"/>
         </folderSettings>
@@ -74,21 +70,22 @@
 
         <avaliablePreprocessors>
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliablePreprocessors>
 
         <avaliableTransformers>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.UnexistingTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </avaliableTransformers>
 
         <availableSerializers>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"
-                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
+                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"
-                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
+                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.UnexistingSerializer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
         </availableSerializers>

@@ -25,7 +25,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * Test the functionality of the HtmlUrlRewriter
+ * Test the functionality of the HtmlUrlRewriteTransformer
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -74,7 +74,7 @@ public class HtmlUrlRewriterTest extends TestCase {
     }
 
     /**
-     * Test of process method, of class HtmlUrlRewriter.
+     * Test of process method, of class HtmlUrlRewriteTransformer.
      */
     public void testProcess() throws Exception {
         System.out.println("process");
@@ -92,7 +92,7 @@ public class HtmlUrlRewriterTest extends TestCase {
         aResource.getResponse().setResponseData(responseData);
         aResource.setProxyFolder(folder1);
 
-        ResourceHandler instance = new HtmlUrlRewriter(context);
+        ResourceHandler instance = new HtmlUrlRewriteTransformer(context);
         instance.process(aResource);
 
         ProxymaResponseDataBean data = aResource.getResponse().getResponseData();

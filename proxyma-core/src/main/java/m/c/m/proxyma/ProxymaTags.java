@@ -22,10 +22,10 @@ public class ProxymaTags {
     public static final String CONFIG_FILE_VERSION = "global/version";
     public static final String GLOBAL_BUFFERS_IMPLEMENTATION = "global/byteBufferImplementation";
     public static final String GLOBAL_SHOW_FOLDERS_LIST = "global/showProxyFoldersOnRootPath";
-    public static final String GLOBAL_LOGLEVEL = "global/logging/level";
-    public static final String GLOBAL_LOGFILES_DIR = "global/logging/directoryPath";
-    public static final String GLOBAL_LOGFILE_MAXSIZE = "global/logging/maxLinesPerFile";
-    public static final String GLOBAL_LOGFILES_RETENTION = "global/logging/retentionPolicy";
+    public static final String GLOBAL_LOGLEVEL = "global/logging/@level";
+    public static final String GLOBAL_LOGFILES_DIR = "global/logging/@directoryPath";
+    public static final String GLOBAL_LOGFILE_MAXSIZE = "global/logging/@maxLinesPerFile";
+    public static final String GLOBAL_LOGFILES_RETENTION = "global/logging/@retentionPolicy";
 
     //Plugins Parameter configuration names
     public static final String AVAILABLE_CACHE_PROVIDERS = "plugins/avaliableCacheProviders/cacheProvider";
