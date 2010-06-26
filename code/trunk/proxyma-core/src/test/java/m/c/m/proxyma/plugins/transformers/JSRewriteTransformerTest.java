@@ -25,7 +25,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
 
 /**
  * <p>
- * Test the functionality of the CssUrlRewriteTransformer
+ * Test the functionality of the JSRewriteTransformer
  *
  * </p><p>
  * NOTE: this software is released under GPL License.
@@ -35,9 +35,9 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com];
  * @version $Id$
  */
-public class CssUrlRewriteTransformerTest extends TestCase {
+public class JSRewriteTransformerTest extends TestCase {
     
-    public CssUrlRewriteTransformerTest(String testName) {
+    public JSRewriteTransformerTest(String testName) {
         super(testName);
     }
 
@@ -49,9 +49,9 @@ public class CssUrlRewriteTransformerTest extends TestCase {
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
         ServletRunner sr = new ServletRunner();
-        sr.registerServlet( "myServlet/style.css", TestServlet.class.getName() );
+        sr.registerServlet( "myServlet/library.js", TestServlet.class.getName() );
         ServletUnitClient sc = sr.newClient();
-        WebRequest wreq   = new GetMethodWebRequest( "http://test.meterware.com/myServlet/style.css" );
+        WebRequest wreq   = new GetMethodWebRequest( "http://test.meterware.com/myServlet/library.js" );
         wreq.setParameter( "color", "red" );
         WebResponse wres = sc.getResponse( wreq );
         InvocationContext ic = sc.newInvocation( wreq );
@@ -84,7 +84,7 @@ public class CssUrlRewriteTransformerTest extends TestCase {
         aResource.setProxymaRootURI("http://localhost:8080/proxyma");
 
 
-        ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/images", context);
+        ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.uniurb.it/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/disney", context);
         proxyma.registerProxyFolderIntoContext(folder1, context);
         proxyma.registerProxyFolderIntoContext(folder2, context);
@@ -92,7 +92,7 @@ public class CssUrlRewriteTransformerTest extends TestCase {
         aResource.getResponse().setResponseData(responseData);
         aResource.setProxyFolder(folder1);
 
-        ResourceHandler instance = new CssUrlRewriteTransformer(context);
+        ResourceHandler instance = new JSRewriteTransformer(context);
         instance.process(aResource);
 
         ProxymaResponseDataBean data = aResource.getResponse().getResponseData();
@@ -100,12 +100,9 @@ public class CssUrlRewriteTransformerTest extends TestCase {
         byte[] result = thepage.getWholeBufferAsByteArray();
         String resultString = new String(result,context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
 
-        assertTrue(resultString.startsWith("/*  TEST CSS */"));
-
-        assertTrue(resultString.contains("url(/proxyma/host1/ankonline.gif)"));
-        assertTrue(resultString.contains("url(/proxyma/host1/goofy.gif)"));
-        assertTrue(resultString.contains("url(/proxyma/host2/character/mickeyMouse.jpg)"));
-
+        assertTrue(resultString.startsWith("/*  TEST JS */"));
+        assertTrue(resultString.contains("window.location.href='http://localhost:8080/proxyma/host1/portale/index.php?mist_id=0&lang=IT&tipo=IST&page=0';"));
+        assertTrue(resultString.contains("appo = 'http://localhost:8080/proxyma/host2/character/mickeyMouse.jpg';"));
         assertTrue(resultString.endsWith("}"));
 
         proxyma.unregisterProxyFolderFromContext(folder1, context);
@@ -142,7 +139,7 @@ public class CssUrlRewriteTransformerTest extends TestCase {
             ByteBuffer out = ByteBufferFactory.createNewByteBuffer(context);
 
             //write the header of the page
-            byte[] data = css_test_template.getBytes(charsetEncoding);
+            byte[] data = js_test_template.getBytes(charsetEncoding);
             out.appendBytes(data,data.length);
 
             //add the buffer to the response
@@ -162,18 +159,11 @@ public class CssUrlRewriteTransformerTest extends TestCase {
     private static final String SERVER_HEADER = "Server";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
 
-    private static final String css_test_template = "" +
-        "/*  TEST CSS */\n" +
-        "#testi{\n" +
-	"float:left;\n" +
-	"border-bottom:3px solid #CC3333;\n" +
-	"width:100%;\n" +
-	"text-align:right;\n" +
-	"background-image:url(/images/ankonline.gif);\n" +
-        "foreground-image:url(\"http://www.google.com/images/goofy.gif\");\n" +
-	"background-position:675px 18px;\n" +
-	"background-repeat:no-repeat;\n" +
-        "unexisting-directive: url ('https://www.apple.com/disney/character/mickeyMouse.jpg');\n" +
+    private static final String js_test_template = "" +
+        "/*  TEST JS */\n" +
+        "function test () {\n" +
+	"window.location.href=\"http://www.uniurb.it/it/portale/index.php?mist_id=0&lang=IT&tipo=IST&page=0\";\n" +
+        "var appo = 'https://www.apple.com/disney/character/mickeyMouse.jpg';\n" +
         "}";
 
 }
