@@ -58,8 +58,9 @@ public class HttpRedirectsRewriteTransformer extends m.c.m.proxyma.plugins.trans
                     String newLocation = rewriter.masqueradeURL(location.getValue(), aResource);
                     if (newLocation.startsWith("/")) {
                         URL proxymaRootURL = aResource.getProxymaRootURL();
-                        StringBuffer proxymaHost = new StringBuffer(proxymaRootURL.getProtocol());
-                        proxymaHost.append("://").append(proxymaRootURL.getHost());
+                        StringBuffer proxymaHost = new StringBuffer(location.getValue().length());
+                        proxymaHost.append(proxymaRootURL.getProtocol()).append("://");
+                        proxymaHost.append(proxymaRootURL.getHost());
                         if (proxymaRootURL.getPort() > 0)
                             proxymaHost.append(":").append(proxymaRootURL.getPort());
                         proxymaHost.append(newLocation);

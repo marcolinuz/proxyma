@@ -83,13 +83,13 @@ public class URLRewriteEngineTest extends TestCase {
         aResource.setProxyFolder(folder1);
         URLRewriteEngine instance = new URLRewriteEngine(context);
 
-        String theUrl = "http://www.yahoo.it/profile/it.html";
-        String expected = "http://www.yahoo.it/profile/it.html";
+        String theUrl = "http://www.yahoo.it/profile/it.html?a=1&b=2";
+        String expected = "http://www.yahoo.it/profile/it.html?a=1&b=2";
         String result = instance.masqueradeURL(theUrl, aResource);
         assertEquals(expected, result);
 
-        theUrl = "http://www.google.com:80/it/profile/io.html";
-        expected = "/proxyma/host1/profile/io.html";
+        theUrl = "http://www.google.com:80/it/profile/io.html?a=1&b=2";
+        expected = "/proxyma/host1/profile/io.html?a=1&b=2";
         result = instance.masqueradeURL(theUrl, aResource);
         assertEquals(expected, result);
 
@@ -109,8 +109,8 @@ public class URLRewriteEngineTest extends TestCase {
         assertEquals(expected, result);
 
 
-        theUrl = "https://www.apple.com:443/en/macbook/new.html";
-        expected = "/proxyma/host2/macbook/new.html";
+        theUrl = "https://www.apple.com:443/en/macbook/new.html?a=1&b=2";
+        expected = "/proxyma/host2/macbook/new.html?a=1&b=2";
         result = instance.masqueradeURL(theUrl, aResource);
         assertEquals(expected, result);
 

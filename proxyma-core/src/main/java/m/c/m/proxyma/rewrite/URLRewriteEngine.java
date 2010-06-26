@@ -79,6 +79,10 @@ public class URLRewriteEngine {
             //Transform the URLs into jav.net.URL
             URL proxymaRootURL = aResource.getProxymaRootURL();
             URL urlToRewrite = new URL(theURL);
+            StringBuffer pathToRewrite = new StringBuffer(theURL.length());
+            pathToRewrite.append(urlToRewrite.getPath());
+            if (urlToRewrite.getQuery() != null)
+                pathToRewrite.append("?").append(urlToRewrite.getQuery());
 
             //Check if the schema siteMatches
             boolean siteMatches = true;
@@ -97,14 +101,14 @@ public class URLRewriteEngine {
 
             if (siteMatches) {
                 //Rewrites the url using the site relative method
-                retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), aResource.getProxyFolder(), proxymaRootURL.getPath());
+                retVal = rewriteSiteAbsoluteURL(pathToRewrite.toString(), aResource.getProxyFolder(), proxymaRootURL.getPath());
             } else {
                 //Searches into the context for a matching destination
                 ProxyFolderBean matchingFolder = searchMatchingProxyFolderIntoContext(urlToRewrite, aResource.getContext());
 
                 //Rewrite the URL based upon the matched folder.
                 if (matchingFolder != null)
-                    retVal = rewriteSiteAbsoluteURL(urlToRewrite.getPath(), matchingFolder, proxymaRootURL.getPath());
+                    retVal = rewriteSiteAbsoluteURL(pathToRewrite.toString(), matchingFolder, proxymaRootURL.getPath());
             }
 
         } catch (MalformedURLException ex) {
