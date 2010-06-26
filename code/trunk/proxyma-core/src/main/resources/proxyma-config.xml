@@ -16,7 +16,7 @@
     <!-- Global settings for every instance of proxyma -->
     <global>
         <!-- Version of this release of the proxyma-core engine -->
-        <version>1.0-alpha</version>
+        <version>1.0-Snapshot</version>
 
        <!-- Specify the default encoding charset to use -->
        <defaultEncoding>UTF-8</defaultEncoding>
@@ -38,23 +38,14 @@
              generated if the client requests the proxyma root URI -->
         <showProxyFoldersOnRootPath>true</showProxyFoldersOnRootPath>
 
-        <!-- Logging policy -->
-        <logging>
-            <!-- Log level.. set this to INFO in Production Environments
-             Valid values: SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL -->
-            <level>INFO</level>
-
-            <!-- The proxyma log files directory.
-                 All the log files for the context will be written there.
-                 PS: Do not forget the tailing slash "/" -->
-            <directoryPath>/tmp/</directoryPath>
-
-            <!-- Max number of lines per log file -->
-            <maxLinesPerFile>500000</maxLinesPerFile>
-
-            <!-- Max number of log files to keep on filesystem -->
-            <retentionPolicy>5</retentionPolicy>
-        </logging>
+        <!-- Logging policy
+             level: possible values are SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
+             directoryPath: is the directory where all the log files of Proxyma will be wrtitten
+                            PS: Do not forget the tailing slash "/"
+             maxLinesPerFile: maximun number of lines for each log file
+             retentionPolicy: maximum number of old log files to keep on the disk -->
+        <logging level="INFO" directoryPath="/tmp/"
+                 maxLinesPerFile="500000" retentionPolicy="5" />
     </global>
     
     <!-- This element defines the settings for the new ProxyFolders
@@ -64,15 +55,15 @@
              the any new ProxyFolders that it creates -->
         <folderSettings maxPostSize="5000" enabled="true" >
             <preprocessors>
-                <resourceHandler/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
             </preprocessors>
             <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider" />
             <retriver class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
             <transformers>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriter"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRevriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"/>
             </transformers>
             <serializer class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"/>
         </folderSettings>
@@ -109,6 +100,7 @@
              the "process" method. -->
         <avaliablePreprocessors>
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
         </avaliablePreprocessors>
 
         <!-- List of Retriver plugins that can be used by the proxyma engine.
@@ -123,12 +115,11 @@
              NOTE: these plugins extends the "AbstractTransformer" class overriding
              the "process" method. -->
         <avaliableTransformers>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriter"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpCookiesRevriter"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriter"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriter"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlEmbedJSRewriter"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSLibraryRewriter"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer"/>
         </avaliableTransformers>
 
         <!-- List of Serializer plugins that can be used by the proxyma engine.
@@ -136,10 +127,10 @@
              the "process" method. -->
         <availableSerializers>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"
-                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
+                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.DebugSerializer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"
-                             maxLinesPerFile="5000000" filesRetentionPolicy="5"/>
+                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
         </availableSerializers>
     </plugins>
 </proxyma-configuration>

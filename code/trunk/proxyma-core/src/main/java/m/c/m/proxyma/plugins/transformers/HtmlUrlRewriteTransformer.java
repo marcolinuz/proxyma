@@ -35,7 +35,7 @@ import org.htmlparser.visitors.NodeVisitor;
  * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
  * @version $Id$
  */
-public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.AbstractTransformer {
+public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformers.AbstractTransformer {
 
     /**
      * The default constructor for this class<br/>
@@ -43,7 +43,7 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
      *
      * NOTE: Every plugin must have a constructor that takes a ProxymaContext as parameter.
      */
-    public HtmlUrlRewriter(ProxymaContext context) {
+    public HtmlUrlRewriteTransformer(ProxymaContext context) {
         //initialize the logger
         this.log = context.getLogger();
         this.rewriter = new URLRewriteEngine(context);
@@ -60,9 +60,10 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
         ProxymaResponseDataBean originalResponse = aResource.getResponse().getResponseData();
         ProxymaHttpHeader contentType = originalResponse.getHeader(CONTENT_TYPE_HEADER);
         ProxyFolderBean folder = aResource.getProxyFolder();
+        Matcher contentTypeMatcher = processedContentType.matcher(contentType.getValue());
 
         // The plugin works only on text/html documents
-        if ((contentType != null) && (contentType.getValue().startsWith(ALLOWED_CONTENT_TYPE))) {
+        if ((contentType != null) && (contentTypeMatcher.matches())) {
             /**
              * Inner Class for the html analisys.
              */
@@ -278,6 +279,11 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
     private ProxyFolderBean currentFolder = null;
 
     /**
+     * The value for the content type header that activates this plugin.
+     */
+    private static final Pattern processedContentType = Pattern.compile("^[Tt]ext/[Hh]tml.*$");
+
+    /**
      * Charset match Pattern
      */
     private static final Pattern charsetPattern = Pattern.compile("^.*; *[Cc]harset *= *");
@@ -286,10 +292,7 @@ public class HtmlUrlRewriter extends m.c.m.proxyma.plugins.transformers.Abstract
      * The content type header
      */
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    /**
-     * The expected value for the content type header for this plugin.
-     */
-    private static final String ALLOWED_CONTENT_TYPE = "text/html";
+
     /**
      * The name of this plugin.
      */
