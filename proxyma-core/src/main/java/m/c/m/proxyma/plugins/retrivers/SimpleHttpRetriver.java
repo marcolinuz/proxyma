@@ -232,7 +232,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
     private Collection<String> getRequestCookies(ProxymaRequest request) {
         LinkedList retValue = new LinkedList();
         Cookie[] cookies = request.getCookies();
-        if (cookies.length > 0) {
+        if ((cookies != null) && (cookies.length > 0)) {
             Cookie requestCookie;
             for (int loop = 0; loop < cookies.length; loop++) {
                 StringBuffer currentCookie = new StringBuffer();
@@ -431,11 +431,6 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
      * The standard name of the set-cookies header
      */
     private final static String SET_COOKIE_HEADER = "Set-Cookie";
-
-    /**
-     * Default cookie for Java web-applications sessions.
-     */
-    private final static String COOKIE_JSESSIONID = "JSESSIONID";
 
     /**
      * The cookie declared path
