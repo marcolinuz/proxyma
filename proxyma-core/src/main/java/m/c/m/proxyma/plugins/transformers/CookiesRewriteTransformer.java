@@ -52,8 +52,13 @@ public class CookiesRewriteTransformer extends m.c.m.proxyma.plugins.transformer
         ProxymaResponseDataBean originalResponse = aResource.getResponse().getResponseData();
 
         Iterator<Cookie> responseCookies = originalResponse.getCookies().iterator();
-        while (responseCookies.hasNext())
-            rewriter.masqueradeCookie(responseCookies.next(), aResource);
+        Cookie currentCookie = null;
+        while (responseCookies.hasNext()) {
+            currentCookie = responseCookies.next();
+            log.fine("Rewriting Cookie: " + currentCookie.getName());
+            rewriter.masqueradeCookie(currentCookie, aResource);
+            log.finest("Rewritten cookie, original domain/path: " + currentCookie.getComment());
+        }
     }
 
     /**
