@@ -37,7 +37,7 @@ public class CookiesRewritePreprocessor extends m.c.m.proxyma.plugins.preprocess
         this.log = context.getLogger();
 
         //Load the cookies rewriter engine
-        this.cookieRewriter = new CookieRewriteEngine(context);
+        this.rewriter = new CookieRewriteEngine(context);
     }
 
     /**
@@ -58,7 +58,7 @@ public class CookiesRewritePreprocessor extends m.c.m.proxyma.plugins.preprocess
             for (int current = 0; current < requestCookies.length; current++) {
                 cookieComment = requestCookies[current].getComment();
                 if ((cookieComment != null) && (cookieComment.contains(CookieRewriteEngine.COMMENT_FIELDS_SEPARATOR))) {
-                    cookieRewriter.unmasqueradeCookie(requestCookies[current]);
+                    rewriter.unmasqueradeCookie(requestCookies[current]);
                 }
             }
         }
@@ -92,7 +92,7 @@ public class CookiesRewritePreprocessor extends m.c.m.proxyma.plugins.preprocess
     /**
      * The cookie rewriter used by this plugin
      */
-    private CookieRewriteEngine cookieRewriter = null;
+    private CookieRewriteEngine rewriter = null;
     /**
      * The name of this plugin.
      */

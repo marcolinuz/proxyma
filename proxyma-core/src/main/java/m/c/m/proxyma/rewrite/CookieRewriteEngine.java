@@ -34,8 +34,9 @@ public class CookieRewriteEngine {
      * @param cookie the cookie to masquerade
      * @param aResource the resource that owns the Cookie
      */
-    public void masqueradeCookie(Cookie cookie, ProxyFolderBean folder, ProxymaResource aResource) {
+    public void masqueradeCookie(Cookie cookie, ProxymaResource aResource) {
         //calculate the new Path of the cookie
+        ProxyFolderBean folder = aResource.getProxyFolder();
         URL proxymaRootURL = aResource.getProxymaRootURL();
         StringBuffer newPath = new StringBuffer(proxymaRootURL.getPath());
         newPath.append("/").append(aResource.getProxyFolder().getURLEncodedFolderName());

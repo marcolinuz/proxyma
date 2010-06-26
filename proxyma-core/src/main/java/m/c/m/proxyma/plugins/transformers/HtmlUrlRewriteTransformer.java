@@ -80,131 +80,131 @@ public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformer
                     if (A.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(HREF);
                         if (tagValue != null) {
-                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (IMG.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(SRC);
                         if (tagValue != null) {
-                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(ISMAP);
                         if (tagValue != null) {
-                            tag.setAttribute(ISMAP, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(ISMAP, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(USEMAP);
                         if (tagValue != null) {
-                            tag.setAttribute(USEMAP, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(USEMAP, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(LONGDESC);
                         if (tagValue != null) {
-                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (LINK.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(HREF);
                         if (tagValue != null) {
-                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (FORM.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(ACTION);
                         if (tagValue != null) {
-                            tag.setAttribute(ACTION, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(ACTION, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (INPUT.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(SRC);
                         if (tagValue != null) {
-                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (TD.equalsIgnoreCase(name)) {
                         //NOTE: This is a NON-Standard attribute for this TAG but MSIE, Netscape and Firefox supports it.
                         //..so I added this statements.
                         tagValue = tag.getAttribute(BACKGROUND);
                         if (tagValue != null) {
-                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (TABLE.equalsIgnoreCase(name)) {
                         //NOTE: This is a NON-Standard attribute for this TAG but MSIE, Netscape and Firefox supports it.
                         //..so I added this statements.
                         tagValue = tag.getAttribute(BACKGROUND);
                         if (tagValue != null) {
-                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (SCRIPT.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(SRC);
                         if (tagValue != null) {
-                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentResource));
                         } 
                     } else if (BODY.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(BACKGROUND);
                         if (tagValue != null) {
-                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(BACKGROUND, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (BASE.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(HREF);
                         if (tagValue != null) {
-                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (FRAME.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(SRC);
                         if (tagValue != null) {
-                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(LONGDESC);
                         if (tagValue != null) {
-                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (IFRAME.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(SRC);
                         if (tagValue != null) {
-                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(SRC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(LONGDESC);
                         if (tagValue != null) {
-                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(LONGDESC, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (APPLET.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(ARCHIVE);
                         if (tagValue != null) {
-                            tag.setAttribute(ARCHIVE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(ARCHIVE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(CODE);
                         if (tagValue != null) {
-                            tag.setAttribute(CODE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(CODE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(CODEBASE);
                         if (tagValue != null) {
-                            tag.setAttribute(CODEBASE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(CODEBASE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (OBJECT.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(ARCHIVE);
                         if (tagValue != null) {
-                            tag.setAttribute(ARCHIVE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(ARCHIVE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(CODEBASE);
                         if (tagValue != null) {
-                            tag.setAttribute(CODEBASE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(CODEBASE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(DATA);
                         if (tagValue != null) {
-                            tag.setAttribute(DATA, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(DATA, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                         tagValue = tag.getAttribute(USEMAP);
                         if (tagValue != null) {
-                            tag.setAttribute(USEMAP, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(USEMAP, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (AREA.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(HREF);
                         if (tagValue != null) {
-                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(HREF, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (DEL.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(CITE);
                         if (tagValue != null) {
-                            tag.setAttribute(CITE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(CITE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     } else if (INS.equalsIgnoreCase(name)) {
                         tagValue = tag.getAttribute(CITE);
                         if (tagValue != null) {
-                            tag.setAttribute(CITE, rewriter.masqueradeURL(tagValue, currentFolder, currentResource));
+                            tag.setAttribute(CITE, rewriter.masqueradeURL(tagValue, currentResource));
                         }
                     }
                 }
@@ -223,7 +223,7 @@ public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformer
 
             //Generate a linkvisitor for the url rewriting
             NodeList myPage = parser.parse(null);
-            currentFolder = folder; currentResource = aResource;
+            currentResource = aResource;
             myPage.visitAllNodesWith(linkVisitor);
 
             //Add to the response the rewritten data
@@ -271,12 +271,6 @@ public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformer
      * is to have private attributes with the wanted values.
      */
     private ProxymaResource currentResource = null;
-
-    /**
-     * The only way to share variable between this class and its nested companion
-     * is to have private attributes with the wanted values.
-     */
-    private ProxyFolderBean currentFolder = null;
 
     /**
      * The value for the content type header that activates this plugin.
