@@ -61,13 +61,13 @@ public class ProxyEngineFactoryTest extends TestCase {
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.PREPROCESSOR);
-        assertEquals(1, plugins.size());
+        assertEquals(2, plugins.size());
         iter=plugins.iterator();
         assertTrue(iter.next() instanceof  AbstractPreprocessor);
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.RETRIVER);
-        assertEquals(1, plugins.size());
+        assertEquals(2, plugins.size());
         iter=plugins.iterator();
         assertTrue(iter.next() instanceof  AbstractRetriver);
 
@@ -79,7 +79,7 @@ public class ProxyEngineFactoryTest extends TestCase {
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.TRANSFORMER);
-        assertEquals(1, plugins.size());
+        assertEquals(5, plugins.size());
         iter=plugins.iterator();
         assertTrue(iter.next() instanceof  AbstractTransformer);
 

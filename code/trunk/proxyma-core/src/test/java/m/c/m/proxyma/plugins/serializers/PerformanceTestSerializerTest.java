@@ -102,7 +102,7 @@ public class PerformanceTestSerializerTest extends TestCase {
         assertFalse(dataBean.containsHeader("X-Forwarded-For"));
         assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
 
-        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-performance.log.0";
+        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-performance.log";
         File log = new File(logsDirectory);
         assertTrue(log.exists());
     }

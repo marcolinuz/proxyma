@@ -100,7 +100,7 @@
              the "process" method. -->
         <avaliablePreprocessors>
             <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" />
         </avaliablePreprocessors>
 
         <!-- List of Retriver plugins that can be used by the proxyma engine.
@@ -115,7 +115,7 @@
              NOTE: these plugins extends the "AbstractTransformer" class overriding
              the "process" method. -->
         <avaliableTransformers>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
@@ -130,7 +130,8 @@
                              accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.DebugSerializer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.PerformanceTestSerializer"
-                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"/>
+                             accessLogMaxLinesPerFile="5000000" accessLogRetentionPolicy="5"
+                             performanceLogMaxLinesPerFile="5000000" performanceLogRetentionPolicy="1"/>
         </availableSerializers>
     </plugins>
 </proxyma-configuration>
