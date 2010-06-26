@@ -91,7 +91,7 @@ public class PerformanceTestSerializerTest extends TestCase {
         dataBean.setStatus(200);
 
         dataBean.setData(data);
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         aResource.getResponse().setResponseData(dataBean);
         aResource.addAttibute("Timestamp", previous);
         Thread.sleep(100);

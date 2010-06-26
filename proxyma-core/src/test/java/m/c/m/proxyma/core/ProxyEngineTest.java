@@ -54,7 +54,7 @@ public class ProxyEngineTest extends TestCase {
         InvocationContext ic = sc.newInvocation( wreq );
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         ProxyEngine instance = proxyma.createNewProxyEngine(context);
         ProxyFolderBean folder = proxyma.createNewProxyFolder("google", "http://www.google.com", context);
         proxyma.registerProxyFolderIntoContext(folder, context);

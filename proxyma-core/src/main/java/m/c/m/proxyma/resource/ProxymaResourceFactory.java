@@ -32,7 +32,7 @@ public class ProxymaResourceFactory {
      * @return an resource that can be directly handled by the ProxyEngine.
      * @throws NullArgumentException if any of the passed parameters is null
      */
-    public ProxymaResource createNewResourceInstance(HttpServletRequest request, HttpServletResponse response, ProxymaContext context)
+    public ProxymaResource createNewResource(HttpServletRequest request, HttpServletResponse response, ProxymaContext context)
         throws NullArgumentException {
         ProxymaRequest proxymaRequest = new ProxymaServletRequest(request, context);
         ProxymaResponse proxymaResponse = new ProxymaServletResponse(response, context);

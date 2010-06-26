@@ -89,7 +89,7 @@ public class SimpleSerializerTest extends TestCase {
         dataBean.setStatus(200);
 
         dataBean.setData(data);
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         aResource.getResponse().setResponseData(dataBean);
 
         ResourceHandler serializer = new SimpleSerializer(context);
