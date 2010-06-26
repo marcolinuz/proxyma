@@ -74,7 +74,7 @@ public class URLRewriteEngineTest extends TestCase {
         System.out.println("masqueradeURL");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         aResource.setProxymaRootURI("http://localhost:8080/proxyma");
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/en", context);

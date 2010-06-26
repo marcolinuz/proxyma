@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 public class ProxymaResourceFactoryTest extends TestCase {
 
     /**
-     * Test of createNewResourceInstance method, of class ResourceFactory.
+     * Test of createNewResource method, of class ResourceFactory.
      */
     public void testCreateNewResourceInstance() throws IOException, SAXException {
         System.out.println("createNewResourceInstance");
@@ -48,7 +48,7 @@ public class ProxymaResourceFactoryTest extends TestCase {
         HttpServletRequest request = ic.getRequest();
         HttpServletResponse response = ic.getResponse();
         ProxymaResourceFactory factory = new ProxymaResourceFactory();
-        ProxymaResource instance = factory.createNewResourceInstance(request, response, context);
+        ProxymaResource instance = factory.createNewResource(request, response, context);
 
         //Test resource creation
         assertNotNull(instance);

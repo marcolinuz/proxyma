@@ -74,7 +74,7 @@ public class HttpRedirectsRewriteTransformerTest extends TestCase {
        System.out.println("process");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         HttpRedirectsRewriteTransformer instance = new HttpRedirectsRewriteTransformer(context);
 
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/it", context);

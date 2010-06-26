@@ -75,7 +75,7 @@ public class EhcacheCacheProviderTest extends TestCase {
         System.out.println("testing all methods");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         EhcacheCacheProvider instance = new EhcacheCacheProvider(context);
 
         //Create a testpage for the tests..

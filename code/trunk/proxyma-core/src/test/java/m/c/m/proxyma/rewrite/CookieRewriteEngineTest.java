@@ -76,7 +76,7 @@ public class CookieRewriteEngineTest extends TestCase {
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/en", context);
         proxyma.registerProxyFolderIntoContext(folder1, context);
         proxyma.registerProxyFolderIntoContext(folder2, context);
-        ProxymaResource aResource = proxyma.createNewResourceInstance(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         aResource.setProxymaRootURI("http://localhost:8080/proxyma");
         aResource.setProxyFolder(folder1);
         CookieRewriteEngine instance = new CookieRewriteEngine(context);
