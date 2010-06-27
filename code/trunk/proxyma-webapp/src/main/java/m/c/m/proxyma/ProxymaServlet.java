@@ -11,11 +11,25 @@ import m.c.m.proxyma.core.ProxyEngine;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
+ * <p>
+ * This is a simple servlet that uses the proxyma-core library to provide
+ * a multiple reverse proxy with URL Rewrite capabilities.
  *
- * @author shad0w
+ * NOTE: This is only the hook to the reverse-proxy engine. If you are looking
+ *       for proxyma intercafe take a look to the proxyma-console webapp.
+ * </p><p>
+ * NOTE: this software is released under GPL License.
+ *       See the LICENSE of this distribution for more informations.
+ * </p>
+ *
+ * @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
+ * @version $Id$
  */
 public class ProxymaServlet extends HttpServlet {
 
+    /**
+     * Initialize the servlet and the proxyma environment.
+     */
     public void init() {
         try {
             //Obtain configuration parameters..
@@ -44,6 +58,8 @@ public class ProxymaServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * This method uses the proxyma-core reverse proxy engine to serve the clients
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
