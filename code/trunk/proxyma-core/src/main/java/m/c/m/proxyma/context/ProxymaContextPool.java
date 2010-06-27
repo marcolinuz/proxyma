@@ -59,7 +59,7 @@ public class ProxymaContextPool {
             log.info("Context \"" + contextName + "\" already exists, returning it..");
             theNewContext = getContextByName(contextName);
         } else {
-            log.finest("Creatibg new context \"" + contextName + "\"");
+            log.finer("Creatibg new context \"" + contextName + "\"");
             theNewContext = new ProxymaContext(contextName, contextBaseURI, configurationFile, logsDirectory);
             proxymaContexts.put(contextName, theNewContext);
         }
@@ -88,7 +88,7 @@ public class ProxymaContextPool {
             log.warning("Context \"" + context.getName() + "\" doesn't exists.. operation aborted.");
             throw new IllegalArgumentException("Context \"" + context.getName() + "\" doesn't exists.. operation aborted.");
         } else {  
-            log.finest("Removing context \"" + context.getName() + "\" from the pool.");
+            log.finer("Removing context \"" + context.getName() + "\" from the pool.");
             proxymaContexts.remove(context.getName());
         }
     }
@@ -105,7 +105,7 @@ public class ProxymaContextPool {
     public ProxymaContext getContextByName(String contextName) {
         ProxymaContext retValue = null;
         if (proxymaContexts.containsKey(contextName)) {
-            log.finest("Context \"" + contextName + "\" found");
+            log.finer("Context \"" + contextName + "\" found");
             retValue = (ProxymaContext) proxymaContexts.get(contextName);
         } else {
             log.warning("Context \"" + contextName + "\" does not exixts.");

@@ -129,7 +129,7 @@ public class ProxyInternalResponsesFactory {
             boolean even = true;
             while (iter.hasNext()) {
                 ProxyFolderBean folder = iter.next();
-                log.finest("   adding folder \"" + folder.getFolderName() + "\" to the page..");
+                log.finer("   adding folder \"" + folder.getFolderName() + "\" to the page..");
                 String ruleRow = html_resource_row_template.replaceAll(proxyFolderName, folder.getFolderName());
                 ruleRow = ruleRow.replaceAll(proxyFolderURI, folder.getURLEncodedFolderName());
                 ruleRow = ruleRow.replaceAll(proxyDestination, folder.getDestinationAsString());
@@ -154,7 +154,7 @@ public class ProxyInternalResponsesFactory {
             e.printStackTrace();
             listPage = createErrorResponse(STATUS_SERVER_ERROR, context);
         }
-        log.finest("page creation done.");
+        log.finer("page creation done.");
 
         return listPage;
     }

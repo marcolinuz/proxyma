@@ -54,7 +54,7 @@ public class ProxymaResource {
         this.context = context;
         this.request = request;
         this.response = response;
-        log.finest("Created new eesource for context " + context.getName());
+        log.finer("Created new eesource for context " + context.getName());
     }
 
     /**
@@ -163,13 +163,13 @@ public class ProxymaResource {
      */
     public Object getAttribute(String anAttributeName) {
        Object retVal = null;
-       log.finest("Searching for attribute " + anAttributeName);
+       log.finer("Searching for attribute " + anAttributeName);
        if (anAttributeName == null) {
            log.warning("Null attribute name parameter.. Ignoring operation");
        } else if (attributes.containsKey(anAttributeName)) {
            retVal = attributes.get(anAttributeName);
        } else {
-           log.finest("Attribute " + anAttributeName + " not found.");
+           log.finer("Attribute " + anAttributeName + " not found.");
        }
        return retVal;
     }
@@ -189,10 +189,10 @@ public class ProxymaResource {
         } else {
             boolean exists = attributes.containsKey(attributeName);
             if (exists) {
-                log.finest("The attribute \"" + attributeName + "\" already exists.. overwriting it.");
+                log.finer("The attribute \"" + attributeName + "\" already exists.. overwriting it.");
                 attributes.remove(attributeName);
             } else {
-                log.finest("Adding new attribute " + attributeName);
+                log.finer("Adding new attribute " + attributeName);
             }
             attributes.put(attributeName, attributeValue);
         }
@@ -210,9 +210,9 @@ public class ProxymaResource {
         } else {
             boolean exists = attributes.containsKey(anAttributeName);
             if (!exists) {
-                log.finest("The attribute \"" + anAttributeName + "\" doesn't exists.. nothing done.");
+                log.finer("The attribute \"" + anAttributeName + "\" doesn't exists.. nothing done.");
             } else {
-                log.finest("Deleting existing attribute " + anAttributeName);
+                log.finer("Deleting existing attribute " + anAttributeName);
                 attributes.remove(anAttributeName);
             }
         }

@@ -94,9 +94,9 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         out.appendBytes(line, line.length);
 
         //Start writing client request data
-        log.finest("dumping request data..");
+        log.finer("dumping request data..");
         if (request != null) {
-            log.finest("dumping client request data..");
+            log.finer("dumping client request data..");
             line = ("\nCLIENT REQUEST DATA\n").getBytes(charsetEncoding);
             out.appendBytes(line, line.length);
             dumpRequestData(request, out, charsetEncoding, aResource);
@@ -104,7 +104,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
 
         //Write the original response data
         if (original != null) {
-            log.finest("dumping original response data..");
+            log.finer("dumping original response data..");
             line = ("\nORIGINAL RESPONSE DATA\n").getBytes(charsetEncoding);
             out.appendBytes(line, line.length);
             dumpResponseData(original, out, charsetEncoding);
@@ -112,7 +112,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
 
         //Check If there was a Cache Hit.
         if (aResource.getAttribute(CACHE_HIT_ATTRIBUTE) != null) {
-            log.finest("Cache Hit for this resource..");
+            log.finer("Cache Hit for this resource..");
             line = ("\n+++++++++++++++++++++++++++\n++++++ CACHE HIT!!! ++++++\n+++++++++++++++++++++++++++\n").getBytes(charsetEncoding);
             out.appendBytes(line, line.length);
         }
@@ -120,7 +120,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
 
         //Write processed response data
         if (processed != null) {
-            log.finest("dumping output response data..");
+            log.finer("dumping output response data..");
             line = ("\nPROCESSED RESPONSE DATA\n").getBytes(charsetEncoding);
             out.appendBytes(line, line.length);
             dumpResponseData(processed, out, charsetEncoding);
@@ -136,7 +136,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         //add the response data to the resource
         aResource.getResponse().setResponseData(debugPage);
 
-        log.finest("Debug page generation completed.");
+        log.finer("Debug page generation completed.");
       
         //Send the resource back to the client
         aResource.getResponse().sendDataToClient();

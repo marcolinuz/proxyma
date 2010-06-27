@@ -66,9 +66,9 @@ public class HttpRedirectsRewriteTransformer extends m.c.m.proxyma.plugins.trans
                         proxymaHost.append(newLocation);
                         newLocation = proxymaHost.toString();
                         location.setValue(newLocation);
-                        log.finest("Rewritten location target: " + newLocation);
+                        log.finer("Rewritten location target: " + newLocation);
                     } else {
-                        log.finest("Redirect to an external target not rewritten.");
+                        log.finer("Redirect to an external target not rewritten.");
                     }
                 }
                 break;

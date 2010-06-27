@@ -47,17 +47,17 @@ public class URLRewriteEngine {
         if (matcher.matches()) {
             //This is an absolute URL with schema://host[:potr]/and/path
             retVal = rewriteNetAbsoluteURL(theURL, aResource);
-            log.finest("Rewritten net absolute URL: " + theURL + " -> " + retVal);
+            log.finer("Rewritten net absolute URL: " + theURL + " -> " + retVal);
         } else {
             matcher = siteAbsoulteURLPattern.matcher(theURL);
             if(matcher.matches()) {
                 //This is a site absolute URL
                 retVal = rewriteSiteAbsoluteURL(theURL, aResource.getProxyFolder(), aResource.getProxymaRootURL().getPath());
-                 log.finest("Rewritten site absolute URL: " + theURL + " -> " + retVal);
+                 log.finer("Rewritten site absolute URL: " + theURL + " -> " + retVal);
             } else {
                 //This is a relative URL no rewriting is needed..
                 retVal = theURL;
-                log.finest("Relative URL: " + theURL + " not rewritten");
+                log.finer("Relative URL: " + theURL + " not rewritten");
             }
         }
 

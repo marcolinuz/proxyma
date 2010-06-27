@@ -59,7 +59,7 @@ public class CookieRewriteEngine {
         cookie.setPath(newPath.toString());
         cookie.setComment(originalDomainAndPath.toString());
 
-        log.finest("Masqueraded Cookie, old Host/domain=" + originalDomainAndPath.toString() +
+        log.finer("Masqueraded Cookie, old Host/domain=" + originalDomainAndPath.toString() +
                    " New Host/Domain=" + proxymaRootURL.getHost() + COMMENT_FIELDS_SEPARATOR + newPath.toString());
     }
 
@@ -73,7 +73,7 @@ public class CookieRewriteEngine {
         cookie.setDomain(originalValues[0]);
         cookie.setPath(originalValues[1]);
 
-        log.finest("Unmasqueraded Cookie, original Host/domain " + cookie.getComment() + " restored."); 
+        log.finer("Unmasqueraded Cookie, original Host/domain " + cookie.getComment() + " restored."); 
     }
 
     /**

@@ -108,9 +108,9 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
     private HttpURLConnection connectToServer(ProxymaResource aResource) {
         ProxymaRequest originalRequest = aResource.getRequest();
         String destination = composeURL(aResource);
-        log.finest("Target URL: " + destination);
+        log.finer("Target URL: " + destination);
         HttpURLConnection retVal = null;
-        log.finest("Connecting to the remote server..");
+        log.finer("Connecting to the remote server..");
         try {
             //Prepare the connection to the remote server
             URL theUrl = new URL(destination);
@@ -133,7 +133,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                     propertyValues = originalRequest.getHeaders(propertyName);
                     while (propertyValues.hasMoreElements()) {
                         propertyValue = propertyValues.nextElement();
-                        log.finest("Sending header: " + propertyName + "=" + propertyValue);
+                        log.finer("Sending header: " + propertyName + "=" + propertyValue);
                         retVal.addRequestProperty(propertyName, propertyValue);
                     }
                 }
@@ -151,7 +151,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                 Iterator iter = cookies.iterator();
                 while (iter.hasNext()) {
                     serializedCookie = (String) iter.next();
-                    log.finest("Sending Cookie: " + serializedCookie);
+                    log.finer("Sending Cookie: " + serializedCookie);
                     retVal.addRequestProperty(COOKIE_HEADER, serializedCookie);
                 }
             }
@@ -191,7 +191,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
             }
 
             //set the connection method
-            log.finest("Set Method: " + method);
+            log.finer("Set Method: " + method);
             retVal.setRequestMethod(method);
 
         } catch (IOException ex) {
@@ -297,7 +297,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
 
         //First of all, set the HTTP status code:
         int statusCode = urlConnection.getResponseCode();
-        log.finest("Setting response status to: " + statusCode);
+        log.finer("Setting response status to: " + statusCode);
         responseData.setStatus(statusCode);
 
         //now get all the headers
@@ -351,10 +351,10 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                         }
                     }
 
-                    log.finest("Setting Adding Cookie: " + theCookie.getName());
+                    log.finer("Setting Adding Cookie: " + theCookie.getName());
                     responseData.addCookie(theCookie);
                 } else {
-                    log.finest("Adding header: " + header + "=" + value);
+                    log.finer("Adding header: " + header + "=" + value);
                     responseData.addHeader(header, value);
                 }
             }

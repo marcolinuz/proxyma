@@ -149,7 +149,7 @@ public class ProxyEngineFactory {
             if (exists) {
                 log.warning("Cache provider \"" + providerImpl.getClass().getName() + "\" already registered.. nothing done.");
             } else {
-                log.finest("Adding cache provider " + providerImpl.getClass().getName());
+                log.finer("Adding cache provider " + providerImpl.getClass().getName());
                 availableCacheProviders.put(providerImpl.getClass().getName(), providerImpl);
             }
         }
@@ -171,7 +171,7 @@ public class ProxyEngineFactory {
                     if (exists) {
                         log.warning("Preprocessor \"" + pluginImpl.getClass().getName() + "\" already registered.. nothing done.");
                     } else {
-                        log.finest("Adding preprocessor " + pluginImpl.getClass().getName());
+                        log.finer("Adding preprocessor " + pluginImpl.getClass().getName());
                         pluginContainer.put(pluginImpl.getClass().getName(), pluginImpl);
                     }
                     break;
@@ -181,7 +181,7 @@ public class ProxyEngineFactory {
                     if (exists) {
                         log.warning("Retriver \"" + pluginImpl.getClass().getName() + "\" already registered.. nothing done.");
                     } else {
-                        log.finest("Adding retriver " + pluginImpl.getClass().getName());
+                        log.finer("Adding retriver " + pluginImpl.getClass().getName());
                         pluginContainer.put(pluginImpl.getClass().getName(), pluginImpl);
                     }
                     break;
@@ -191,7 +191,7 @@ public class ProxyEngineFactory {
                     if (exists) {
                         log.warning("Transformer \"" + pluginImpl.getClass().getName() + "\" already registered.. nothing done.");
                     } else {
-                        log.finest("Adding transformer " + pluginImpl.getClass().getName());
+                        log.finer("Adding transformer " + pluginImpl.getClass().getName());
                         pluginContainer.put(pluginImpl.getClass().getName(), pluginImpl);
                     }
                     break;
@@ -201,7 +201,7 @@ public class ProxyEngineFactory {
                     if (exists) {
                         log.warning("Serializer \"" + pluginImpl.getClass().getName() + "\" already registered.. nothing done.");
                     } else {
-                        log.finest("Adding serializer " + pluginImpl.getClass().getName());
+                        log.finer("Adding serializer " + pluginImpl.getClass().getName());
                         pluginContainer.put(pluginImpl.getClass().getName(), pluginImpl);
                     }
                     break;
