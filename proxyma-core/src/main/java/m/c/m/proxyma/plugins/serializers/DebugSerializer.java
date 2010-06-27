@@ -78,34 +78,49 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         debugPage.addHeader(SERVER_HEADER, aResource.getContext().getProxymaVersion());
 
         //Add Content-Type header
-        debugPage.addHeader(CONTENT_TYPE_HEADER, "text/html;charset="+charsetEncoding);
+        debugPage.addHeader(CONTENT_TYPE_HEADER, "text/plain;charset="+charsetEncoding);
 
         //Add headers for the cache providers to avoid to cache this resource
         debugPage.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
         debugPage.addHeader(PRAGMA_HEADER, NO_CACHE);
 
-        //Prepare the byte buffer with the page content.
+        //Prepare the byte buffer for the page content.
         ByteBuffer out = ByteBufferFactory.createNewByteBuffer(aResource.getContext());
 
-        //Start writing request data
-        log.finest("dumping request data..");
-        dumpRequestData(request, out, charsetEncoding, aResource);
+        //Start dumping page header
+        byte[] line = null;
+        String now = pageHeaderDateFormat.format(new Date());
+        line = ("***************  PROXYMA DUMP " + now + "  ***************\n").getBytes(charsetEncoding);
+        out.appendBytes(line, line.length);
 
-        //Dump the original response
+        //Start writing client request data
+        log.finest("dumping request data..");
+        if (request != null) {
+            log.finest("dumping client request data..");
+            line = ("\nCLIENT REQUEST DATA\n").getBytes(charsetEncoding);
+            out.appendBytes(line, line.length);
+            dumpRequestData(request, out, charsetEncoding, aResource);
+        }
+
+        //Write the original response data
         if (original != null) {
             log.finest("dumping original response data..");
-            byte[] line = ("\nORIGINAL RESPONSE DATA\n").getBytes(charsetEncoding);
+            line = ("\nORIGINAL RESPONSE DATA\n").getBytes(charsetEncoding);
             out.appendBytes(line, line.length);
             dumpResponseData(original, out, charsetEncoding);
         }
 
-        //Dump processed response
+        //Write processed response data
         if (processed != null) {
             log.finest("dumping output response data..");
-            byte[] line = ("\nPROCESSED RESPONSE DATA\n").getBytes(charsetEncoding);
+            line = ("\nPROCESSED RESPONSE DATA\n").getBytes(charsetEncoding);
             out.appendBytes(line, line.length);
             dumpResponseData(processed, out, charsetEncoding);
         }
+
+        //mark the end of the dump.
+        line = ("*************************  PROXYMA DUMP END  *************************\n").getBytes(charsetEncoding);
+        out.appendBytes(line, line.length);
 
         //add the buffer to the response
         debugPage.setData(out);
@@ -113,7 +128,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         //add the response data to the resource
         aResource.getResponse().setResponseData(debugPage);
 
-        log.finest("Debug page creation completed.");
+        log.finest("Debug page generation completed.");
       
         //Send the resource back to the client
         aResource.getResponse().sendDataToClient();
@@ -143,7 +158,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
 
     /**
      * Dump in text format the data of the passed response into the specified
-     * buffer using the wanted encoding.
+     * buffer using the provided encoding.
      *
      * @param response the response to dump
      * @param output the buffer to fill
@@ -162,8 +177,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
                                           ClassNotFoundException, IllegalAccessException, InstantiationException,
                                           InvocationTargetException {
         byte[] line = null;
-        String now = dateFormatter.format(new Date());
-
+        String now = pageHeaderDateFormat.format(new Date());
         line = ("\nStatus: " + response.getStatus() + "\n").getBytes(encoding);
         output.appendBytes(line, line.length);
 
@@ -199,7 +213,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         Iterator<Cookie> cookieIterator = response.getCookies().iterator();
         while (cookieIterator.hasNext()) {
             Cookie cookie = cookieIterator.next();
-            line = ("\tSet-Cookie: " + serializeCookie(cookie) + "\n").getBytes(encoding);
+            line = ("\t" + SET_COOKIE_HEADER + ": " + serializeCookie(cookie) + "\n").getBytes(encoding);
             output.appendBytes(line, line.length);
         }
 
@@ -220,7 +234,8 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
 
 
     /**
-     * Dump the request data in text format
+     * Dump in text format the request data into the provided buffer and using
+     * the specified encoding.
      *
      * @param request the original request
      * @param output the byteBuffer the will be the output of the serialization
@@ -231,19 +246,12 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
      */
     private void dumpRequestData(ProxymaRequest request, ByteBuffer output, String encoding, ProxymaResource aResource)
                                 throws UnsupportedEncodingException, IOException {
-        byte[] line = null;
-        String now = dateFormatter.format(new Date());
-
-        line = ("***************  PROXYMA DUMP " + now + "  ***************\n").getBytes(encoding);
-        output.appendBytes(line, line.length);
-
-        line = ("\nREQUEST DATA\n").getBytes(encoding);
-        output.appendBytes(line, line.length);
 
         ProxymaRequest theRequest = aResource.getRequest();
         StringBuffer requestedURL = new StringBuffer(aResource.getProxyFolder().getDestinationAsString());
         requestedURL.append(aResource.getDestinationSubPath());
-
+        byte[] line = null;
+        
         if (theRequest.getQueryString() != null) {
             requestedURL.append("?").append(theRequest.getQueryString());
         }
@@ -280,7 +288,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         if ((cookies != null) && (cookies.length > 0)) {
             for (int loop = 0; loop < cookies.length; loop++) {
                 String serializedCookie = serializeCookie(cookies[loop]);
-                line = ("\t" + SET_COOKIE_HEADER + ": " + serializedCookie + "\n").getBytes(encoding);
+                line = ("\t" + COOKIE_HEADER + ": " + serializedCookie + "\n").getBytes(encoding);
                 output.appendBytes(line, line.length);
             }
         }
@@ -305,7 +313,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
         int intVal = aCookie.getMaxAge();
         if (intVal > 0) {
             long exp = new Date().getTime() + (intVal * 1000);
-            strVal = dateFormat.format(new Date(exp));
+            strVal = cookieDateFormat.format(new Date(exp));
             currentCookie.append(COOKIE_TOKENS_DELIMITER);
             currentCookie.append(COOKIE_EXPIRES);
             currentCookie.append(strVal);
@@ -346,7 +354,12 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
     /**
      * The date formatter for the common logging format.
      */
-    private final Format dateFormatter = new SimpleDateFormat(" [dd/MMM/yyyy:HH:mm:ss Z] ");
+    private final Format pageHeaderDateFormat = new SimpleDateFormat("[dd/MMM/yyyy - HH:mm:ss Z]");
+
+    /**
+     * The standard date format for the cookies.
+     */
+    private final static SimpleDateFormat cookieDateFormat = new SimpleDateFormat("EEE, dd-MMM-yyyy hh:mm:ss z");
 
     /**
      * Attribute setted by this plugin into the resource to allof further inspections
@@ -433,11 +446,6 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
      * The cookie values standard delimiter
      */
     private final static String COOKIE_VALUE_DELIMITER = "=";
-
-    /**
-     * The standard date format for the cookies.
-     */
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd-MMM-yyyy hh:mm:ss z");
 
     /**
      * Size of the buffer to write data into the http response.
