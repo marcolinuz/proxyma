@@ -134,7 +134,7 @@ public class PerformanceTestSerializer extends m.c.m.proxyma.plugins.serializers
         }
 
         //Write if there was a cache hit
-        Object cacheHit = aResource.getAttribute("Cache-Hit");
+        Object cacheHit = aResource.getAttribute(CACHE_HIT_ATTRIBUTE);
         if (cacheHit != null)
             theRecord.append(" CACHE HIT!");
         theRecord.append("\n");
@@ -151,6 +151,12 @@ public class PerformanceTestSerializer extends m.c.m.proxyma.plugins.serializers
      * The date formatter for the common logging format.
      */
     private final Format dateFormatter = new SimpleDateFormat(" [dd/MMM/yyyy:HH:mm:ss Z] ");
+
+    /**
+     * The attribute name that will be stored into the resource
+     * on every cache-hit.
+     */
+    private static final String CACHE_HIT_ATTRIBUTE = "Cache-Hit";
 
     /**
      * The name of this plugin.
