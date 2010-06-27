@@ -47,10 +47,10 @@ public class ProxymaFacade {
      * @see ProxymaContext
      * @throws IllegalArgumentException if the context already exists
      */
-    public ProxymaContext createNewContext (String contextName, String contextBaseURI, String configFilePath) throws IllegalArgumentException {
+    public ProxymaContext createNewContext (String contextName, String contextBaseURI, String configFilePath, String logsDirectoryPath) throws IllegalArgumentException {
         ProxymaContext retValue = null;
         ProxymaContextPool pool = ProxymaContextPool.getInstance();
-        retValue = pool.registerNewContext(contextName, contextBaseURI, configFilePath);
+        retValue = pool.registerNewContext(contextName, contextBaseURI, configFilePath, logsDirectoryPath);
         return retValue;
     }
 

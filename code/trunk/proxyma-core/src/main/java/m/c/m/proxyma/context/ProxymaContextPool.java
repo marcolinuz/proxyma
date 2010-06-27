@@ -43,21 +43,24 @@ public class ProxymaContextPool {
 
     /**
      * Creates and register a new context into the pool.
+     * if the context name already exists it returns the existing one without
+     * create it.
      *
      * @param contextName a unique string that identifies the context
      * (use "default" if you don't understand what this means)
      * @param contextBaseURI The base URI to reach this context
      * @param configurationFile The configuration file for the context
-     * @throws IllegalArgumentException if the context already exists
+     *
+     * @return the created context or the existing context with the same name
      */
-    public ProxymaContext registerNewContext(String contextName, String contextBaseURI, String configurationFile) throws IllegalArgumentException {
+    public ProxymaContext registerNewContext(String contextName, String contextBaseURI, String configurationFile, String logsDirectory) {
         ProxymaContext theNewContext = null;
         if (proxymaContexts.containsKey(contextName)) {
-            log.warning("Context \"" + contextName + "\" already exists");
-            throw new IllegalArgumentException("Context \"" + contextName + "\" already exists");
+            log.info("Context \"" + contextName + "\" already exists, returning it..");
+            theNewContext = getContextByName(contextName);
         } else {
             log.finest("Creatibg new context \"" + contextName + "\"");
-            theNewContext = new ProxymaContext(contextName, contextBaseURI, configurationFile);
+            theNewContext = new ProxymaContext(contextName, contextBaseURI, configurationFile, logsDirectory);
             proxymaContexts.put(contextName, theNewContext);
         }
         return theNewContext;

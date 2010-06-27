@@ -31,7 +31,7 @@ public class ByteBufferFactoryTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
 
         ByteBuffer instance = ByteBufferFactory.createNewByteBuffer(context);
         assertNotNull(instance);
@@ -54,7 +54,7 @@ public class ByteBufferFactoryTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
 
         try {
             ByteBufferReader instance = ByteBufferFactory.createNewByteBufferReader(null);

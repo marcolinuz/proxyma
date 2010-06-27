@@ -46,18 +46,14 @@ public class ProxymaContextPoolTest extends TestCase {
         String contextURI = "/";
         String configurationFile = "src/test/resources/test-config.xml";
         ProxymaContextPool instance = ProxymaContextPool.getInstance();
-        ProxymaContext result = instance.registerNewContext(contextName, contextURI, configurationFile);
+        ProxymaContext result = instance.registerNewContext(contextName, contextURI, configurationFile, "/tmp/");
 
         //Testing context creation
         assertNotNull("Context not created.",result);
 
         //Testing double context registration
-        try {
-            ProxymaContext retry = instance.registerNewContext(contextName, contextURI, configurationFile);
-            fail("Exception not thrown");
-        } catch (IllegalArgumentException ex){
-            assertTrue(true);
-        }
+        ProxymaContext retry = instance.registerNewContext(contextName, contextURI, configurationFile, "/tmp/");
+        assertSame(result, retry);
 
         //cleanup pool
         try {
@@ -76,7 +72,7 @@ public class ProxymaContextPoolTest extends TestCase {
         String contextPath = "/";
         String configurationFile = "src/test/resources/test-config.xml";
         ProxymaContextPool instance = ProxymaContextPool.getInstance();
-        ProxymaContext result = instance.registerNewContext(contextName, contextPath, configurationFile);
+        ProxymaContext result = instance.registerNewContext(contextName, contextPath, configurationFile, "/tmp/");
         ProxyFolderBean bean = null;
 
         //Testing context creation
@@ -92,7 +88,7 @@ public class ProxymaContextPoolTest extends TestCase {
 
         //Testing remove unregistered context
         try {
-            ProxymaContext unregistered = new ProxymaContext ("testContext", contextPath, configurationFile);
+            ProxymaContext unregistered = new ProxymaContext ("testContext", contextPath, configurationFile, "/tmp/");
             instance.unregisterContext(unregistered);
             fail("Exception not thrown");
         } catch (IllegalArgumentException ex){
@@ -130,7 +126,7 @@ public class ProxymaContextPoolTest extends TestCase {
         String contextPath = "/";
         String configurationFile = "src/test/resources/test-config.xml";
         ProxymaContextPool instance = ProxymaContextPool.getInstance();
-        ProxymaContext newContext = instance.registerNewContext(contextName, contextPath, configurationFile);
+        ProxymaContext newContext = instance.registerNewContext(contextName, contextPath, configurationFile, "/tmp/");
 
 
         //Testing loaded context

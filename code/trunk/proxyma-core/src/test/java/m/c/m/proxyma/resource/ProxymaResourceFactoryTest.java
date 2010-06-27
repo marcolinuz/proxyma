@@ -37,7 +37,7 @@ public class ProxymaResourceFactoryTest extends TestCase {
 
          //Prepare the environment..
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ServletRunner sr = new ServletRunner();
         sr.registerServlet( "myServlet", TestServlet.class.getName() );
         ServletUnitClient sc = sr.newClient();
