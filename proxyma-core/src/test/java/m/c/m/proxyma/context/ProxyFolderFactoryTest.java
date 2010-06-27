@@ -32,7 +32,7 @@ public class ProxyFolderFactoryTest extends TestCase {
         String proxyFolderName = "default";
         String proxyFolderDestination = "http://www.google.com";
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ProxyFolderBean expResult = null;
 
         try {

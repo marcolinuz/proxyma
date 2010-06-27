@@ -40,7 +40,7 @@ public class PerformanceTestSerializer extends m.c.m.proxyma.plugins.serializers
         String configXpath = ProxymaTags.AVAILABLE_SERIALIZERS + "[@class='" + this.getClass().getName() + "']";
              
         //Get configuration files direxctives
-        String performanceLogDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR);
+        String performanceLogDirectory = context.getLogsDirectoryPath();
         int maxLogSize = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@performanceLogMaxLinesPerFile"));
         int logRetention = Integer.parseInt(context.getSingleValueParameter(configXpath+"/@performanceLogRetentionPolicy"));
 

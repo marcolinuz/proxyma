@@ -42,7 +42,7 @@ public class ProxyEngineFactoryTest extends TestCase {
         Iterator iter = null;
         System.out.println("ProxyEngineFactory");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         try {
             instance = proxyma.createNewProxyEngine(context);
         } catch (IllegalAccessException ex) {

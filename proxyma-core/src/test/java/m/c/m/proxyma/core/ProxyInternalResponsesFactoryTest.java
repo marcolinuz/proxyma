@@ -36,7 +36,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
     public void testCreateRedirectResponse() {
         System.out.println("createRedirectResponse");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ProxymaResponseDataBean instance = null;
 
         String destination = "htpo:/inv,alid.url/";
@@ -73,7 +73,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
     public void testCreateErrorResponse() {
         System.out.println("createErrorResponse");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ProxymaResponseDataBean instance = null;
 
         int code = 500;
@@ -98,7 +98,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
     public void testcreateFoldersListResponse() throws IllegalArgumentException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException {
         System.out.println("createFoldersListResponse");
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ProxyFolderBean folder =  proxyma.createNewProxyFolder("GoogleFolder", "http://www.google.com", context);
         proxyma.registerProxyFolderIntoContext(folder, context);
         folder = proxyma.createNewProxyFolder("AppleFolder", "http://www.apple.com", context);

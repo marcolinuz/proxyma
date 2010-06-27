@@ -240,10 +240,10 @@ public class ProxyInternalResponsesFactory {
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
             "<html>\n" +
             "<head><title>Proxyma Available Resources:</title><style type=\"text/css\">td{font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small;}</style></head>\n" +
-            "<body><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"medium\"><b>Available Rules:</b><hr/>\n" +
+            "<body><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"medium\"><b>Available Destinations:</b><hr/>\n" +
             "<table align=\"center\" width=\"95%\">\n" +
             "<tr bgcolor=\"#bacaff\">\n" +
-            "<td width=\"20%\" align=\"left\"><b>Resource</b></td>" +
+            "<td width=\"20%\" align=\"left\"><b>Proxy-Folder</b></td>" +
             "<td width=\"65%\" align=\"left\"><b>Masqueraded Resource</b></td>" +
             "<td width=\"15%\" align=\"center\"><b>status</b></td>\n" +
             "</tr>\n";

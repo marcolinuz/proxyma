@@ -1,6 +1,5 @@
 package m.c.m.proxyma.context;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,11 +29,20 @@ import org.apache.commons.lang.NullArgumentException;
  * @version $Id$
  */
 public class ProxymaContext {
-    public ProxymaContext (String contextName, String contextBaseURI, String configurationFile) {
+    /**
+     * Default constructor for this Class
+     *
+     * @param contextName the name of the context to create
+     * @param contextBaseURI Base URI of the context
+     * @param configurationFile proxyma configuration file to load
+     * @param logsDirectoryPath directory where to write all the logs
+     */
+    public ProxymaContext (String contextName, String contextBaseURI, String configurationFile, String logsDirectoryPath) {
         // Initialize private attributes
         try {
             this.contextName = contextName;
             this.contextBasePath = contextBaseURI;
+            this.logsDirectoryPath = logsDirectoryPath;
             proxyFoldersByName = new ConcurrentHashMap<String, ProxyFolderBean>();
             proxyFoldersByDestinationHost = new ConcurrentHashMap<String, LinkedList<ProxyFolderBean>>();
             config = new XMLConfiguration(configurationFile);
@@ -44,7 +52,7 @@ public class ProxymaContext {
                 String name = ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + contextName;
                 this.log = Logger.getLogger(name);
 
-                String logFile = getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + contextName + ".log";
+                String logFile = logsDirectoryPath + contextName + ".log";
                 String level = getSingleValueParameter(ProxymaTags.GLOBAL_LOGLEVEL);
                 int maxSize = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILE_MAXSIZE));
                 int retention = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_RETENTION));
@@ -299,6 +307,14 @@ public class ProxymaContext {
     }
 
     /**
+     * Returns the path of the logs directory for this context.
+     * @return the directory of the logs.
+     */
+    public String getLogsDirectoryPath () {
+        return logsDirectoryPath;
+    }
+
+    /**
      * The context name.
      */
     private String contextName = null;
@@ -329,6 +345,11 @@ public class ProxymaContext {
      * The logger for this class
      */
     private Logger log = null;
+
+    /**
+     * The main directory where the logs for this context will be written.
+     */
+    private String logsDirectoryPath = null;
 
     /**
      * The default encodig to use to encode/decode URLs and for html parsing

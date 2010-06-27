@@ -45,7 +45,7 @@ public class PerformanceTestSerializerTest extends TestCase {
         super.setUp();
         //Prepare the environment..
         ProxymaFacade proxyma = new ProxymaFacade();
-        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml");
+        ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ServletRunner sr = new ServletRunner();
         sr.registerServlet( "myServlet", TestServlet.class.getName() );
         ServletUnitClient sc = sr.newClient();
@@ -102,7 +102,7 @@ public class PerformanceTestSerializerTest extends TestCase {
         assertFalse(dataBean.containsHeader("X-Forwarded-For"));
         assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
 
-        String logsDirectory = context.getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_DIR) + context.getName() + "-performance.log";
+        String logsDirectory = context.getLogsDirectoryPath() + context.getName() + "-performance.log";
         File log = new File(logsDirectory);
         assertTrue(log.exists());
     }

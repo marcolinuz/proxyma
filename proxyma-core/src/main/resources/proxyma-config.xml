@@ -44,8 +44,7 @@
                             PS: Do not forget the tailing slash "/"
              maxLinesPerFile: maximun number of lines for each log file
              retentionPolicy: maximum number of old log files to keep on the disk -->
-        <logging level="INFO" directoryPath="/tmp/"
-                 maxLinesPerFile="500000" retentionPolicy="5" />
+        <logging level="INFO" maxLinesPerFile="500000" retentionPolicy="5" />
     </global>
     
     <!-- This element defines the settings for the new ProxyFolders
@@ -69,7 +68,7 @@
         </folderSettings>
     </defaultContext>
 
-    <!-- The following is a list of plugins that comes with the
+    <!-- The following list is a collection of plugins that comes with the
          standard release of Proxyma. You can add to these lists
          your own plugins.. you only have to implement them using
          the proper interface. ;O)
