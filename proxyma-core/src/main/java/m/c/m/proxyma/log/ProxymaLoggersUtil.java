@@ -1,5 +1,6 @@
 package m.c.m.proxyma.log;
 
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -39,15 +40,19 @@ public class ProxymaLoggersUtil {
                 if (handlers[index] instanceof FileHandler) {
                     foundFileHandler = true;
                 }
+            
+                if (handlers[index] instanceof ConsoleHandler) {
+                    logger.removeHandler(handlers[index]);
+                }
             }
             if (!foundFileHandler) {
                 // no handler found
                 Logger.getLogger("").info("Setting up a new custom logger \"" + logger.getName() + "\" with output file " + fileName);
                 FileHandler fileHandler = new FileHandler(fileName, maxLogSize, logRetention);
-                fileHandler.setLevel(Level.INFO);
+                fileHandler.setLevel(Level.FINEST);
                 fileHandler.setFormatter(new OnlyTheMessageFormatter());
                 logger.addHandler(fileHandler);
-                logger.setLevel(Level.INFO);
+                logger.setLevel(Level.FINEST);
             }
         } catch (Throwable t) {
             Logger.getLogger("").severe("Unexpected Error setting up new log level for logger: " + logger.getName() + " \n" + t);
@@ -75,6 +80,10 @@ public class ProxymaLoggersUtil {
                 if (handlers[index] instanceof FileHandler) {
                     handlers[index].setLevel(Level.parse(logLevel));
                     foundFileHandler = true;
+                }
+
+                if (handlers[index] instanceof ConsoleHandler) {
+                    logger.removeHandler(handlers[index]);
                 }
             }
             if (!foundFileHandler) {

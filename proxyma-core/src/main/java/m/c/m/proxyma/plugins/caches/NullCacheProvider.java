@@ -40,7 +40,7 @@ public class NullCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProv
      */
     @Override
     public void storeResponseDataIfCacheable(ProxymaResource aResource) {
-        log.finest("Null cache cant't store responses..");
+        log.finer("Null cache cant't store responses..");
     }
 
     /**
@@ -50,7 +50,7 @@ public class NullCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProv
      */
     @Override
     public boolean getResponseData(ProxymaResource aResource) {
-        log.finest("Null cache cant't get any respones..");
+        log.finer("Null cache cant't get any respones..");
         return false;
     }
 
@@ -60,7 +60,7 @@ public class NullCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProv
      */
     @Override
     public Collection<String> getCachedURIs() {
-        log.finest("Null cache always returns an empty collection..");
+        log.finer("Null cache always returns an empty collection..");
         return new LinkedList();
     }
 
@@ -70,7 +70,7 @@ public class NullCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProv
      */
     @Override
     public String getStatistics() {
-        log.finest("Null cache doesn't provide statistics..");
+        log.finer("Null cache doesn't provide statistics..");
         return "Null cache doesn't provide statistics..";
     }
 

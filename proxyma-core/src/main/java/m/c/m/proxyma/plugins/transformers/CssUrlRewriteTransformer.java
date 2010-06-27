@@ -193,7 +193,7 @@ public class CssUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformers
         
         //Perform the urls substitution..
         while (linksMatcher.find()) {
-            log.finest("Found link directive: " + linksMatcher.group(1));
+            log.finer("Found link directive: " + linksMatcher.group(1));
             linksMatcher.appendReplacement(retVal, replaceCssURL(linksMatcher.group(1), aResource));
         }
         linksMatcher.appendTail(retVal);
@@ -211,7 +211,7 @@ public class CssUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformers
     private String replaceCssURL (String theUrl, ProxymaResource aResouce) {
         StringBuffer retValue = new StringBuffer(128);
         retValue.append("url(").append(rewriter.masqueradeURL(theUrl, aResouce)).append(")");
-        log.finest("Rewritten link directive to: " + retValue.toString());
+        log.finer("Rewritten link directive to: " + retValue.toString());
         return retValue.toString();
     }
 

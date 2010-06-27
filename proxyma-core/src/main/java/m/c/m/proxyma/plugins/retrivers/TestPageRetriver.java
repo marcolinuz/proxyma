@@ -77,7 +77,7 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
         //add the response data to the resource
         aResource.getResponse().setResponseData(listPage);
 
-        log.finest("Test page creation completed.");
+        log.finer("Test page creation completed.");
     }
     
     /**

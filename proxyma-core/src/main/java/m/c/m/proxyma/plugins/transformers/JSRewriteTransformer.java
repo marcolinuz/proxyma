@@ -217,7 +217,7 @@ public class JSRewriteTransformer extends m.c.m.proxyma.plugins.transformers.Abs
         
         //Perform the urls substitution..
         while (linksMatcher.find()) {
-            log.finest("Found URL: " + linksMatcher.group(1));
+            log.finer("Found URL: " + linksMatcher.group(1));
             linksMatcher.appendReplacement(retVal, replaceJSURL(linksMatcher.group(1), aResource));
         }
         linksMatcher.appendTail(retVal);
@@ -244,7 +244,7 @@ public class JSRewriteTransformer extends m.c.m.proxyma.plugins.transformers.Abs
         retValue.append(rewriter.masqueradeURL(theUrl, aResouce));
         retValue.append("'");
 
-        log.finest("Rewritten URL to: " + retValue.toString());
+        log.finer("Rewritten URL to: " + retValue.toString());
         return retValue.toString();
     }
 

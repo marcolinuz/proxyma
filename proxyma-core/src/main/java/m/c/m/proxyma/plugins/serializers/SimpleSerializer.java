@@ -50,7 +50,7 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
 
         //Set up the access-log logger
         accessLog = Logger.getLogger(ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + context.getName() + ".access");
-        String logFilePath = logsDirectory + context.getName() + "-access.log";
+        String logFilePath = logsDirectory + "proxyma-" + context.getName() + "-access.log";
         ProxymaLoggersUtil.initializeCustomLogger(accessLog, logFilePath, maxLogSize, logRetention);
     }
 
@@ -73,7 +73,7 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         int statusCode = aResource.getResponse().sendDataToClient();
         
         //Writes the record into the access-log file
-        accessLog.info(generateExtendedAccessLog(aResource, statusCode));
+        accessLog.finest(generateExtendedAccessLog(aResource, statusCode));
     }
 
     /**
@@ -145,12 +145,14 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
         theRecord.append("\"");
         theRecord.append(folder==null?aResource.getProxymaRootURLAsString():folder.getDestinationAsString());
         theRecord.append(aResource.getDestinationSubPath()==null?EMPTY_STRING:aResource.getDestinationSubPath());
-        theRecord.append("\" \"");
 
-        //Add informations about the client browser
-        String userAgent = request.getHeader("User-Agent");
-        theRecord.append(userAgent == null ? "User-Agent not provided." : userAgent);
-        theRecord.append("\"");
+        /* NOTE: Log the User Agent is not a good idea.. but if you really want 
+           it, you can do it by uncommenting the following 3 lines...   */
+        //theRecord.append("\" \"");
+        //String userAgent = request.getHeader("User-Agent");
+        //theRecord.append(userAgent == null ? "User-Agent not provided." : userAgent);
+
+        theRecord.append("\"\n");
 
         return theRecord.toString();
     }

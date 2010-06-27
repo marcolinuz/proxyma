@@ -52,7 +52,7 @@ public class ProxymaContext {
                 String name = ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + contextName;
                 this.log = Logger.getLogger(name);
 
-                String logFile = logsDirectoryPath + contextName + ".log";
+                String logFile = logsDirectoryPath + "proxyma-" + contextName + ".log";
                 String level = getSingleValueParameter(ProxymaTags.GLOBAL_LOGLEVEL);
                 int maxSize = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILE_MAXSIZE));
                 int retention = Integer.parseInt(getSingleValueParameter(ProxymaTags.GLOBAL_LOGFILES_RETENTION));
@@ -73,13 +73,13 @@ public class ProxymaContext {
      */
     public ProxyFolderBean getProxyFolderByURLEncodedName(String proxyFolderURLEncodedName) {
        ProxyFolderBean retVal = null;
-       log.finest("Searching for Proxy folder " + proxyFolderURLEncodedName);
+       log.finer("Searching for Proxy folder " + proxyFolderURLEncodedName);
        if (proxyFolderURLEncodedName == null) {
            log.warning("Null proxyFolderName parameter.. Ignoring operation");
        } else if (proxyFoldersByName.containsKey(proxyFolderURLEncodedName)) {
            retVal = proxyFoldersByName.get(proxyFolderURLEncodedName);
        } else {
-           log.finest("Proxy folder " + proxyFolderURLEncodedName + " not found.");
+           log.finer("Proxy folder " + proxyFolderURLEncodedName + " not found.");
        }
        return retVal;
     }
@@ -92,13 +92,13 @@ public class ProxymaContext {
      */
     public Collection<ProxyFolderBean> getProxyFolderByDestinationHost(String proxyFolderDestinationHost) {
        LinkedList retVal = null;
-       log.finest("Searching for Proxy folder destination host " + proxyFolderDestinationHost);
+       log.finer("Searching for Proxy folder destination host " + proxyFolderDestinationHost);
        if (proxyFolderDestinationHost == null) {
            log.warning("Null proxyFolderDestination parameter.. Ignoring operation");
        } else if (proxyFoldersByDestinationHost.containsKey(proxyFolderDestinationHost)) {
            retVal = proxyFoldersByDestinationHost.get(proxyFolderDestinationHost);
        } else {
-           log.finest("Proxy folder destination host " + proxyFolderDestinationHost + " not found.");
+           log.finer("Proxy folder destination host " + proxyFolderDestinationHost + " not found.");
        }
        return retVal;
     }
@@ -120,7 +120,7 @@ public class ProxymaContext {
                 log.warning("The Proxy foder already exists.. nothing done.");
                 throw new IllegalArgumentException("The Proxy foder already exists.. nothing done.");
             } else {
-                log.finest("Adding Proxy folder " + proxyFolder.getFolderName());
+                log.finer("Adding Proxy folder " + proxyFolder.getFolderName());
                 proxyFoldersByName.put(proxyFolder.getFolderName(), proxyFolder);
 
                 //add the proxy-folder to the second indexing map.
@@ -154,7 +154,7 @@ public class ProxymaContext {
                 log.warning("The Proxy foder doesn't exists.. nothing done.");
                 throw new IllegalArgumentException("The Proxy foder doesn't exists.. nothing done.");
             } else {
-                log.finest("Deleting existing Proxy folder " + proxyFolder.getFolderName());
+                log.finer("Deleting existing Proxy folder " + proxyFolder.getFolderName());
                 proxyFoldersByName.remove(proxyFolder.getFolderName());
 
                 //Delete the proxy-folder from the second indexing map.
@@ -202,7 +202,7 @@ public class ProxymaContext {
      */
     public String getSingleValueParameter(String parameterXPath) {
         String retVal = config.getString(parameterXPath);
-        log.finest("Getting single value of parameter on " + parameterXPath + ": " + retVal);
+        log.finer("Getting single value of parameter on " + parameterXPath + ": " + retVal);
         return retVal;
     }
 
@@ -221,7 +221,7 @@ public class ProxymaContext {
         } else if (retValue.isEmpty()) {
             log.warning("Parameter on " + parameterXPath + " do not have any value");
         } else {
-            log.finest("Multiple value parameter on " + parameterXPath + " loaded [" + retValue.size() + " elements]");
+            log.finer("Multiple value parameter on " + parameterXPath + " loaded [" + retValue.size() + " elements]");
         }
         return retValue;
     }

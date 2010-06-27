@@ -123,7 +123,7 @@ public class ProxyEngine {
                 
                 //Set the matched proxyFolder into the resource
                 aResource.setProxyFolder(folder);
-                log.finest("Destination URL: " + folder.getDestinationAsString());
+                log.finer("Destination URL: " + folder.getDestinationAsString());
 
                 //Set the destination subpath into the resource
                 aResource.setDestinationSubPath(subPath.replaceFirst(PATH_SEPARATOR+URLEncodedProxyFolder, EMPTY_STRING));
@@ -137,7 +137,7 @@ public class ProxyEngine {
                     configuredPlugins = folder.getPreprocessors();
                     while (configuredPlugins.hasNext()) {
                         plugin = availablePreprocessors.get(configuredPlugins.next());
-                        log.finest("Applying preprocessor: " + plugin.getName());
+                        log.finer("Applying preprocessor: " + plugin.getName());
                         plugin.process(aResource);
                     }
 
@@ -148,14 +148,14 @@ public class ProxyEngine {
                         // *** The resource is not present into the cache **
                         //Go to retrive it using the folder-specific retriver
                         plugin = availableRetrivers.get(folder.getRetriver());
-                        log.finest("Getting resource with the "+ plugin.getName());
+                        log.finer("Getting resource with the "+ plugin.getName());
                         plugin.process(aResource);
 
                         //Apply the folder-specific transformer in registration order
                         configuredPlugins = folder.getTransformers();
                         while (configuredPlugins.hasNext()) {
                             plugin = availableTransformers.get(configuredPlugins.next());
-                            log.finest("Applying transformer: " + plugin.getName());
+                            log.finer("Applying transformer: " + plugin.getName());
                             plugin.process(aResource);
                         }
 
@@ -165,7 +165,7 @@ public class ProxyEngine {
 
                     //Finally pass the resource to the folder-specific serializer
                     plugin = availableSerializers.get(folder.getSerializer());
-                    log.finest("Serializing the resource with the " + plugin.getName());
+                    log.finer("Serializing the resource with the " + plugin.getName());
                     retValue = aResource.getResponse().getResponseData().getStatus();
                     plugin.process(aResource);
 

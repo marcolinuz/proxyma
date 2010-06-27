@@ -66,11 +66,11 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
     public void storeResponseDataIfCacheable(ProxymaResource aResource) {
         ProxymaRequest theRequest = aResource.getRequest();
         if (isCacheable(aResource.getResponse().getResponseData())) {
-            log.finest("The resource is cacheable.. storing it into the cache");
+            log.finer("The resource is cacheable.. storing it into the cache");
             Element element = new Element(calculateKey(aResource), aResource.getResponse().getResponseData());
             theCache.put(element);
         } else {
-            log.finest("The resource is not cacheable.. nothing done.");
+            log.finer("The resource is not cacheable.. nothing done.");
         }
     }
 
@@ -264,7 +264,7 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
                 ehCacheManager.addCache(context.getName());
                 Cache addedCache = ehCacheManager.getCache(context.getName());
                 addedCache.setStatisticsAccuracy(Statistics.STATISTICS_ACCURACY_BEST_EFFORT);
-                log.info("Ehcahe subsystem for context \"" + context.getName() + "\"initialized..");
+                log.info("Ehcahe subsystem for context \"" + context.getName() + "\" initialized..");
             }
         } catch (UnsupportedEncodingException ex) {
             log.log(Level.SEVERE, "Unable to initialize ehcache subsystem!", ex);

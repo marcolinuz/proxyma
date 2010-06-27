@@ -49,7 +49,7 @@ public class ProxyFolderBean implements Serializable {
         this.preprocessors = new ConcurrentLinkedQueue<String>();
         this.transformers = new ConcurrentLinkedQueue<String>();
     
-        log.finest("ProxyFolder " + folderName + " for " + destination + "created.");
+        log.finer("ProxyFolder " + folderName + " for " + destination + "created.");
     }
 
     /**
@@ -280,7 +280,7 @@ public class ProxyFolderBean implements Serializable {
             } else if (preprocessors.contains(preprocessorClassName)) {
                 log.warning("The preprocessor \"" + preprocessorClassName + "\" is already registered in proxy folder \"" + getFolderName() + "\".. nothing done.");
             } else {
-                log.finest("Registering new preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
+                log.finer("Registering new preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
                 preprocessors.add(preprocessorClassName);
             }
         }
@@ -296,7 +296,7 @@ public class ProxyFolderBean implements Serializable {
         } else {
             preprocessorClassName = preprocessorClassName.trim();
             if (preprocessors.contains(preprocessorClassName)) {
-                log.finest("Unregistering preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
+                log.finer("Unregistering preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
                 preprocessors.remove(preprocessorClassName);
             } else {
                 log.warning("Preprocessor \"" + preprocessorClassName + "\" not present in proxy folder \""+ getFolderName() + "\".. nothing done.");
@@ -326,7 +326,7 @@ public class ProxyFolderBean implements Serializable {
             } else if (transformers.contains(transformerClassName)) {
                 log.warning("The transformer \"" + transformerClassName + "\" is already registered in proxy folder \"" + getFolderName() + "\".. nothing done.");
             } else {
-                log.finest("Registering new transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
+                log.finer("Registering new transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
                 transformers.add(transformerClassName);
             }
         }
@@ -342,7 +342,7 @@ public class ProxyFolderBean implements Serializable {
         } else {
             transformerClassName = transformerClassName.trim();
             if (transformers.contains(transformerClassName)) {
-                log.finest("Unregistering transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
+                log.finer("Unregistering transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
                 transformers.remove(transformerClassName);
             } else {
                 log.warning("Transformer \"" + transformerClassName + "\" not present in proxy folder \""+ getFolderName() + "\".. nothing done.");

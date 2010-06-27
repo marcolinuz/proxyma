@@ -60,7 +60,7 @@ public class ProxymaServletResponse extends ProxymaResponse {
             throw new IllegalStateException("This respone has been already sent to the client.");
         }
         else {
-            log.finest("Start sending the response to the client..");
+            log.finer("Start sending the response to the client..");
             sendingData();
         }
 
@@ -93,7 +93,7 @@ public class ProxymaServletResponse extends ProxymaResponse {
         theResponse.setStatus(exitStatus);
 
         //set all the headers of the response data into the http servlet response..
-        log.finest("Sending headers..");
+        log.finer("Sending headers..");
         Iterator<String> stringIterarot = responseData.getHeaderNames().iterator();
         String headerName = null;
         ProxymaHttpHeader header = null;
@@ -116,7 +116,7 @@ public class ProxymaServletResponse extends ProxymaResponse {
         }
 
         //set the cookies into the http servlet response.
-        log.finest("Sending cookies..");
+        log.finer("Sending cookies..");
         Iterator<Cookie> cookieIterator = responseData.getCookies().iterator();
         while (cookieIterator.hasNext()) {
             theResponse.addCookie(cookieIterator.next());
@@ -125,7 +125,7 @@ public class ProxymaServletResponse extends ProxymaResponse {
         //Serialize the data of the ByteBuffer into the servlet response..
         if (responseData.getData() != null) {
             BufferedOutputStream bos = null;
-            log.finest("Sending data..");
+            log.finer("Sending data..");
             try {
                 bos = new BufferedOutputStream(theResponse.getOutputStream());
                 ByteBufferReader data = ByteBufferFactory.createNewByteBufferReader(responseData.getData());

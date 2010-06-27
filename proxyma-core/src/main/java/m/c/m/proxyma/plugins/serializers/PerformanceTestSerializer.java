@@ -46,7 +46,7 @@ public class PerformanceTestSerializer extends m.c.m.proxyma.plugins.serializers
 
         //Set up the access-log logger
         performanceLog = Logger.getLogger(ProxymaTags.DEFAULT_LOGGER_PREFIX + "." + context.getName() + ".performances");
-        String logFilePath = performanceLogDirectory + context.getName() + "-performance.log";
+        String logFilePath = performanceLogDirectory + "proxyma-" + context.getName() + "-performance.log";
         ProxymaLoggersUtil.initializeCustomLogger(performanceLog, logFilePath, maxLogSize, logRetention);
     }
 
@@ -62,7 +62,7 @@ public class PerformanceTestSerializer extends m.c.m.proxyma.plugins.serializers
 
         //Write the performance log
         String logRecord = generatePerformancesLog(aResource);
-        performanceLog.info(logRecord);
+        performanceLog.finest(logRecord);
     }
 
     /**

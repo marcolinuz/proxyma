@@ -57,7 +57,7 @@ public class CookiesRewriteTransformer extends m.c.m.proxyma.plugins.transformer
             currentCookie = responseCookies.next();
             log.fine("Rewriting Cookie: " + currentCookie.getName());
             rewriter.masqueradeCookie(currentCookie, aResource);
-            log.finest("Rewritten cookie, original domain/path: " + currentCookie.getComment());
+            log.finer("Rewritten cookie, original domain/path: " + currentCookie.getComment());
         }
     }
 
