@@ -110,6 +110,14 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
             dumpResponseData(original, out, charsetEncoding);
         }
 
+        //Check If there was a Cache Hit.
+        if (aResource.getAttribute(CACHE_HIT_ATTRIBUTE) != null) {
+            log.finest("Cache Hit for this resource..");
+            line = ("\n+++++++++++++++++++++++++++\n++++++ CACHE HIT!!! ++++++\n+++++++++++++++++++++++++++\n").getBytes(charsetEncoding);
+            out.appendBytes(line, line.length);
+        }
+
+
         //Write processed response data
         if (processed != null) {
             log.finest("dumping output response data..");
@@ -228,7 +236,7 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
                 output.appendBytes(buffer, count);
         }
 
-        line = ("\n----8<----8<----8<----8<----8<----8<----\n").getBytes(encoding);
+        line = ("\n----8<----8<----8<----8<----8<----8<----\n\n\n").getBytes(encoding);
         output.appendBytes(line, line.length);
     }
 
@@ -366,6 +374,13 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
      * on the original retrived tata from subsequent plugins.
      */
     private static final String ORIGINAL_RESPONSE_ATTRIBUTE = "Original-Response";
+
+    /**
+     * The attribute name that will be stored into the resource
+     * on every cache-hit.
+     */
+    private static final String CACHE_HIT_ATTRIBUTE = "Cache-Hit";
+
 
      /**
      * Standard status code for a successfull response

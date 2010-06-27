@@ -85,7 +85,7 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
         boolean retValue = false;
         Element elem = theCache.get(calculateKey(aResource));
         if (elem != null) {
-            aResource.addAttibute(cacheHitAttribute, "Cache Hit!");
+            aResource.addAttibute(CACHE_HIT_ATTRIBUTE, "Cache Hit!");
             aResource.getResponse().setResponseData((ProxymaResponseDataBean) elem.getValue());
             retValue = true;
         }
@@ -340,7 +340,7 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
      * The attribute name that will be stored into the resource
      * on every cache-hit.
      */
-    private static final String cacheHitAttribute = "Cache-Hit";
+    private static final String CACHE_HIT_ATTRIBUTE = "Cache-Hit";
 
     /**
      * an empty string..
