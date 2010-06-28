@@ -65,7 +65,7 @@ public class ProxyEngine {
         aResource.setProxymaRootURI(getProxymaRootURI(request));
 
         // *** Try to understand what kind of request was come and if it belongs to any proxyFolder ***
-        String subPath = request.getRequestURI().replace(request.getContextPath(), EMPTY_STRING);
+        String subPath = request.getRequestURI().replace(request.getServletContextPath(), EMPTY_STRING);
         ProxymaResponseDataBean responseData = null;
         if (subPath == null || EMPTY_STRING.equals(subPath)) {
             //The path is not complete, redirect the client to proxyma root path
@@ -315,7 +315,7 @@ public class ProxyEngine {
         } else {
             retVal.append(":").append(request.getServerPort());
         }
-        retVal.append(request.getContextPath());
+        retVal.append(request.getServletContextPath());
         retVal.append("/");
         
         return retVal.toString();

@@ -233,7 +233,7 @@ public class ProxymaContext {
      * Possible values are: SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
      */
     public String getLogLevel() {
-        return logLevel;
+        return log.getLevel().toString();
     }
 
     /**
@@ -242,10 +242,11 @@ public class ProxymaContext {
      * @param the new log level as defined into the java standard Logger.
      * Possible values are: SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
      */
-    public void setLogLevel(String logLevel) {
+    public String setLogLevel(String logLevel) {
+        String newLogLevel = null;
         if (logLevel == null) {
            log.warning("Null loglevel.. setting it to " + ProxymaTags.UNSPECIFIED_LOGLEVEL);
-           this.logLevel = ProxymaTags.UNSPECIFIED_LOGLEVEL;
+           newLogLevel = ProxymaTags.UNSPECIFIED_LOGLEVEL;
         } else if (ProxymaTags.LogLevels.ALL.toString().equals(logLevel) ||
             ProxymaTags.LogLevels.FINEST.toString().equals(logLevel) ||
             ProxymaTags.LogLevels.FINER.toString().equals(logLevel) ||
@@ -254,12 +255,13 @@ public class ProxymaContext {
             ProxymaTags.LogLevels.INFO.toString().equals(logLevel) ||
             ProxymaTags.LogLevels.WARNING.toString().equals(logLevel) ||
             ProxymaTags.LogLevels.SEVERE.toString().equals(logLevel)) {
-            this.logLevel = logLevel;
+            newLogLevel = logLevel;
         } else {
            log.warning("Unknown log level \"" + logLevel + "\" setting it to " + ProxymaTags.UNSPECIFIED_LOGLEVEL);
-           this.logLevel = ProxymaTags.UNSPECIFIED_LOGLEVEL;
+           newLogLevel = ProxymaTags.UNSPECIFIED_LOGLEVEL;
         }
-        ProxymaLoggersUtil.updateLogLevel(log, logLevel);
+        ProxymaLoggersUtil.updateLogLevel(log, newLogLevel);
+        return newLogLevel;
     }
 
     /**
@@ -360,9 +362,4 @@ public class ProxymaContext {
      * The current release of proxyma
      */
     private String proxymaVersion = null;
-
-    /**
-     * The log level to use on this context
-     */
-    private String logLevel = "INFO";
 }

@@ -115,6 +115,7 @@ public class ProxymaLoggersUtil {
                 // set console handler
                 if (handlers[index] instanceof FileHandler) {
                     handlers[index].setLevel(Level.parse(newLevel));
+                    logger.setLevel(Level.parse(newLevel));
                     foundFileHandler = true;
                 }
             }

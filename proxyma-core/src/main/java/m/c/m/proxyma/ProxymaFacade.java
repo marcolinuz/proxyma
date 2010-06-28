@@ -1,6 +1,7 @@
 package m.c.m.proxyma;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,6 +84,16 @@ public class ProxymaFacade {
         retValue = pool.getContextByName(contextName);
         return retValue;
     }
+
+    /**
+     * Returns an Enumeration of all the registered context names
+     * @return the registered context names
+     */
+    public Enumeration<String> getRegisteredContextNames() {
+        ProxymaContextPool pool = ProxymaContextPool.getInstance();
+        return pool.getRegisteredContextNames();
+    }
+
 
     /**
      * Builds a new default ProxyFolder to the specified destination setting

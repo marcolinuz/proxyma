@@ -239,10 +239,10 @@ public class ProxymaContextTest extends TestCase {
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
 
         context.setLogLevel("UNEXISTENT");
-        assertEquals(context.getLogLevel(), ProxymaTags.UNSPECIFIED_LOGLEVEL);
+        assertEquals(ProxymaTags.UNSPECIFIED_LOGLEVEL, context.getLogLevel());
 
         context.setLogLevel("FINER");
-        assertEquals(context.getLogLevel(), "FINER");
+        assertEquals("FINER",context.getLogLevel());
 
         //Cleanup pool
         try {

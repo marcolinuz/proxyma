@@ -1,5 +1,6 @@
 package m.c.m.proxyma.context;
 
+import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.apache.commons.lang.NullArgumentException;
@@ -111,6 +112,14 @@ public class ProxymaContextPool {
             log.warning("Context \"" + contextName + "\" does not exixts.");
         }
         return retValue;
+    }
+
+    /**
+     * Returns the name of the registered contexts.
+     * @return the registeres context names
+     */
+    public Enumeration<String> getRegisteredContextNames() {
+        return proxymaContexts.keys();
     }
 
     /**

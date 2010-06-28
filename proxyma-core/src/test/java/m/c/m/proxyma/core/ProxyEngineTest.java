@@ -63,7 +63,7 @@ public class ProxyEngineTest extends TestCase {
         proxyma.registerProxyFolderIntoContext(folder, context);
 
         int retval = instance.doProxy(aResource);
-        assertEquals(404, retval);
+        assertEquals(302, retval);
         assertEquals(context.getProxymaVersion(), aResource.getResponse().getResponseData().getHeader("Server").getValue());
 
        
