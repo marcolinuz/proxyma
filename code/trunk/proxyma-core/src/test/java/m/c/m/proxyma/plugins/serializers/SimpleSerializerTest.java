@@ -98,7 +98,7 @@ public class SimpleSerializerTest extends TestCase {
         assertFalse(dataBean.containsHeader("X-Forwarded-For"));
         assertEquals(dataBean.getHeader("Content-Length").getValue(), Integer.toString((int)dataBean.getData().getSize()));
 
-        String logsDirectory = context.getLogsDirectoryPath() + context.getName() + "-access.log.0";
+        String logsDirectory = context.getLogsDirectoryPath() + "proxyma-" + context.getName() + "-access.log.0";
         File log = new File(logsDirectory);
         assertTrue(log.exists());
     }

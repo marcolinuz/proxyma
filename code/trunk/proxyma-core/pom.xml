@@ -4,12 +4,12 @@
     Description:
        This is the Maven 2 POM file for the Proxyma Project..
 
-    NOTE: 
+    NOTE:
        this software is released under GPL License.
        See the LICENSE of this distribution for more informations.
-	
+
        @author Marco Casavecchia Morganti (marcolinuz) [marcolinuz-at-gmail.com]
-       @version $Id$ 
+       @version $Id$
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -52,7 +52,6 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -101,7 +100,7 @@
             <artifactId>httpunit</artifactId>
             <version>1.7</version>
             <scope>test</scope>
-</dependency>
+        </dependency>
 
     </dependencies>
 </project>
