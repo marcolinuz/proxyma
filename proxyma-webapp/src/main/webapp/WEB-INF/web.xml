@@ -44,6 +44,26 @@
             <param-name>ProxymaLogsDir</param-name>
             <param-value>${catalina.home}/logs/</param-value>
         </init-param>
+
+        <!-- The proxyma-config file path
+             Note: To work properly every instance of proxyma-webapp have to
+                   share the same configuration file with the proxyma-console.
+                   To do so you have 2 possibilities:
+                    1- copy the file int the WE-INF directory of every webapp
+                       that uses the proxyma-core library.
+                    2- Specify for alla the webapps a path where an unique
+                       configuration file can be found.
+                    By default proxyma uses the firs approach. If you want to
+                    use the centralized configuration file uncomment the
+                    following node and copy the proxyma-config into your
+                    ${CATALINA_HOME}/conf/ directory. -->
+<!--
+        <init-param>
+            <param-name>ProxymaConfigurationFile</param-name>
+            <param-value>${catalina.home}/conf/proxyma-config.xml</param-value>
+        </init-param>
+-->
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>

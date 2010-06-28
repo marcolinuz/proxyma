@@ -34,10 +34,14 @@ public class ProxymaServlet extends HttpServlet {
         try {
             //Obtain configuration parameters..
             ServletConfig config = this.getServletConfig();
-            String proxymaConfigFile = config.getServletContext().getRealPath("/WEB-INF/proxyma-config.xml");
+            String proxymaConfigFile = this.getInitParameter("ProxymaConfigurationFile");
             String proxymaContextName = this.getInitParameter("ProxymaContextName");
             String proxymaLogsDirectory = this.getInitParameter("ProxymaLogsDir");
             
+            //if the config file init-parameter is notspecified use the default configuration
+            if (proxymaConfigFile == null)
+                proxymaConfigFile = config.getServletContext().getRealPath("/WEB-INF/proxyma-config.xml");
+
             //Check if the logs directory init-parameter ends with "/"
             if (!proxymaLogsDirectory.endsWith("/")) {
                 proxymaLogsDirectory = proxymaLogsDirectory + "/";
