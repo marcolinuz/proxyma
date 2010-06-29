@@ -111,6 +111,7 @@ public class ProxymaResourceTest extends TestCase {
 
         //Cleanup the pool
         try {
+            proxyma.removeProxyFolder(folder, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");

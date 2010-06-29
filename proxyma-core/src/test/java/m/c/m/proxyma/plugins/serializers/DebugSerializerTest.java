@@ -7,6 +7,7 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.InvocationContext;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
@@ -84,7 +85,13 @@ public class DebugSerializerTest extends TestCase {
         aResource.setDestinationSubPath("/");
 
         ResourceHandler retriver = new SimpleHttpRetriver(context);
-        retriver.process(aResource);
+        try {
+            retriver.process(aResource);
+        } catch (IOException e) {
+            //internet connection not available?
+            proxyma.removeProxyFolder(folder, context);
+            fail("Unable to connect to remote host.. Internet conection not available?");
+        }
 
         DebugSerializer instance = new DebugSerializer(context);
         instance.process(aResource);
@@ -95,7 +102,9 @@ public class DebugSerializerTest extends TestCase {
         String resultString = new String(result,context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING));
 
         assertTrue(resultString.length() > 0);
-        
+
+        //Cleanup Context
+        proxyma.removeProxyFolder(folder, context);       
     }
 
     private HttpServletRequest request;

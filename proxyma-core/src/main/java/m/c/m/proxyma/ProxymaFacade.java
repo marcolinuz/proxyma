@@ -96,8 +96,8 @@ public class ProxymaFacade {
 
 
     /**
-     * Builds a new default ProxyFolder to the specified destination setting
-     * it up and ready to be attached to a context.
+     * Builds a new default ProxyFolder to the specified destination setting.<br/>
+     * The proxy folder will be disabled and attached to the provided context.
      *
      * @param FolderName the path (and name) of the proxy folder.
      * @param destination the destination URI to masquerade
@@ -108,7 +108,9 @@ public class ProxymaFacade {
      */
     public ProxyFolderBean createNewProxyFolder (String FolderName, String destination, ProxymaContext context) 
             throws NullArgumentException, IllegalArgumentException, UnsupportedEncodingException {
-       return foldersFactory.createNewProxyFolder(FolderName, destination, context);
+        ProxyFolderBean theNewContext = foldersFactory.createNewProxyFolder(FolderName, destination, context);
+        context.addProxyFolder(theNewContext);
+       return theNewContext;
     }
 
     /**
@@ -126,26 +128,41 @@ public class ProxymaFacade {
      * Remove from the passed context an existing proxyFolder
      *
      * @param theFolder the proxy folder to remove
-     * @param context context the context to inspect
+     * @param context the context to inspect
      * @throws IllegalArgumentException if the context doesn't exist
      * @throws NullArgumentException if the argument is null
      */
-    public void unregisterProxyFolderFromContext (ProxyFolderBean theFolder, ProxymaContext context) throws IllegalArgumentException, NullArgumentException {
+    public void removeProxyFolder (ProxyFolderBean theFolder, ProxymaContext context) throws IllegalArgumentException, NullArgumentException {
         context.removeProxyFolder(theFolder);
     }
 
     /**
-     * Add a proxy folder to the passed context
+     * Enable the passed proxyFolder
      *
-     * @param theFolder the ProxyFolderBean to attach to the context
-     * @param context the context that will run the folder
-     * @throws IllegalArgumentException if the context is already registered
+     * @param theFolder the proxy folder to remove
+     * @param context the context to inspect
+     * @throws IllegalArgumentException if the context doesn't exist
      * @throws NullArgumentException if the argument is null
      */
-    public void registerProxyFolderIntoContext (ProxyFolderBean theFolder, ProxymaContext context) throws IllegalArgumentException, NullArgumentException {
-        context.addProxyFolder(theFolder);
+    public void enableProxyFolder (ProxyFolderBean theFolder) throws NullArgumentException {
+        if (theFolder == null)
+            throw new NullArgumentException("Can't enable a null Proxy-Folder");
+        theFolder.setEnabled(true);
     }
 
+    /**
+     * Diable the passed proxyFolder
+     *
+     * @param theFolder the proxy folder to remove
+     * @param context the context to inspect
+     * @throws IllegalArgumentException if the context doesn't exist
+     * @throws NullArgumentException if the argument is null
+     */
+    public void disableProxyFolder (ProxyFolderBean theFolder) throws NullArgumentException {
+        if (theFolder == null)
+            throw new NullArgumentException("Can't disable a null Proxy-Folder");
+        theFolder.setEnabled(false);
+    }
 
     /**
      * Returns all the proxyFolders form the passed context.
@@ -153,7 +170,7 @@ public class ProxymaFacade {
      * @param context the context to inspect for folders
      * @return a Collection of proxy folders 
      */
-    public Collection<ProxyFolderBean> getAllProxyFolders (ProxymaContext context) {
+    public Collection<ProxyFolderBean> getContextProxyFolders (ProxymaContext context) {
         return context.getProxyFoldersAsCollection();
     }
 

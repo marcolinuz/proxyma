@@ -48,6 +48,7 @@ public class ProxyFolderBean implements Serializable {
         setDestination(destination);
         this.preprocessors = new ConcurrentLinkedQueue<String>();
         this.transformers = new ConcurrentLinkedQueue<String>();
+        this.context = context;
     
         log.finer("ProxyFolder " + folderName + " for " + destination + "created.");
     }
@@ -93,8 +94,11 @@ public class ProxyFolderBean implements Serializable {
                     log.warning("The foldername can't contain a \"/\" character");
                     throw new IllegalArgumentException("The foldername can't contain a \"/\" character");
                 } else {
-                    //check for the last character presence
+                    //register the new urlEncoded name for the context (if the folder has a context)
+                    String oldURLEncodedName = this.URLEncodedName;
                     this.URLEncodedName = URLEncoder.encode(this.folderName, defaultEncoding);
+                    if (context != null)
+                        context.updateFolderURLEncodedIndex(oldURLEncodedName, this);
                 }
             }
         }
@@ -139,7 +143,12 @@ public class ProxyFolderBean implements Serializable {
                         this.destinationAsString = destination.substring(0, destination.length()-1);
                     else
                         this.destinationAsString = destination;
+
+                    //register the new urlEncoded name for the context (if the folder has a context)
+                    URL oldDestination = this.destinationAsURL;
                     destinationAsURL = new URL(this.destinationAsString);
+                    if (context != null)
+                        context.updateFolderDestinationIndex(oldDestination, this);
                 } catch (MalformedURLException ex) {
                     log.warning("Destination \"" + destination + "\" is an Invalid URL.");
                     throw new IllegalArgumentException("Destination \"" + destination + "\" is an Invalid URL.");
@@ -386,7 +395,12 @@ public class ProxyFolderBean implements Serializable {
     /**
      * Specifies if the proxy folder is enabled to operate
      */
-    private boolean enabled = true;
+    private boolean enabled = false;
+
+    /**
+     * The context where this proxy-folder is registered
+     */
+    private ProxymaContext context = null;
 
     /**
      * The name of the Class that will be used as CacheProvider

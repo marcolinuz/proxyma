@@ -52,7 +52,7 @@
     <defaultContext>
         <!-- These are the default settings that ProxymaFacade will apply to
              the any new ProxyFolders that it creates -->
-        <folderSettings maxPostSize="5000" enabled="true" >
+        <folderSettings maxPostSize="5000">
             <preprocessors>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
             </preprocessors>

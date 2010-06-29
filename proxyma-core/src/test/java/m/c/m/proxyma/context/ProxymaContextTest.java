@@ -43,7 +43,6 @@ public class ProxymaContextTest extends TestCase {
             e.printStackTrace();
             fail("ProxyFolderBean creation failed");
         }
-        proxyma.registerProxyFolderIntoContext(expResult, instance);
 
         ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(expResult.getFolderName());
         assertSame(expResult, result);
@@ -52,7 +51,7 @@ public class ProxymaContextTest extends TestCase {
         assertNull(result);
 
         //clean up the context for further tests
-        proxyma.unregisterProxyFolderFromContext(expResult, instance);
+        proxyma.removeProxyFolder(expResult, instance);
 
         //Cleanup pool
         try {
@@ -82,7 +81,6 @@ public class ProxymaContextTest extends TestCase {
             e.printStackTrace();
             fail("ProxyFolderBean creation failed");
         }
-        proxyma.registerProxyFolderIntoContext(expResult, instance);
 
         Collection hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
         assertEquals(1, hostList.size());
@@ -95,8 +93,6 @@ public class ProxymaContextTest extends TestCase {
             fail("ProxyFolderBean creation failed");
         }
 
-        proxyma.registerProxyFolderIntoContext(expResult2, instance);
-
         hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
         Iterator iterator = hostList.iterator();
         assertEquals(2, hostList.size());
@@ -105,14 +101,14 @@ public class ProxymaContextTest extends TestCase {
         
 
         //clean up the remove tests
-        proxyma.unregisterProxyFolderFromContext(expResult, instance);
+        proxyma.removeProxyFolder(expResult, instance);
 
         hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
         assertEquals(hostList.size(), 1);
         assertEquals(hostList.iterator().next(), expResult2);
 
         //clean up the remove tests
-        proxyma.unregisterProxyFolderFromContext(expResult2, instance);
+        proxyma.removeProxyFolder(expResult2, instance);
 
         hostList = instance.getProxyFolderByDestinationHost(URLUtils.getDestinationHost(expResult.getDestinationAsURL()));
         assertNull(hostList);
@@ -152,6 +148,9 @@ public class ProxymaContextTest extends TestCase {
             assertNull(result);
         }
 
+        //clean up the context because the folder is already registered
+        proxyma.removeProxyFolder(expResult, instance);
+
         instance.addProxyFolder(expResult);
         ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(expResult.getFolderName());
         assertSame(expResult, result);
@@ -166,7 +165,7 @@ public class ProxymaContextTest extends TestCase {
         }
 
         //clean up the context for further tests
-        proxyma.unregisterProxyFolderFromContext(expResult, instance);
+        proxyma.removeProxyFolder(expResult, instance);
 
         //Cleanup pool
         try {
@@ -193,7 +192,6 @@ public class ProxymaContextTest extends TestCase {
             e.printStackTrace();
             fail("ProxyFolderBean creation failed");
         }
-        instance.addProxyFolder(expResult);
 
         ProxyFolderBean result = instance.getProxyFolderByURLEncodedName(expResult.getFolderName());
         assertSame(expResult, result);
@@ -269,7 +267,6 @@ public class ProxymaContextTest extends TestCase {
             e.printStackTrace();
             fail("ProxyFolderBean creation failed");
         }
-        instance.addProxyFolder(expResult);
 
         int expResultCount = 1;
         int resultCount = instance.getProxyFoldersAsCollection().size();
@@ -279,7 +276,7 @@ public class ProxymaContextTest extends TestCase {
         assertTrue (result instanceof Collection);
         
         //clean up the context for further tests
-        proxyma.unregisterProxyFolderFromContext(expResult, instance);
+        proxyma.removeProxyFolder(expResult, instance);
         
         //Cleanup pool
         try {
@@ -312,7 +309,7 @@ public class ProxymaContextTest extends TestCase {
         assertEquals(expResultCount, instance.getProxyFoldersCount());
 
         //clean up the context for further tests
-        proxyma.unregisterProxyFolderFromContext(expResult, instance);
+        proxyma.removeProxyFolder(expResult, instance);
 
         //Cleanup pool
         try {

@@ -36,7 +36,6 @@ public class ProxyFolderFactory {
 
         //Set single value parameters
         theFolder.setMaxPostSize(Integer.parseInt(context.getSingleValueParameter(ProxymaTags.FOLDER_MAX_POST_SIZE)));
-        theFolder.setEnabled(context.getSingleValueParameter(ProxymaTags.FOLDER_ENABLED).equalsIgnoreCase("true")?true:false);
         theFolder.setCacheProvider(context.getSingleValueParameter(ProxymaTags.FOLDER_CACHEPROVIDER));
         theFolder.setRetriver(context.getSingleValueParameter(ProxymaTags.FOLDER_RETRIVER));
         theFolder.setSerializer(context.getSingleValueParameter(ProxymaTags.FOLDER_SERIALIZER));

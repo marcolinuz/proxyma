@@ -6,6 +6,7 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.InvocationContext;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
@@ -83,7 +84,16 @@ public class SimpleHttpRetriverTest extends TestCase {
         aResource.setDestinationSubPath("/");
 
         ResourceHandler instance = new SimpleHttpRetriver(context);
+
+        try {
         instance.process(aResource);
+        } catch (IOException e) {
+            //internet connection not available?
+
+            //cleanupThe context
+            proxyma.removeProxyFolder(folder, context);
+            fail("Unable to connect to the remote server for the test.. continue");
+        }
 
         ProxymaResponseDataBean data = aResource.getResponse().getResponseData();
 
@@ -96,6 +106,9 @@ public class SimpleHttpRetriverTest extends TestCase {
         assertTrue(resultString.startsWith("<?xml version='1.0'?>\n"));
         assertTrue(resultString.contains("<title>Proxyma - HomePage</title>"));
         assertTrue(resultString.endsWith("</html><!-- Content End -->"));
+
+        //cleanupThe context
+        proxyma.removeProxyFolder(folder, context);
     }
 
     private HttpServletRequest request;

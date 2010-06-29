@@ -86,8 +86,6 @@ public class JSRewriteTransformerTest extends TestCase {
 
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.uniurb.it/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/disney", context);
-        proxyma.registerProxyFolderIntoContext(folder1, context);
-        proxyma.registerProxyFolderIntoContext(folder2, context);
         ProxymaResponseDataBean responseData = createTestResponse(context);
         aResource.getResponse().setResponseData(responseData);
         aResource.setProxyFolder(folder1);
@@ -105,8 +103,8 @@ public class JSRewriteTransformerTest extends TestCase {
         assertTrue(resultString.contains("appo = 'http://localhost:8080/proxyma/host2/character/mickeyMouse.jpg';"));
         assertTrue(resultString.endsWith("}"));
 
-        proxyma.unregisterProxyFolderFromContext(folder1, context);
-        proxyma.unregisterProxyFolderFromContext(folder2, context);
+        proxyma.removeProxyFolder(folder1, context);
+        proxyma.removeProxyFolder(folder2, context);
     }
 
 

@@ -83,8 +83,6 @@ public class CookiesRewriteTransformerTest extends TestCase {
 
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/en", context);
-        proxyma.registerProxyFolderIntoContext(folder1, context);
-        proxyma.registerProxyFolderIntoContext(folder2, context);
         ProxymaResponseDataBean responseData = new ProxymaResponseDataBean();
         aResource.getResponse().setResponseData(responseData);
         aResource.setProxyFolder(folder1);
@@ -118,8 +116,8 @@ public class CookiesRewriteTransformerTest extends TestCase {
             }
         }
 
-        proxyma.unregisterProxyFolderFromContext(folder1, context);
-        proxyma.unregisterProxyFolderFromContext(folder2, context);
+        proxyma.removeProxyFolder(folder1, context);
+        proxyma.removeProxyFolder(folder2, context);
     }
 
     private HttpServletRequest request;

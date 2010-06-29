@@ -104,6 +104,7 @@ public class ProxymaServletResponseTest extends TestCase {
         anotherResponse.setResponseData(clone);
         result = anotherResponse.sendDataToClient();
         assertEquals(result, HttpServletResponse.SC_OK);
+
     }
 
     private HttpServletRequest request;
