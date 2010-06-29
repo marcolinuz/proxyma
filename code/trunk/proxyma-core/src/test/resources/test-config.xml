@@ -32,7 +32,7 @@
 
     <!-- Element to test the instantiation of a new proxy folder by ProxymaFacace -->
     <defaultContext>
-        <folderSettings maxPostSize="5000" enabled="true" >
+        <folderSettings maxPostSize="5000" >
             <preprocessors>
                 <resourceHandler/>
             </preprocessors>

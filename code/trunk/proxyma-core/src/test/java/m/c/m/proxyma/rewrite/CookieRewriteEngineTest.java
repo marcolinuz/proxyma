@@ -74,8 +74,6 @@ public class CookieRewriteEngineTest extends TestCase {
         ProxymaContext context = proxyma.getContextByName("default");
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/en", context);
-        proxyma.registerProxyFolderIntoContext(folder1, context);
-        proxyma.registerProxyFolderIntoContext(folder2, context);
         ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         aResource.setProxymaRootURI("http://localhost:8080/proxyma");
         aResource.setProxyFolder(folder1);
@@ -118,8 +116,8 @@ public class CookieRewriteEngineTest extends TestCase {
         expected = "/";
         assertEquals(expected, theCookie.getPath());
 
-        proxyma.unregisterProxyFolderFromContext(folder2, context);
-        proxyma.unregisterProxyFolderFromContext(folder1, context);
+        proxyma.removeProxyFolder(folder2, context);
+        proxyma.removeProxyFolder(folder1, context);
     }
 
     private HttpServletRequest request;

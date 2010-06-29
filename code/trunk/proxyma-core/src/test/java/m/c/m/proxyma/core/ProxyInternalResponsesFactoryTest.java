@@ -100,9 +100,7 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.createNewContext("default", "/", "src/test/resources/test-config.xml", "/tmp/");
         ProxyFolderBean folder =  proxyma.createNewProxyFolder("GoogleFolder", "http://www.google.com", context);
-        proxyma.registerProxyFolderIntoContext(folder, context);
         folder = proxyma.createNewProxyFolder("AppleFolder", "http://www.apple.com", context);
-        proxyma.registerProxyFolderIntoContext(folder, context);
         ProxymaResponseDataBean instance = null;
 
         instance = ProxyInternalResponsesFactory.createFoldersListResponse(context);
@@ -126,8 +124,8 @@ public class ProxyInternalResponsesFactoryTest extends TestCase {
 
         //Cleanup pool
         try {
-            proxyma.unregisterProxyFolderFromContext(context.getProxyFolderByURLEncodedName("GoogleFolder"), context);
-            proxyma.unregisterProxyFolderFromContext(context.getProxyFolderByURLEncodedName("AppleFolder"), context);
+            proxyma.removeProxyFolder(context.getProxyFolderByURLEncodedName("GoogleFolder"), context);
+            proxyma.removeProxyFolder(context.getProxyFolderByURLEncodedName("AppleFolder"), context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");

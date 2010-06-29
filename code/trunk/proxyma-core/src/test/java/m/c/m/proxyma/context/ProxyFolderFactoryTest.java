@@ -45,7 +45,7 @@ public class ProxyFolderFactoryTest extends TestCase {
         assertEquals(expResult.getFolderName(), proxyFolderName);
         assertEquals(expResult.getDestinationAsString(), proxyFolderDestination);
         assertEquals(expResult.getMaxPostSize(), Integer.parseInt(context.getSingleValueParameter(ProxymaTags.FOLDER_MAX_POST_SIZE)));
-        assertEquals(expResult.isEnabled(), context.getSingleValueParameter(ProxymaTags.FOLDER_ENABLED).equalsIgnoreCase("true")?true:false);
+        assertEquals(expResult.isEnabled(), false);
         assertEquals(expResult.getCacheProvider(), context.getSingleValueParameter(ProxymaTags.FOLDER_CACHEPROVIDER));
         assertEquals(expResult.getRetriver(), context.getSingleValueParameter(ProxymaTags.FOLDER_RETRIVER));
         assertEquals(expResult.getSerializer(), context.getSingleValueParameter(ProxymaTags.FOLDER_SERIALIZER));
@@ -73,6 +73,7 @@ public class ProxyFolderFactoryTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(expResult, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");

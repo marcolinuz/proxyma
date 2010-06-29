@@ -57,10 +57,8 @@ public class ProxyEngineTest extends TestCase {
         ProxymaResource aResource = proxyma.createNewResource(request, response, context);
         ProxyEngine instance = proxyma.createNewProxyEngine(context);
         ProxyFolderBean folder = proxyma.createNewProxyFolder("google", "http://www.google.com", context);
-        proxyma.registerProxyFolderIntoContext(folder, context);
         folder = proxyma.createNewProxyFolder("apple", "http://www.apple.com", context);
         folder.setEnabled(false);
-        proxyma.registerProxyFolderIntoContext(folder, context);
 
         int retval = instance.doProxy(aResource);
         assertEquals(302, retval);
@@ -70,8 +68,8 @@ public class ProxyEngineTest extends TestCase {
 
         //Cleanup the pool
         try {
-            proxyma.unregisterProxyFolderFromContext(proxyma.getProxyFolderByURLEncodedName("google", context), context);
-            proxyma.unregisterProxyFolderFromContext(proxyma.getProxyFolderByURLEncodedName("apple", context), context);
+            proxyma.removeProxyFolder(proxyma.getProxyFolderByURLEncodedName("google", context), context);
+            proxyma.removeProxyFolder(proxyma.getProxyFolderByURLEncodedName("apple", context), context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");

@@ -77,6 +77,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -122,6 +123,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -192,6 +194,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -237,6 +240,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -317,6 +321,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -373,6 +378,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -456,6 +462,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -488,6 +495,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -526,6 +534,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -564,6 +573,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");
@@ -602,6 +612,7 @@ public class ProxyFolderBeanTest extends TestCase {
 
         //Cleanup pool
         try {
+            proxyma.removeProxyFolder(instance, context);
             proxyma.destroyContext(context);
         } catch (Exception x) {
             fail("Unable to unregister the context");

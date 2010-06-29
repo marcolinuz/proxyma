@@ -78,8 +78,6 @@ public class URLRewriteEngineTest extends TestCase {
         aResource.setProxymaRootURI("http://localhost:8080/proxyma");
         ProxyFolderBean folder1 = proxyma.createNewProxyFolder("host1", "http://www.google.com/it", context);
         ProxyFolderBean folder2 = proxyma.createNewProxyFolder("host2", "https://www.apple.com/en", context);
-        proxyma.registerProxyFolderIntoContext(folder1, context);
-        proxyma.registerProxyFolderIntoContext(folder2, context);
         aResource.setProxyFolder(folder1);
         URLRewriteEngine instance = new URLRewriteEngine(context);
 
@@ -114,7 +112,7 @@ public class URLRewriteEngineTest extends TestCase {
         result = instance.masqueradeURL(theUrl, aResource);
         assertEquals(expected, result);
 
-        proxyma.unregisterProxyFolderFromContext(folder2, context);
+        proxyma.removeProxyFolder(folder2, context);
 
         theUrl = "https://www.apple.com/en/macbook/new.html";
         expected = "https://www.apple.com/en/macbook/new.html";
@@ -122,7 +120,7 @@ public class URLRewriteEngineTest extends TestCase {
         assertEquals(expected, result);
 
 
-        proxyma.unregisterProxyFolderFromContext(folder1, context);
+        proxyma.removeProxyFolder(folder1, context);
     }
 
    
