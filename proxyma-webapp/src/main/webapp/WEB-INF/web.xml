@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
@@ -45,29 +46,26 @@
             <param-value>${catalina.home}/logs/</param-value>
         </init-param>
 
-        <!-- The proxyma-config file path
-             Note: To work properly every instance of proxyma-webapp have to
-                   share the same configuration file with the proxyma-console.
-                   To do so you have 2 possibilities:
-                    1- copy the file into the WE-INF directory of every webapp
-                       that uses the proxyma-core library.
-                    2- Specify for all the webapps a path where a unique
-                       configuration file can be found.
-                    By default proxyma uses the first approach. If you want to
-                    use the centralized configuration file uncomment the
-                    following node and copy the "proxyma-config.xml" file into
-                    your ${CATALINA_HOME}/conf/ directory. -->
-<!--
-        <init-param>
-            <param-name>ProxymaConfigurationFile</param-name>
-            <param-value>${catalina.home}/conf/proxyma-config.xml</param-value>
-        </init-param>
--->
+        <!-- Load the servlet on container startup -->
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <description>
+            This is the main servlet for the proxyma console.
+            It receive all the client requests to perform.
+        </description>
+        <servlet-name>ProxymaConsoleServlet</servlet-name>
+        <servlet-class>m.c.m.proxyma.ProxymaConsoleServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ProxymaConsoleServlet</servlet-name>
+        <url-pattern>/console</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ProxymaServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/fetch/*</url-pattern>
     </servlet-mapping>
 </web-app>

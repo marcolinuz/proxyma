@@ -52,17 +52,17 @@
     <defaultContext>
         <!-- These are the default settings that ProxymaFacade will apply to
              the any new ProxyFolders that it creates -->
-        <folderSettings maxPostSize="5000" enabled="true" >
+        <folderSettings maxPostSize="5000">
             <preprocessors>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewritePreprocessor" />
+                <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" />
             </preprocessors>
             <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider" />
             <retriver class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
             <transformers>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRevriteTransformer"/>
-                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
             </transformers>
             <serializer class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"/>
         </folderSettings>
