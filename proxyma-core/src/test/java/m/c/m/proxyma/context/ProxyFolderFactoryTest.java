@@ -5,6 +5,7 @@
 
 package m.c.m.proxyma.context;
 
+import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import m.c.m.proxyma.ProxymaTags;
@@ -50,17 +51,12 @@ public class ProxyFolderFactoryTest extends TestCase {
         assertEquals(expResult.getRetriver(), context.getSingleValueParameter(ProxymaTags.FOLDER_RETRIVER));
         assertEquals(expResult.getSerializer(), context.getSingleValueParameter(ProxymaTags.FOLDER_SERIALIZER));
 
-        Iterator <String> preprocessors = expResult.getPreprocessors();
+        Collection <String> preprocessors = expResult.getPreprocessors();
+        assertEquals(0, preprocessors.size());
+
+
+        Iterator <String> transformers = expResult.getTransformers().iterator();
         int counter = 0;
-        while (preprocessors.hasNext()) {
-            preprocessors.next();
-            counter++;
-        }
-        assertEquals(0, counter);
-
-
-        Iterator <String> transformers = expResult.getTransformers();
-        counter = 0;
         String expResults[] = new String[] {"m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer",

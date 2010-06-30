@@ -42,7 +42,7 @@ public class ProxymaContext {
         // Initialize private attributes
         try {
             this.contextName = contextName;
-            this.contextBasePath = contextBaseURI;
+            this.proxymaContextBasePath = contextBaseURI;
             this.logsDirectoryPath = logsDirectoryPath;
             proxyFoldersByURLEncodedName = new ConcurrentHashMap<String, ProxyFolderBean>();
             proxyFoldersByDestinationHost = new ConcurrentHashMap<String, LinkedList<ProxyFolderBean>>();
@@ -359,8 +359,8 @@ public class ProxymaContext {
      * Get the contextPath for this context
      * @return the contextURI as String
      */
-    public String getBasePath() {
-        return contextBasePath;
+    public String getProxymaContextBasePath() {
+        return proxymaContextBasePath;
     }
 
     /**
@@ -379,7 +379,7 @@ public class ProxymaContext {
     /**
      * The context base path.
      */
-    private String contextBasePath = null;
+    private String proxymaContextBasePath = null;
 
     /**
      * The registered ProxyFolders for this context indexed by name
