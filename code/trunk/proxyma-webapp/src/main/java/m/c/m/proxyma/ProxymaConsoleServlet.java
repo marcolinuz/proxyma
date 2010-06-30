@@ -1,5 +1,6 @@
 package m.c.m.proxyma;
 
+import java.io.UnsupportedEncodingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import m.c.m.proxyma.context.ProxyFolderBean;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.core.ProxyEngine;
+import org.apache.commons.lang.NullArgumentException;
 
 /**
  * <p>
@@ -202,13 +204,15 @@ public class ProxymaConsoleServlet extends HttpServlet {
     }
 
     /**
-     * This command ries to create a new ProxyFolder from the request paqssed parameters
+     * This method updates the passed ProxyFolder using the request parameters
      *
      * @param request the servlet request passed from edtit_rule.jsp
      * @return the ruleBean if all parameters are valid.
      */
-    private void updateProxyFolderFromRequestParameters(HttpServletRequest request, ProxyFolderBean context) {
-    
+    private void updateProxyFolderFromRequestParameters(HttpServletRequest request, ProxyFolderBean theFolder)
+            throws NullArgumentException, IllegalArgumentException, UnsupportedEncodingException {
+
+        //Obtain request parmeters
         String proxyFolderName = request.getParameter(GlobalConstants.EDIT_FORM_FOLDER_NAME);
         String destination = request.getParameter(GlobalConstants.EDIT_FORM_DESTINATION);
         String maxPostSize = request.getParameter(GlobalConstants.EDIT_FORM_MAX_POST_SIZE);
@@ -218,9 +222,37 @@ public class ProxymaConsoleServlet extends HttpServlet {
         String[] preprocessors = request.getParameterValues(GlobalConstants.EDIT_FORM_PREPROCESSORS);
         String[] transformers = request.getParameterValues(GlobalConstants.EDIT_FORM_TRANSFORMERS);
 
+        //updtate folder name
+        theFolder.setFolderName(proxyFolderName);
+
+        //Update destination
+        theFolder.setDestination(destination);
+
+        //update max Post Size
+        theFolder.setMaxPostSize(Integer.parseInt(maxPostSize));
         
+        //Update cahce provider class
+        theFolder.setCacheProvider(cacheProvider);
 
+        //update retriver class
+        theFolder.setRetriver(retriver);
 
+        //update serializer class
+        theFolder.setSerializer(serializer);
+
+        //Update preprocessors classes
+        theFolder.getPreprocessors().removeAll(theFolder.getPreprocessors());
+        if (preprocessors != null) {
+            for (int i=0; i< preprocessors.length; i++)
+                theFolder.registerPreprocessor(preprocessors[i]);
+        }
+        
+        //Update transformer classes
+        theFolder.getTransformers().removeAll(theFolder.getTransformers());
+        if (transformers != null) {
+            for (int i=0; i< transformers.length; i++)
+                theFolder.registerTransformer(transformers[i]);
+        }
     }
 
     /**
