@@ -57,7 +57,9 @@ public class ProxyFolderFactoryTest extends TestCase {
 
         Iterator <String> transformers = expResult.getTransformers().iterator();
         int counter = 0;
-        String expResults[] = new String[] {"m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer",
+        String expResults[] = new String[] {
+                              "m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer",
+                              "m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"};
@@ -65,7 +67,7 @@ public class ProxyFolderFactoryTest extends TestCase {
             assertEquals(transformers.next(), expResults[counter]);
             counter++;
         }
-        assertEquals(4, counter);
+        assertEquals(5, counter);
 
         //Cleanup pool
         try {

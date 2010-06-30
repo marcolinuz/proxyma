@@ -129,7 +129,12 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
             String propertyValue = null;
             while (headerNames.hasMoreElements()) {
                 propertyName = headerNames.nextElement();
-                if (!COOKIE_HEADER.equalsIgnoreCase(propertyName)) {
+                if (HOST_HEADER.equalsIgnoreCase(propertyName)) {
+                    String newHostHeader = theUrl.getHost();
+                    if (theUrl.getPort() > 0)
+                        newHostHeader = newHostHeader + ":" + theUrl.getPort();
+                    retVal.addRequestProperty(HOST_HEADER, newHostHeader);
+                }else if (!COOKIE_HEADER.equalsIgnoreCase(propertyName)) {
                     propertyValues = originalRequest.getHeaders(propertyName);
                     while (propertyValues.hasMoreElements()) {
                         propertyValue = propertyValues.nextElement();
@@ -300,6 +305,10 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
         log.finer("Setting response status to: " + statusCode);
         responseData.setStatus(statusCode);
 
+        //Contents are always unpacked to allow plugins to inspect the content.
+        //This flag is setted to true if the original content was gzipped.
+        boolean packedData = false;
+
         //now get all the headers
         log.fine("Setting response headers and Cookies..");
         Map<String, List<String>> responseHeaders = urlConnection.getHeaderFields();
@@ -353,6 +362,11 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
 
                     log.finer("Setting Adding Cookie: " + theCookie.getName());
                     responseData.addCookie(theCookie);
+                } else if (CONTENT_ENCODING_HEADER.equalsIgnoreCase(header) && (value.indexOf("gzip") >= 0)) {
+                    packedData = true;
+                    log.finer("Skipping content encoding Header (content unpacked)");
+                } else if (TRANSFER_ENCODING_HEADER.equalsIgnoreCase(header)) {
+                    log.finer("Skipping Transfer encoding Header (content unpacked)");
                 } else {
                     log.finer("Adding header: " + header + "=" + value);
                     responseData.addHeader(header, value);
@@ -365,16 +379,12 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
         BufferedInputStream reader = null;
         try {
             ByteBuffer theBuffer = ByteBufferFactory.createNewByteBuffer(aResurce.getContext());
-            ProxymaHttpHeader encoding = responseData.getHeader(CONTENT_ENCODING_HEADER);
-            if (encoding != null) {
-                if (encoding.getValue().indexOf("gzip") >= 0) {
-                    reader = new BufferedInputStream(new GZIPInputStream(urlConnection.getInputStream()));
-                } else {
-                    reader = (new BufferedInputStream(urlConnection.getInputStream()));
-                }
+            if (packedData) {
+                reader = new BufferedInputStream(new GZIPInputStream(urlConnection.getInputStream()));
             } else {
-               reader = (new BufferedInputStream(urlConnection.getInputStream()));
+                reader = (new BufferedInputStream(urlConnection.getInputStream()));
             }
+
             int count;
             byte buffer[] = new byte[BUF_SIZE];
             while ((count = reader.read(buffer, 0, BUF_SIZE)) > -1) {
@@ -415,12 +425,17 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
     /**
      * The standard content-type header
      */
-    private final static String CONTENT_TYPE_HEADER = "Content-Type";
+    private final static String HOST_HEADER = "Host";
 
     /**
      * The standard content-encoding header.
      */
     public final static String CONTENT_ENCODING_HEADER = "Content-Encoding";
+
+    /**
+     * The standard Trensfer Encodign Header
+     */
+    public final static String TRANSFER_ENCODING_HEADER = "Transfer-Encoding";
 
     /**
      * The standard name of the cookies header

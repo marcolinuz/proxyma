@@ -59,6 +59,7 @@
             <cacheProvider class="m.c.m.proxyma.plugins.caches.EhcacheCacheProvider" />
             <retriver class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
             <transformers>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRevriteTransformer"/>
@@ -114,6 +115,7 @@
              NOTE: these plugins extends the "AbstractTransformer" class overriding
              the "process" method. -->
         <avaliableTransformers>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>

@@ -316,7 +316,6 @@ public class ProxyEngine {
             retVal.append(":").append(request.getServerPort());
         }
         retVal.append(request.getServletContextPath());
-        retVal.append("/");
         
         return retVal.toString();
     }
