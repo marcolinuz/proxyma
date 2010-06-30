@@ -121,7 +121,8 @@ public class ProxyInternalResponsesFactory {
             ByteBuffer out = ByteBufferFactory.createNewByteBuffer(context);
 
             //write the header of the page
-            byte[] data = html_head_template.getBytes(charsetEncoding);
+            String contextString = "\"" + context.getName() + "\" (" + context.getProxymaContextBasePath() + ")";
+            byte[] data = html_head_template.replace("%PROXYMA_CONTEXT%", contextString).getBytes(charsetEncoding);
             out.appendBytes(data,data.length);
 
             //iterate the configured folders
@@ -239,8 +240,8 @@ public class ProxyInternalResponsesFactory {
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
             "<html>\n" +
-            "<head><title>Proxyma Available Resources:</title><style type=\"text/css\">td{font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small;}</style></head>\n" +
-            "<body><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"medium\"><b>Available Destinations:</b><hr/>\n" +
+            "<head><title>Proxyma Available Destinations:</title><style type=\"text/css\">td{font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small;}</style></head>\n" +
+            "<body><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"medium\"><b>Available Destinations in context %PROXYMA_CONTEXT% :</b><hr/>\n" +
             "<table align=\"center\" width=\"95%\">\n" +
             "<tr bgcolor=\"#bacaff\">\n" +
             "<td width=\"20%\" align=\"left\"><b>Proxy-Folder</b></td>" +

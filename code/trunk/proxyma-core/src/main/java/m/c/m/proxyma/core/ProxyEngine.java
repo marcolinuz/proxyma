@@ -134,7 +134,7 @@ public class ProxyEngine {
                 CacheProvider cache = null;
                 try {
                     //Applying all the folder-specific preprocessors to the resource in registration order
-                    configuredPlugins = folder.getPreprocessors();
+                    configuredPlugins = folder.getPreprocessors().iterator();
                     while (configuredPlugins.hasNext()) {
                         plugin = availablePreprocessors.get(configuredPlugins.next());
                         log.finer("Applying preprocessor: " + plugin.getName());
@@ -152,7 +152,7 @@ public class ProxyEngine {
                         plugin.process(aResource);
 
                         //Apply the folder-specific transformer in registration order
-                        configuredPlugins = folder.getTransformers();
+                        configuredPlugins = folder.getTransformers().iterator();
                         while (configuredPlugins.hasNext()) {
                             plugin = availableTransformers.get(configuredPlugins.next());
                             log.finer("Applying transformer: " + plugin.getName());

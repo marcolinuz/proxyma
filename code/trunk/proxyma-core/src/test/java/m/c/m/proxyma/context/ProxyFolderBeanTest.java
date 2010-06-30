@@ -1,5 +1,6 @@
 package m.c.m.proxyma.context;
 
+import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import m.c.m.proxyma.ProxymaTags;
@@ -40,40 +41,20 @@ public class ProxyFolderBeanTest extends TestCase {
         }
 
         instance.registerPreprocessor(null);
-        Iterator preprocessors = instance.getPreprocessors();
-        int counter=0;
-        while (preprocessors.hasNext()) {
-            preprocessors.next();
-            counter++;
-        }
-        assertEquals(0, counter);
+        Collection preprocessors = instance.getPreprocessors();
+        assertEquals(0, preprocessors.size());
 
         instance.registerPreprocessor(preprocessorClassName);
         preprocessors = instance.getPreprocessors();
-        counter=0;
-        while (preprocessors.hasNext()) {
-            preprocessors.next();
-            counter++;
-        }
-        assertEquals(1, counter);
+        assertEquals(1, preprocessors.size());
 
         instance.registerPreprocessor(" ");
         preprocessors = instance.getPreprocessors();
-        counter=0;
-        while (preprocessors.hasNext()) {
-            preprocessors.next();
-            counter++;
-        }
-        assertEquals(1, counter);
+        assertEquals(1, preprocessors.size());
 
         instance.registerPreprocessor(" m.c.m.plugins.preprocessors.SomePreprocessor");
         preprocessors = instance.getPreprocessors();
-        counter=0;
-        while (preprocessors.hasNext()) {
-            assertEquals(preprocessorClassName, preprocessors.next());
-            counter++;
-        }
-        assertEquals(1, counter);
+        assertEquals(1, preprocessors.size());
 
         //Cleanup pool
         try {
@@ -104,22 +85,12 @@ public class ProxyFolderBeanTest extends TestCase {
         }
 
         instance.registerPreprocessor(preprocessorClassName);
-        Iterator preprocessors = instance.getPreprocessors();
-        int counter = 0;
-        while (preprocessors.hasNext()) {
-            preprocessors.next();
-            counter++;
-        }
-        assertEquals(1, counter);
+        Collection preprocessors = instance.getPreprocessors();
+        assertEquals(1, preprocessors.size());
 
         instance.unregisterPreprocessor(preprocessorClassName);
         preprocessors = instance.getPreprocessors();
-        counter = 0;
-        while (preprocessors.hasNext()) {
-            preprocessors.next();
-            counter++;
-        }
-        assertEquals(0, counter);
+        assertEquals(0, preprocessors.size());
 
         //Cleanup pool
         try {
@@ -150,42 +121,22 @@ public class ProxyFolderBeanTest extends TestCase {
         }
 
         instance.registerTransformer(null);
-        Iterator transformers = instance.getTransformers();
-        int counter = 0;
-        while (transformers.hasNext()) {
-            transformers.next();
-            counter++;
-        }
-        assertEquals(4, counter);
+        Collection transformers = instance.getTransformers();
+        assertEquals(4, transformers.size());
 
         instance.registerTransformer(transformerClassName);
         transformers = instance.getTransformers();
-        counter = 0;
-        while (transformers.hasNext()) {
-            transformers.next();
-            counter++;
-        }
-        assertEquals(5, counter);
+        assertEquals(5, transformers.size());
 
         instance.registerTransformer(" ");
         transformers = instance.getTransformers();
-        counter = 0;
-        while (transformers.hasNext()) {
-            transformers.next();
-            counter++;
-        }
-        assertEquals(5, counter);
+        assertEquals(5, transformers.size());
 
         instance.registerTransformer("m.c.m.plugins.transformers.SomeTransformer ");
         transformers = instance.getTransformers();
-        counter = 0;
-        while (transformers.hasNext()) {
-            transformers.next();
-            counter++;
-        }
-        assertEquals(5, counter);
+        assertEquals(5, transformers.size());
 
-        Iterator<String> iter = instance.getTransformers();
+        Iterator<String> iter = instance.getTransformers().iterator();
         boolean found = false;
         while (iter.hasNext())
             if (transformerClassName.equals(iter.next()))
@@ -221,22 +172,12 @@ public class ProxyFolderBeanTest extends TestCase {
         }
 
         instance.registerTransformer(transformerClassName);
-        Iterator transformers = instance.getTransformers();
-        int counter = 0;
-        while (transformers.hasNext()) {
-            transformers.next();
-            counter++;
-        }
-        assertEquals(5, counter);
+        Collection transformers = instance.getTransformers();
+        assertEquals(5, transformers.size());
 
         instance.unregisterTransformer(transformerClassName);
         transformers = instance.getTransformers();
-        counter = 0;
-        while (transformers.hasNext()) {
-            transformers.next();
-            counter++;
-        }
-        assertEquals(4, counter);
+        assertEquals(4, transformers.size());
 
         //Cleanup pool
         try {

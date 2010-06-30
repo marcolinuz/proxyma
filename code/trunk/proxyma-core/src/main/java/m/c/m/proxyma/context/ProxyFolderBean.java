@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
@@ -317,8 +318,8 @@ public class ProxyFolderBean implements Serializable {
      * Obtain a collection of preprocessor class names registered for the proxy folder
      * @return a Collection of class names.
      */
-    public Iterator<String> getPreprocessors () {
-        return preprocessors.iterator();
+    public Collection<String> getPreprocessors () {
+        return preprocessors;
     }
 
     /**
@@ -363,8 +364,8 @@ public class ProxyFolderBean implements Serializable {
      * Obtain a collection of transformers class names registered for the proxy folder
      * @return a Collection of class names.
      */
-    public Iterator<String> getTransformers () {
-        return transformers.iterator();
+    public Collection<String> getTransformers () {
+        return transformers;
     }
 
     /**
