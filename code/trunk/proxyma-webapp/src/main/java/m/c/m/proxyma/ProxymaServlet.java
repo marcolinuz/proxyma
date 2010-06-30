@@ -1,6 +1,9 @@
 package m.c.m.proxyma;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.core.ProxyEngine;
 import m.c.m.proxyma.resource.ProxymaResource;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 
 /**
  * <p>
@@ -30,6 +36,7 @@ public class ProxymaServlet extends HttpServlet {
     /**
      * Initialize the servlet and the proxyma environment.
      */
+    @Override
     public void init() {
         try {
             //Obtain configuration parameters..
@@ -42,6 +49,21 @@ public class ProxymaServlet extends HttpServlet {
             if (proxymaConfigFile == null)
                 proxymaConfigFile = config.getServletContext().getRealPath("/WEB-INF/proxyma-config.xml");
 
+            //Hack to get the servlet path reading it directly from the deployment descriptor.
+            //Valid until apache will put a getServletMappings() method into the ServletConfig class.
+            XMLConfiguration deploymentDescriptor = null;
+            try {
+                deploymentDescriptor = new XMLConfiguration();
+                deploymentDescriptor.setFile(new File(config.getServletContext().getRealPath("/WEB-INF/web.xml")));
+                deploymentDescriptor.setValidating(false);
+                deploymentDescriptor.load();
+            } catch (ConfigurationException ex) {
+                Logger.getLogger("").log(Level.SEVERE, "Unable to load web.xml", ex);
+            }
+            deploymentDescriptor.setExpressionEngine(new XPathExpressionEngine());
+            String servletPath = deploymentDescriptor.getString("servlet-mapping[servlet-name='" + config.getServletName() + "']/url-pattern");
+            String proxymaServletContext = config.getServletContext().getContextPath() + servletPath.replaceFirst("/\\*$", GlobalConstants.EMPTY_STRING);
+
             //Check if the logs directory init-parameter ends with "/"
             if (!proxymaLogsDirectory.endsWith("/")) {
                 proxymaLogsDirectory = proxymaLogsDirectory + "/";
@@ -51,7 +73,7 @@ public class ProxymaServlet extends HttpServlet {
             this.proxyma = new ProxymaFacade();
 
             //Create a new proxyma context
-            this.proxymaContext = proxyma.createNewContext(proxymaContextName, config.getServletContext().getContextPath(), proxymaConfigFile, proxymaLogsDirectory);
+            this.proxymaContext = proxyma.createNewContext(proxymaContextName, proxymaServletContext, proxymaConfigFile, proxymaLogsDirectory);
             
             //Create a reverse proxy engine for this servlet thread
             this.proxymaEngine = proxyma.createNewProxyEngine(proxymaContext);
@@ -89,6 +111,7 @@ public class ProxymaServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
@@ -101,6 +124,7 @@ public class ProxymaServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
@@ -110,8 +134,9 @@ public class ProxymaServlet extends HttpServlet {
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
+    @Override
     public String getServletInfo() {
-        return "Short description";
+        return "This is the ProxymaServlet.";
     }// </editor-fold>
 
     /**
