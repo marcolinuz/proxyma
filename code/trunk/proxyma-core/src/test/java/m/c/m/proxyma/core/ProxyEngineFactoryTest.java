@@ -79,7 +79,7 @@ public class ProxyEngineFactoryTest extends TestCase {
 
         //Test if the plugins are correctly loaded
         plugins = instance.getRegisteredPluginsByType(ProxymaTags.HandlerType.TRANSFORMER);
-        assertEquals(5, plugins.size());
+        assertEquals(6, plugins.size());
         iter=plugins.iterator();
         assertTrue(iter.next() instanceof  AbstractTransformer);
 

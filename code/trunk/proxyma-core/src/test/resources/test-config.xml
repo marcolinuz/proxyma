@@ -39,6 +39,7 @@
             <cacheProvider class="m.c.m.proxyma.plugins.caches.NullCacheProvider" />
             <retriver class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
             <transformers>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
@@ -76,6 +77,7 @@
         </avaliablePreprocessors>
 
         <avaliableTransformers>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>

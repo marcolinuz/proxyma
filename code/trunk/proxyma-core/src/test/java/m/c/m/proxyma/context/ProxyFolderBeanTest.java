@@ -122,19 +122,19 @@ public class ProxyFolderBeanTest extends TestCase {
 
         instance.registerTransformer(null);
         Collection transformers = instance.getTransformers();
-        assertEquals(4, transformers.size());
+        assertEquals(5, transformers.size());
 
         instance.registerTransformer(transformerClassName);
         transformers = instance.getTransformers();
-        assertEquals(5, transformers.size());
+        assertEquals(6, transformers.size());
 
         instance.registerTransformer(" ");
         transformers = instance.getTransformers();
-        assertEquals(5, transformers.size());
+        assertEquals(6, transformers.size());
 
         instance.registerTransformer("m.c.m.plugins.transformers.SomeTransformer ");
         transformers = instance.getTransformers();
-        assertEquals(5, transformers.size());
+        assertEquals(6, transformers.size());
 
         Iterator<String> iter = instance.getTransformers().iterator();
         boolean found = false;
@@ -173,11 +173,11 @@ public class ProxyFolderBeanTest extends TestCase {
 
         instance.registerTransformer(transformerClassName);
         Collection transformers = instance.getTransformers();
-        assertEquals(5, transformers.size());
+        assertEquals(6, transformers.size());
 
         instance.unregisterTransformer(transformerClassName);
         transformers = instance.getTransformers();
-        assertEquals(4, transformers.size());
+        assertEquals(5, transformers.size());
 
         //Cleanup pool
         try {
