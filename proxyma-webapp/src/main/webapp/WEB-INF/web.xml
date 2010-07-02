@@ -17,7 +17,7 @@
 <web-app>
   <!-- Application Name -->
     <display-name>
-        Proxyma 1.0-alpha (Multiple Reverse/Proxy)
+        Proxyma NG (Multiple Reverse/Proxy)
     </display-name>
 
     <!-- Application Description -->
@@ -43,7 +43,9 @@
         <!-- The directory where proxyma will write its logs -->
         <init-param>
             <param-name>ProxymaLogsDir</param-name>
-            <param-value>${catalina.home}/logs/</param-value>
+            <param-value>./</param-value>
+            <!-- For tomcat use this value
+            <param-value>${catalina.home}/logs/</param-value> -->
         </init-param>
 
         <!-- Load the servlet on container startup -->

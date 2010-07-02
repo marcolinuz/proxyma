@@ -64,6 +64,7 @@
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
                 <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
+                <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer"/>
             </transformers>
             <serializer class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"/>
         </folderSettings>
@@ -96,35 +97,45 @@
         </avaliableCacheProviders>
 
         <!-- List of Preprocessor plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "AbstractPreprocessor" class overriding
-             the "process" method. -->
+             These plugins extends the "AbstractPreprocessor" class overriding
+             the "process" method.
+             Note: The "executionPriority" attribute is like the unix nice system,
+                   The default value is 0, the plugins that shares the same value
+                   for it are executed in random order. Instead, the plugins with
+                   lesser values are executed first and the plugins with
+                   higer values are executed last. -->
         <avaliablePreprocessors>
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" />
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" executionPriority="0"/>
         </avaliablePreprocessors>
 
         <!-- List of Retriver plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "AbstractRetriver" class overriding
+             These plugins extends the "AbstractRetriver" class overriding
              the "process" method. -->
         <availableRetrivers>
             <resourceHandler class="m.c.m.proxyma.plugins.retrivers.TestPageRetriver"/>
             <resourceHandler class="m.c.m.proxyma.plugins.retrivers.SimpleHttpRetriver"/>
         </availableRetrivers>
 
-        <!-- List of Transformer plugins that can be used by the proxyma engine
-             NOTE: these plugins extends the "AbstractTransformer" class overriding
-             the "process" method. -->
+         <!-- List of Transformer plugins that can be used by the proxyma engine
+             These plugins extends the "AbstractTransformer" class overriding
+             the "process" method.
+             Note: The "executionPriority" attribute is like the unix nice system,
+                   The default value is 0, the plugins that shares the same value
+                   for it are executed in random order. Instead, the plugins with
+                   lesser values are executed first and the plugins with
+                   higer values are executed last. -->
         <avaliableTransformers>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer" executionPriority="-1"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer" executionPriority="0"/>
         </avaliableTransformers>
 
         <!-- List of Serializer plugins that can be used by the proxyma engine.
-             NOTE: these plugins extends the "AbstractSerializer" class overriding
+             These plugins extends the "AbstractSerializer" class overriding
              the "process" method. -->
         <availableSerializers>
             <resourceHandler class="m.c.m.proxyma.plugins.serializers.SimpleSerializer"

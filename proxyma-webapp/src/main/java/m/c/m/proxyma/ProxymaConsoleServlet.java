@@ -85,13 +85,13 @@ public class ProxymaConsoleServlet extends HttpServlet {
                 //enble a disabled rule
                 proxyma.enableProxyFolder(currentTarget);
                 httpservletrequest.setAttribute(GlobalConstants.PROXY_FOLDER_LIST_REQUEST_ATTRIBUTE, proxyma.getContextProxyFolders(currentContext));
-                httpservletrequest.setAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE, "Proxy-Folder \"" + currentTarget.getFolderName() + "\" successfully enabled.");
+                httpservletrequest.setAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE, "Proxy-Folder \"" + currentTarget.getFolderName() + "\" successfully Unlocked.");
                 forwardToJsp(httpservletrequest, httpservletresponse, GlobalConstants.CONTEXT_OVERVIEW_PAGE, currentContext);
             } else if (GlobalConstants.DISABLE_FOLDER_ACTION.equals(action)) {
                 //disable an enabled rule
                 proxyma.disableProxyFolder(currentTarget);
                 httpservletrequest.setAttribute(GlobalConstants.PROXY_FOLDER_LIST_REQUEST_ATTRIBUTE, proxyma.getContextProxyFolders(currentContext));
-                httpservletrequest.setAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE, "Proxy-Folder \"" + currentTarget.getFolderName() + "\" successfully disabled.");
+                httpservletrequest.setAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE, "Proxy-Folder \"" + currentTarget.getFolderName() + "\" successfully Locked.");
                 forwardToJsp(httpservletrequest, httpservletresponse, GlobalConstants.CONTEXT_OVERVIEW_PAGE, currentContext);
             } else if (GlobalConstants.GO_TO_EDIT_FOLDER_ACTION.equals(action)) {
                 //Edit an existent rule
@@ -183,8 +183,14 @@ public class ProxymaConsoleServlet extends HttpServlet {
         } else if (GlobalConstants.UPDATE_FOLDER_COMMAND.equals(command)) {
             //Update an existent Rule
             try {
+                StringBuffer message = new StringBuffer(256);
+                message.append("Proxy-Folder \"");
+                message.append(currentTarget.getFolderName());
+                message.append("\" successfully updated.");
+                if (!currentTarget.isEnabled())
+                    message.append("<br/>WARNING: The folder is locked, click on the \"Status\" button to unlock it.");
                 updateProxyFolderFromRequestParameters(httpservletrequest, currentTarget);
-                httpservletrequest.setAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE, "Proxy-Folder \"" + currentTarget.getFolderName() + "\" successfully updated.");
+                httpservletrequest.setAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE, message.toString());
                 httpservletrequest.setAttribute(GlobalConstants.PROXY_FOLDER_LIST_REQUEST_ATTRIBUTE, proxyma.getContextProxyFolders(currentContext));
                 forwardToJsp(httpservletrequest, httpservletresponse, GlobalConstants.CONTEXT_OVERVIEW_PAGE, currentContext);
             } catch (Exception e) {

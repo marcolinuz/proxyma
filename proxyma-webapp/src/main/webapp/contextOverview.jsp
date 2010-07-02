@@ -25,7 +25,7 @@
      %>
     <head>
         <title>Proxyma Configuration Console</title>
-        <meta http-equiv="Content-Type" content="text/html;">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link href="<%=proxymaContextPath%>/stile.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -34,7 +34,7 @@
         You are Here: <a href="<%=proxymaContextPath%>">Context Selection</a> -> <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.RELOAD_PAGE_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=null&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.RELOAD_OVERVIEW_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><%=context.getName()%> context overview</a>
     </div>
     <div id="centrale">
-        <div id="titolo">Proxy-Folder Destinations List.</div>
+        <div id="titolo">Proxy-Folder Destinations.</div>
         <%
             String message = (String)request.getAttribute(GlobalConstants.USER_MESSAGE_REQUEST_ATTRIBUTE);
             if (message != null) {
@@ -72,16 +72,16 @@
                             <td><a href="<%=proxyFolder.getDestinationAsString()%>"><%=proxyFolder.getDestinationAsString()%></a></td>
                             <td align="center" >
                             <% if (proxyFolder.isEnabled()) { %>
-                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.DISABLE_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><img  alt="enabled" src="<%=proxymaContextPath%>/img/running.png" /></a>
+                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.DISABLE_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><img class="folderActions" alt="enabled" src="<%=proxymaContextPath%>/img/running.png" /></a>
                             <% } else { %>
-                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.ENABLE_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><img  alt="disabled" src="<%=proxymaContextPath%>/img/locked.png" /></a>
+                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.ENABLE_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><img class="folderActions" alt="disabled" src="<%=proxymaContextPath%>/img/locked.png" /></a>
                             <% } %>
                             </td>
                             <td align="center">
-                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.GO_TO_EDIT_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><img  alt="Edit Rule" src="<%=proxymaContextPath%>/img/modify.png" /></a>
+                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.GO_TO_EDIT_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>"><img class="folderActions" alt="Edit Rule" src="<%=proxymaContextPath%>/img/modify.png" /></a>
                             </td>
                             <td align="center">
-                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.DELETE_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>" onClick="return confirm('Are you sure you want to Remove this Proxy-Folder?');"><img alt="Remove Rule"  src="<%=proxymaContextPath%>/img/remove.png" /></a>
+                                    <a href="<%=proxymaContextPath%>/console?<%=GlobalConstants.COMMAND_PARAMETER%>=<%=GlobalConstants.MANAGE_FOLDER_COMMAND%>&<%=GlobalConstants.TARGET_PARAMETER%>=<%=proxyFolder.getURLEncodedFolderName()%>&<%=GlobalConstants.ACTION_PARAMETER%>=<%=GlobalConstants.DELETE_FOLDER_ACTION%>&<%=GlobalConstants.CONTEXT_PARAMETER%>=<%=context.getName()%>" onClick="return confirm('Are you sure you want to Remove this Proxy-Folder?');"><img class="folderActions" alt="Remove Rule"  src="<%=proxymaContextPath%>/img/remove.png" /></a>
                             </td>
                         </tr>
 <%
@@ -107,7 +107,7 @@
                                 <input type="hidden" name="<%=GlobalConstants.CONTEXT_PARAMETER%>" value="<%=context.getName()%>" />
                                 <input type="hidden" name="<%=GlobalConstants.TARGET_PARAMETER%>" value="null" />
                                 <input type="hidden" name="<%=GlobalConstants.ACTION_PARAMETER%>" value="null" />
-                                <input type="submit" value="Import Contex Proxy-Folders"/>
+                                <input type="submit" value="Import Proxy-Folders"/>
                             </form>
                         </td>
                         <td width="34%">
@@ -140,7 +140,7 @@
                                 <input type="hidden" name="<%=GlobalConstants.CONTEXT_PARAMETER%>" value="<%=context.getName()%>" />
                                 <input type="hidden" name="<%=GlobalConstants.TARGET_PARAMETER%>" value="null" />
                                 <input type="hidden" name="<%=GlobalConstants.ACTION_PARAMETER%>" value="null" />
-                                <input type="submit" value="Export Context Proxy-Folders"/>
+                                <input type="submit" value="Export Proxy-Folders"/>
                             </form>
                         </td>
                     </tr>
@@ -148,7 +148,17 @@
             </div>
         </div>
     </div>
-    <jsp:include page="/footer.html" />
+    <div id="fondo">
+            <div id="author">
+                    <p><b><%=context.getProxymaVersion()%></b> - Marco Casavecchia Morganti (marcolinuz@gmail.com)</p>
+            </div>
+            <div id="www">
+                    <a href="http://proxyma.sourceforge.net/">Proxyma Project</a>
+            </div>
+            <div id="release">
+                <img src="<%=proxymaContextPath%>/img/angolo_grigio_rev.gif" alt="grey angle image" />
+            </div>
+        </div>
     </body>
 </html>
 
