@@ -25,19 +25,27 @@ To test it you can use the maven embedded Jetty engine, but if you want to use
 it in a production environment or run it from binaries you have to provide 
 a Servlet Container like Tomcat, Jetty, Glassfish, ecc..
 
+Obtain the source code:
+The source code can be found into the sourceforge svn repository.
+To download the latest (and first) stable release run this command:
+ * svn co https://proxyma.svn.sourceforge.net/svnroot/proxyma/code/tags/Proxyma-NG_1.0
+
+Build the project:
 To build and launch the web application and the core-library from source you
-only need to run the following commands:
+only need to install maven 2 on your computer and run the following commands:
 
  * mvn -DskipTests=true install
  * cd proxyma-webapp
  * mvn jetty:run
 
+Deploy the binary distribution:
 To deploy the binary distribution on tomcat simply use the manager interface
-to upload the proxyma-webapp-{version}.war file or copy it into the webapps
+to upload the "proxyma-webapp.war" file or copy it into the webapps
 directory of your application server.
 
 Getting started:
- * Open your browser on the URL of the application server (http://localhost:8080)
+ * Open your favorite browser on the URL of the application server
+   (http://localhost:8080/)
 
  * go to the url of proxyma-webapp and the "Proxyma Console" will appear.
 
@@ -45,7 +53,7 @@ Getting started:
 
  * Add a new proxy folder (to begin you can use the default one :O)
 
- * Click on the generated folde name and surf the site with proxyma.
+ * Click on the generated folder name and surf the site with proxyma.
 
 ------------------------------
  RELEASE NOTES: (Proxyma 1.0)
