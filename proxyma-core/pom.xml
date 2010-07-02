@@ -16,11 +16,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>m.c.m.proxyma</groupId>
     <artifactId>proxyma-core</artifactId>
-    <version>1.0-alpha</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>proxyma-core</name>
     <url>http://proxyma.sourceforge.net/</url>
+
+    <parent>
+        <groupId>m.c.m.proxyma</groupId>
+        <artifactId>proxyma</artifactId>
+        <version>1.0</version>
+    </parent>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -168,7 +168,7 @@ public class PerformanceTestSerializer extends m.c.m.proxyma.plugins.serializers
      */
     private static final String description = ""
             + "This plugin extends the simple HTTP serializer.<br/>"
-            + "Its work is to write an ulterior log file (contextName-performances.log) where "
-            + "are stored the times elapsed to serve the requests.<br/>"
-            + "It writes also if there was a chache-hit.";
+            + "Its purpose is to write a log file (named proxyma-${contextName}-performances.log) where "
+            + "will be stored the times elapsed to serve the requests.<br/>"
+            + "Note: It hilights also if there was a chache-hit.";
 }

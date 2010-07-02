@@ -271,8 +271,9 @@ public class CssUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformers
      */
     private static final String description = ""
             + "This plugin is a Style Sheet Transformer.<br/>"
-            + "Its work is to scan the html pages and the CSS files seraching for style links.<br/>"
-            + "If any link is found it will be rewritten it in order to masquerde the real source.";
+            + "Its purpose is to parse html pages and Cascading Style Sheets, seraching for CSS embedded links.<br/>"
+            + "If any link is found, it will be rewritten it in order to force the client browser to "
+            + "use proxyma to retrive it.";
 
     //INSPECTED TAG NAMES
     private final static String STYLE = "style";

@@ -114,9 +114,9 @@ public class HttpRedirectsRewriteTransformer extends m.c.m.proxyma.plugins.trans
      */
     private static final String description = ""
             + "This plugin rewrites redirected resources.<br/>"
-            + "If the remote server response is a redirect to any masqueraded "
-            + "folder, this plugin will rewrite it in order to keep the client"
-            + "browser using proxyma to fetch it.";
+            + "If the remote server response is a redirect (Status code 300, 302.. ), "
+            + "this plugin will try to rewrite it in order to force the client "
+            + "browser to use proxyma to fetch it.";
 
     /**
      * The standard Location header name.

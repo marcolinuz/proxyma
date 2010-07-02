@@ -325,23 +325,27 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                 value = valuesList.next();
                 if (SET_COOKIE_HEADER.equalsIgnoreCase(header)) {
                     //process cookies one at a time..
+                    log.finer("Processing Set-Cookie Header. Value=\"" + value + "\"");
                     StringTokenizer st = new StringTokenizer(value, COOKIE_TOKENS_DELIMITER);
                     Cookie theCookie = null;
                     if (st.hasMoreTokens()) {
                         String token = st.nextToken();
                         String cookieNameValue[] = token.split(COOKIE_VALUE_DELIMITER);
-                        theCookie = new Cookie(cookieNameValue[0], cookieNameValue[1]);
+                        if (cookieNameValue.length == 2)
+                            theCookie = new Cookie(cookieNameValue[0], cookieNameValue[1].trim());
+                        else
+                            theCookie = new Cookie(cookieNameValue[0], EMPTY_STRING);
                     }
                     while (st.hasMoreTokens()) {
                         String token = st.nextToken();
                         if (token.startsWith(COOKIE_DOMAIN)) {
                             //Rewrites the domain of cookie (this will be rewritten soon by the rewriter)
                             token = token.replaceFirst(COOKIE_DOMAIN, EMPTY_STRING);
-                            theCookie.setDomain(token);
+                            theCookie.setDomain(token.trim());
                         } else if (token.startsWith(COOKIE_PATH)) {
                             //Rewrites the path of cookie (even this will be rewritten soon by the request forwarder)
                             token = token.replaceFirst(COOKIE_PATH, EMPTY_STRING);
-                            theCookie.setPath(token);
+                            theCookie.setPath(token.trim());
                         } else if (token.startsWith(COOKIE_EXPIRES)) {
                             //process expiration date of the cookie
                             token = token.replaceFirst(COOKIE_EXPIRES, EMPTY_STRING);
@@ -354,7 +358,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                         } else if (token.startsWith(COOKIE_VERSION)) {
                             //process path of cookie (even this will be rewritten soon by the rewriter)
                             token = token.replaceFirst(COOKIE_VERSION, EMPTY_STRING);
-                            theCookie.setVersion(Integer.parseInt(token));
+                            theCookie.setVersion(Integer.parseInt(token.trim()));
                         } else if (token.startsWith(COOKIE_SECURE)) {
                             theCookie.setSecure(true);
                         }
@@ -509,6 +513,6 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
     private static final String description = "" +
             "This plugin retrives the requested data from the remote " +
             "hosts (real servers) using the HTTP Protocol.<br/>" +
-            "Note: it sets a resource attribute \"Original-Response\" with a" +
-            "reference to the original retrived response.";
+            "Note for developers: it also writes into the resource an attribute (Original-Response) that countains " +
+            "the original retrived response.";
 }

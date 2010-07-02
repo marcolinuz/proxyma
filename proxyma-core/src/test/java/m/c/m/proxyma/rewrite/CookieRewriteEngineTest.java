@@ -81,23 +81,22 @@ public class CookieRewriteEngineTest extends TestCase {
 
         Cookie theCookie = new Cookie("cookie1", "Value1");
         theCookie.setDomain("google.com");
-        theCookie.setPath("/it");
+        theCookie.setPath("/it/pippo");
         instance.masqueradeCookie(theCookie, aResource);
 
         String expected = "localhost";
         assertEquals(expected, theCookie.getDomain());
 
-        expected = "/proxyma/host1";
+        expected = "/proxyma/host1/pippo";
         assertEquals(expected, theCookie.getPath());
 
+        expected = CookieRewriteEngine.PROXYMA_REWRITTEN_HEADER  + "Value1";
+        assertEquals(expected, theCookie.getValue());
 
         instance.unmasqueradeCookie(theCookie);
 
-        expected = "google.com";
-        assertEquals(expected, theCookie.getDomain());
-
-        expected = "/it";
-        assertEquals(expected, theCookie.getPath());
+        expected = "Value1";
+        assertEquals(expected, theCookie.getValue());
 
         theCookie = new Cookie("cookie2", "Value2");
         instance.masqueradeCookie(theCookie, aResource);
@@ -108,13 +107,13 @@ public class CookieRewriteEngineTest extends TestCase {
         expected = "/proxyma/host1";
         assertEquals(expected, theCookie.getPath());
 
+        expected = CookieRewriteEngine.PROXYMA_REWRITTEN_HEADER  + "Value2";
+        assertEquals(expected, theCookie.getValue());
+
         instance.unmasqueradeCookie(theCookie);
 
-        expected = "www.google.com";
-        assertEquals(expected, theCookie.getDomain());
-
-        expected = "/";
-        assertEquals(expected, theCookie.getPath());
+        expected = "Value2";
+        assertEquals(expected, theCookie.getValue());
 
         proxyma.removeProxyFolder(folder2, context);
         proxyma.removeProxyFolder(folder1, context);

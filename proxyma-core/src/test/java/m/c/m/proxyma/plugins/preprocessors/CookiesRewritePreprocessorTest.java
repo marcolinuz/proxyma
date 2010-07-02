@@ -14,6 +14,7 @@ import m.c.m.proxyma.ProxymaFacade;
 import m.c.m.proxyma.TestServlet;
 import m.c.m.proxyma.context.ProxymaContext;
 import m.c.m.proxyma.resource.ProxymaResource;
+import m.c.m.proxyma.rewrite.CookieRewriteEngine;
 
 /**
  * <p>
@@ -45,7 +46,6 @@ public class CookiesRewritePreprocessorTest extends TestCase {
         ServletUnitClient sc = sr.newClient();
         WebRequest wreq   = new GetMethodWebRequest( "http://test.meterware.com/myServlet?a=1&b=2" );
         wreq.setParameter( "color", "red" );
-        wreq.setHeaderField("Cookie", "rewritten=value1");
         WebResponse wres = sc.getResponse( wreq );
         InvocationContext ic = sc.newInvocation( wreq );
         request = ic.getRequest();
@@ -73,14 +73,12 @@ public class CookiesRewritePreprocessorTest extends TestCase {
        System.out.println("process");
         ProxymaFacade proxyma = new ProxymaFacade();
         ProxymaContext context = proxyma.getContextByName("default");
-        ProxymaResource aResource = proxyma.createNewResource(request, response, context);
+        ProxymaResource aResource = proxyma.createNewResource(new FakeCookieServlet(), response, context);
         CookiesRewritePreprocessor instance = new CookiesRewritePreprocessor(context);
 
         Cookie[] requestCookies = aResource.getRequest().getCookies();
         assertEquals(1,requestCookies.length);
         Cookie theCookie = requestCookies[0];
-        theCookie.setDomain("localhost");
-        theCookie.setPath("/");
 
         //Create a testpage for the tests..
         instance.process(aResource);
@@ -88,11 +86,9 @@ public class CookiesRewritePreprocessorTest extends TestCase {
         requestCookies = aResource.getRequest().getCookies();
         assertEquals(1,requestCookies.length);
         theCookie = requestCookies[0];
-        assertEquals("localhost", theCookie.getDomain());
-        assertEquals("/", theCookie.getPath());
-        
-        
-        theCookie.setComment("www.google.com@/original/path");
+        assertEquals("To protect your privacy, the Proxyma-NG CookiesRewritePreprocessor has ereased this Cookie.", theCookie.getValue());
+
+        theCookie.setValue(CookieRewriteEngine.PROXYMA_REWRITTEN_HEADER + "rewritten-value");
 
         //Create a testpage for the tests..
         instance.process(aResource);
@@ -100,8 +96,7 @@ public class CookiesRewritePreprocessorTest extends TestCase {
         requestCookies = aResource.getRequest().getCookies();
         assertEquals(1,requestCookies.length);
         theCookie = requestCookies[0];
-        assertEquals("www.google.com", theCookie.getDomain());
-        assertEquals("/original/path", theCookie.getPath());
+        assertEquals("rewritten-value", theCookie.getValue());
 
     }
 

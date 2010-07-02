@@ -90,7 +90,7 @@ public class CookiesRewriteTransformerTest extends TestCase {
 
         Cookie aCookie = new Cookie("cookie1", "value1");
         aCookie.setDomain("google.com");
-        aCookie.setPath("/en/goofy");
+        aCookie.setPath("/it/goofy");
         responseData.addCookie(aCookie);
 
         aCookie = new Cookie("cookie2", "value2");
@@ -107,12 +107,12 @@ public class CookiesRewriteTransformerTest extends TestCase {
             aCookie = iterator.next();
             if ("cookie1".equals(aCookie.getName())) {
                 assertEquals("localhost", aCookie.getDomain());
-                assertEquals("/proxyma/host1", aCookie.getPath());
-                assertEquals("google.com" + CookieRewriteEngine.COMMENT_FIELDS_SEPARATOR + "/en/goofy", aCookie.getComment());
+                assertEquals("/proxyma/host1/goofy", aCookie.getPath());
+                assertEquals(CookieRewriteEngine.PROXYMA_REWRITTEN_HEADER+"value1", aCookie.getValue());
             } else {
                 assertEquals("localhost", aCookie.getDomain());
                 assertEquals("/proxyma/host1", aCookie.getPath());
-                assertEquals("www.google.com" + CookieRewriteEngine.COMMENT_FIELDS_SEPARATOR + "/", aCookie.getComment());
+                assertEquals(CookieRewriteEngine.PROXYMA_REWRITTEN_HEADER+"value2", aCookie.getValue());
             }
         }
 

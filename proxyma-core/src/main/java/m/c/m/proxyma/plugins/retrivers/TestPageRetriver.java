@@ -151,8 +151,7 @@ public class TestPageRetriver extends m.c.m.proxyma.plugins.retrivers.AbstractRe
      * A short html description of what it does.
      */
     private static final String description = "" +
-            "This retriver simply generates a test page.<br/>" +
-            "It's useful only for testing puropses.";
+            "This retriver plugin simply generates a test page for (obviously) testing puropses.";
 
     /**
      * The body of the generated test page.

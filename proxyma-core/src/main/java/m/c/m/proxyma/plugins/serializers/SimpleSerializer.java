@@ -192,7 +192,7 @@ public class SimpleSerializer extends m.c.m.proxyma.plugins.serializers.Abstract
      */
     private static final String description = ""
             + "This plugin is a simple HTTP serializer.<br/>"
-            + "Its work is to send back to the client the response adding to it "
-            + "only a few only useful headers.<br/>"
-            + "It writes also the \"access log\" in common logging format.";
+            + "Its puropse is to send back to the client the processed response data adding to it "
+            + "only a few useful headers.<br/>"
+            + "It writes also an \"access log\" in extended-common logging format.";
 }

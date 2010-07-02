@@ -100,10 +100,9 @@ public class CookiesRewriteTransformer extends m.c.m.proxyma.plugins.transformer
      */
     private static final String description = ""
             + "This plugin is a Cookie Transformer.<br/>"
-            + "It scans all the cookies into the server responses "
-            + "and changes the domain and path values in order to allow the clients "
-            + "browsers to manage them properly.<br/>"
-            + "Note: this plugin works in conjunction with the CookiesRewritePreprocessor "
-            + "to restores the original values of the masqueraded hosts, so it would be "
-            + "useless to activate it without its companion plugin.";
+            + "It manipulates all the transiting cookies by changing them in order to allow the client "
+            + "browser to transparently access the remote server through proxyma.<br/>"
+            + "Note: this plugin works togheter the CookiesRewritePreprocessor "
+            + "(that instead restores the original values of the masqueraded cookies), "
+            + "for this reason, it would be useless to activate it without its companion.";
 }

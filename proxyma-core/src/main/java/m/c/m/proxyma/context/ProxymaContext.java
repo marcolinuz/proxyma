@@ -60,7 +60,7 @@ public class ProxymaContext {
                 ProxymaLoggersUtil.initializeContextLogger(this.log, logFile, level, maxSize, retention);
             }
             this.defaultEncoding = getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING);
-            this.proxymaVersion = "Proxyma-Core Engine Rel. " + getSingleValueParameter(ProxymaTags.CONFIG_FILE_VERSION) + " (by MCM).";
+            this.proxymaVersion = "Proxyma-NG (Rel. " + getSingleValueParameter(ProxymaTags.CONFIG_FILE_VERSION) + ")";
         } catch (Exception ex) {
             Logger.getLogger("").log(Level.SEVERE, null, ex);
         }
