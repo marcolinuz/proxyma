@@ -54,11 +54,16 @@ public class CookiesRewritePreprocessor extends m.c.m.proxyma.plugins.preprocess
 
         if (requestCookies != null) {
             //Rewrites the cookie only if it was originally processed by the CookiesRewriteTransformer
-            String cookieComment = null;
+            String cookieValue = null;
             for (int current = 0; current < requestCookies.length; current++) {
-                cookieComment = requestCookies[current].getComment();
-                if ((cookieComment != null) && (cookieComment.contains(CookieRewriteEngine.COMMENT_FIELDS_SEPARATOR))) {
+                cookieValue = requestCookies[current].getValue();
+                if ((cookieValue != null) && (cookieValue.startsWith(CookieRewriteEngine.PROXYMA_REWRITTEN_HEADER))) {
+                    //This is a rewritten cookie
                     rewriter.unmasqueradeCookie(requestCookies[current]);
+                } else {
+                    //This is a local cookie not to forwrad!
+                    //Overwrite it with non-sense value to protect your privacy
+                    requestCookies[current].setValue("To protect your privacy, the Proxyma-NG CookiesRewritePreprocessor has ereased this Cookie.");
                 }
             }
         }
@@ -102,5 +107,5 @@ public class CookiesRewritePreprocessor extends m.c.m.proxyma.plugins.preprocess
      */
     private static final String description = ""
             + "This Preprocessor recognizes the rewritten cookies and restore them with their original values.<br/>"
-            + "It works in conjunction with the <b>CookiesRewriteTransformer</b> plugin, so it's useless to activate it without its compalnion.";
+            + "It works togheter the <i>CookiesRewriteTransformer</i> plugin. So it's useless to activate it without its companion.";
 }

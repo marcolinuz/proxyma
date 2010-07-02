@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import m.c.m.proxyma.ProxymaTags;
@@ -287,11 +288,11 @@ public class ProxyFolderBean implements Serializable {
             preprocessorClassName = preprocessorClassName.trim();
             if (preprocessorClassName.length() == 0) {
                 log.warning("The preprocessor class name is an empty (or blank) string.. nothing done");
-            } else if (preprocessors.contains(preprocessorClassName)) {
+            } else if (isAlreadyRegistered(preprocessorClassName, preprocessors)) {
                 log.warning("The preprocessor \"" + preprocessorClassName + "\" is already registered in proxy folder \"" + getFolderName() + "\".. nothing done.");
             } else {
                 log.finer("Registering new preprocessor \"" + preprocessorClassName + "\" for proxy folder \"" + getFolderName() + "\"");
-                preprocessors.add(preprocessorClassName);
+                addPluginUsingExecutionPriority (preprocessorClassName, ProxymaTags.AVAILABLE_PREPROCESSORS, preprocessors);
             }
         }
     }
@@ -333,11 +334,11 @@ public class ProxyFolderBean implements Serializable {
             transformerClassName = transformerClassName.trim();
             if (transformerClassName.length() == 0) {
                 log.warning("The transformer class name is an empty (or blank) string.. nothing done");
-            } else if (transformers.contains(transformerClassName)) {
+            } else if (isAlreadyRegistered(transformerClassName, transformers)) {
                 log.warning("The transformer \"" + transformerClassName + "\" is already registered in proxy folder \"" + getFolderName() + "\".. nothing done.");
             } else {
                 log.finer("Registering new transformer \"" + transformerClassName + "\" for proxy folder \"" + getFolderName() + "\"");
-                transformers.add(transformerClassName);
+                addPluginUsingExecutionPriority (transformerClassName, ProxymaTags.AVAILABLE_TRANSFORMERS, transformers);
             }
         }
     }
@@ -368,6 +369,68 @@ public class ProxyFolderBean implements Serializable {
         return transformers;
     }
 
+    /**
+     * Checks if the passed plugin is already registered into the passed collection.
+     * @param pluginName the name to search for
+     * @param list the collection to inspect
+     * @return true if the plugin is found into the collection.
+     */
+    private boolean isAlreadyRegistered(String pluginName, Collection<String> list) {
+        boolean found = false;
+        Iterator<String> listIterator = list.iterator();
+        String curValue = null;
+        while (listIterator.hasNext()) {
+            curValue = listIterator.next();
+            if (pluginName.equals(curValue))
+                found = true;
+        }
+        return found;
+    }
+
+    /**
+     * Add the a plugin to the specified list using the execution priority 
+     * to define the position of the plugin into the list.
+     * @param pluginName the plugin name to add to the list
+     * @param list the list to update.
+     */
+    private void addPluginUsingExecutionPriority (String pluginName, String baseXPath, ConcurrentLinkedQueue<String> list) {
+        String pluginPriorityXPath = baseXPath + "[@class='" + pluginName + "']/@executionPriority";
+        int pluginPriority = 0;
+        try {
+            pluginPriority = Integer.parseInt(context.getSingleValueParameter(pluginPriorityXPath));
+        } catch (Exception x) {
+            log.warning("executionPiority not an integer in \"" + pluginPriorityXPath + "\"");
+        }
+
+        //put the new object in the correct position based upon its execution priority
+        LinkedList<String> tmpList = new LinkedList(list);
+
+        String currentPlugin = null;
+        int currentPluginPriority = 0;
+        boolean inserted = false;
+        for (int i=0; (i<tmpList.size() && !inserted); i++) {
+            currentPlugin = tmpList.get(i);
+            pluginPriorityXPath = baseXPath + "[@class='" + currentPlugin + "']/@executionPriority";
+            try {
+                currentPluginPriority = Integer.parseInt(context.getSingleValueParameter(pluginPriorityXPath));
+            } catch (Exception x) {
+                currentPluginPriority = 0;
+            }
+
+            if (pluginPriority < currentPluginPriority) {
+                tmpList.add(i, pluginName);
+                inserted = true;
+            }
+        }
+
+        //If a place for the plugin was not found the plugin is addedd on the tail
+        if (!inserted)
+            tmpList.add(pluginName);
+
+        //Update the thread-safe queue
+        list.removeAll(tmpList);
+        list.addAll(tmpList);
+    }
     /**
      * The proxy folder name
      */

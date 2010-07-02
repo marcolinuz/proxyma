@@ -324,8 +324,9 @@ public class JSRewriteTransformer extends m.c.m.proxyma.plugins.transformers.Abs
      */
     private static final String description = ""
             + "This plugin is a Basic Javescript Transformer.<br/>"
-            + "Its work is to scan the html pages and the JS files seraching for URLs.<br/>"
-            + "If any URL (http...) is found, it will be rewritten it in order to masquerde the real source.";
+            + "Its purpose is to scan the html pages and the JavaScript libraries seraching for URLs.<br/>"
+            + "If any URL (http...) is found, it will be rewritten it in order to force the client browser "
+            + "to use proxyma to retrive it.";
 
     //INSPECTED TAG NAMES
     private final static String SCRIPT = "script";

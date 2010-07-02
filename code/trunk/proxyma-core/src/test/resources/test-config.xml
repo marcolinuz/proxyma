@@ -70,21 +70,21 @@
         </avaliableCacheProviders>
 
         <avaliablePreprocessors>
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" />
-            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.StoreTimestampPreprocessor" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.CookiesRewritePreprocessor" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.preprocessors.UnexistingPreprocessor" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider" executionPriority="0"/>
         </avaliablePreprocessors>
 
         <avaliableTransformers>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer" executionPriority="1"/>
             <resourceHandler class="m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.transformers.UnexistingTransformer"/>
-            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer" executionPriority="-1"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.HttpRedirectsRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.JSRewriteTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.transformers.UnexistingTransformer" executionPriority="0"/>
+            <resourceHandler class="m.c.m.proxyma.plugins.caches.NullCacheProvider" executionPriority="0"/>
         </avaliableTransformers>
 
         <availableSerializers>

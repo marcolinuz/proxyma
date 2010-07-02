@@ -296,8 +296,8 @@ public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformer
      */
     private static final String description = ""
             + "This plugin is an HTML Transformer.<br/>"
-            + "Its work is to scan the pages seraching for links and modify them "
-            + "in order to masquerde the real source of the page resources.";
+            + "Its purpose is to parse the html pages searching for http links. Every founded link is modifyed "
+            + "in order to force the client browser to use proxyma to retrive it.";
 
     //INSPECTED TAG NAMES
     private final static String A = "a";

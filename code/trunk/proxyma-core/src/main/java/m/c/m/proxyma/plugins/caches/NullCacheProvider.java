@@ -105,8 +105,8 @@ public class NullCacheProvider implements m.c.m.proxyma.plugins.caches.CacheProv
      * A short html description of what it does.
      */
     private static final String description = "" +
-            "This is a null cache provider.<br/>" +
-            "Use this plugin if you don't want to use a cache subsystem " +
-            "on the proxy-folder. It always force the proxy to retrive the " +
-            "resources from the original server";
+            "To be honest, this is not a cache.<br/>" +
+            "With this plugin you can disable the cache subsystem " +
+            "for the current proxy-folder. In other words, it will force the proxy engine to always retrive the " +
+            "resources from the original server.";
 }

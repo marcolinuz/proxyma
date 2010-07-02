@@ -391,10 +391,8 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
      */
     private static final String description = ""
             + "This is a wrapper for the famouns Ehcache subsystem.<br/>"
-            + "This plugin uses the Ecache engine to implement a robust and fast "
-            + "cache for the reverse proxy.<br/>"
-            + "It costs in terms of RAM and disk utilization, but it can give "
-            + "a great speed up the proxy operations.<br/>"
-            + "NOTE: It register an attribute into the resource if thhere is a cache hit. "
-            + "The attribute name is \"Cache-Hit\".";
+            + "Namely, this plugin uses the Ecache engine to implement a robust and fast "
+            + "cache backend for the reverse proxy operations.<br/>"
+            + "It have a side effect in terms of RAM occupation and disk activity, but it can give "
+            + "a great speed up to the proxy operations.";
 }

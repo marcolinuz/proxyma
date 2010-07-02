@@ -86,7 +86,8 @@ public class StoreTimestampPreprocessor extends m.c.m.proxyma.plugins.preprocess
      * A short html description of what it does.
      */
     private static final String description = "" +
-            "This Preprocessor register a timestamp into the incoming resources.<br/>" +
-            "The atribute name is \"Timestamp\" and it can be used to check the performances of the server.<br/>" +
-            "You don't really need it into a production environment.";
+            "This plugin registers a timestamp into the incoming resources.<br/>" +
+            "In other words it writes an attribute named \"Timestamp\" in the resource so " +
+            "it can be used later by another plugin to check the performances of the proxy engine.<br/>" +
+            "Of course, you don't really need it into a production environment.";
 }

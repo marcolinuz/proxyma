@@ -59,10 +59,10 @@ public class ProxyFolderFactoryTest extends TestCase {
         int counter = 0;
         String expResults[] = new String[] {
                               "m.c.m.proxyma.plugins.transformers.CharsetInspectorTransformer",
-                              "m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.CssUrlRewriteTransformer",
                               "m.c.m.proxyma.plugins.transformers.CookiesRewriteTransformer",
-                              "m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer"};
+                              "m.c.m.proxyma.plugins.transformers.HttpRedirectRewriteTransformer",
+                              "m.c.m.proxyma.plugins.transformers.HtmlUrlRewriteTransformer"};
         while (transformers.hasNext()) {
             assertEquals(transformers.next(), expResults[counter]);
             counter++;

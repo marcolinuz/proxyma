@@ -477,9 +477,8 @@ public class DebugSerializer extends m.c.m.proxyma.plugins.serializers.AbstractS
      * A short html description of what it does.
      */
     private static final String description = ""
-            + "This plugin is a simple text serializer.<br/>"
-            + "Its work is to send back to the client all the data processed by " 
-            + "the proxyma engine.<br/>"
-            + "It will dump in text format the request data, the original response data "
-            + "and the transformed data. (No access log records are written by this plugin.)";
+            + "This plugin is a text/plain serializer.<br/>"
+            + "Its purpose is to dump all the data processed by the proxy engine.<br/>"
+            + "In other words, it will dump in text format all the request data, the original-server response "
+            + "and the transformed respone.<br/>Note: No access log records are written when this plugin is active.";
 }

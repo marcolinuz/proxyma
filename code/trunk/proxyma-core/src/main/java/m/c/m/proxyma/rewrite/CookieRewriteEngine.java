@@ -24,6 +24,7 @@ public class CookieRewriteEngine {
     public CookieRewriteEngine (ProxymaContext context) {
         //initialize the logger for this class.
         log = context.getLogger();
+        urlRewriter = new URLRewriteEngine(context);
     }
 
     /**
@@ -35,45 +36,43 @@ public class CookieRewriteEngine {
      * @param aResource the resource that owns the Cookie
      */
     public void masqueradeCookie(Cookie cookie, ProxymaResource aResource) {
-        //calculate the new Path of the cookie
-        ProxyFolderBean folder = aResource.getProxyFolder();
+        //calculate the new values of the Set-Cookie header
         URL proxymaRootURL = aResource.getProxymaRootURL();
-        StringBuffer newPath = new StringBuffer(proxymaRootURL.getPath());
-        newPath.append("/").append(aResource.getProxyFolder().getURLEncodedFolderName());
 
-        //calculate the old domain of the  cookie
-        StringBuffer originalDomainAndPath = null;
-        if (cookie.getDomain() == null)
-            originalDomainAndPath = new StringBuffer(folder.getDestinationAsURL().getHost()).append(COMMENT_FIELDS_SEPARATOR);
-        else
-            originalDomainAndPath = new StringBuffer(cookie.getDomain()).append(COMMENT_FIELDS_SEPARATOR);
-        
-        // calculate old path of the cookie
-        if (cookie.getPath() == null)
-            originalDomainAndPath.append("/");
-        else
-            originalDomainAndPath.append(cookie.getPath());
-
-        //Set the new cookie values for the client
+        //Calculate the new Cookie Domain
         cookie.setDomain(proxymaRootURL.getHost());
-        cookie.setPath(newPath.toString());
-        cookie.setComment(originalDomainAndPath.toString());
+        
+        // calculate new path of the cookie
+        if (cookie.getPath() == null) {
+            cookie.setPath(urlRewriter.masqueradeURL(aResource.getProxyFolder().getDestinationAsURL().getPath(), aResource));
+        } else {
+            String newPath = urlRewriter.masqueradeURL(cookie.getPath(), aResource);
+            if (newPath.startsWith("/")) {
+                cookie.setPath(newPath);
+            } else {
+                cookie.setPath(urlRewriter.masqueradeURL(aResource.getProxyFolder().getDestinationAsURL().getPath(), aResource));
+            }
+        }
 
-        log.finer("Masqueraded Cookie, old Host/domain=" + originalDomainAndPath.toString() +
-                   " New Host/Domain=" + proxymaRootURL.getHost() + COMMENT_FIELDS_SEPARATOR + newPath.toString());
+        //set the new value for the cookie
+        String newValue = PROXYMA_REWRITTEN_HEADER + cookie.getValue();
+        cookie.setValue(newValue);
+
+        log.finer("Masqueraded Cookie, new path=" + cookie.getPath() + "; new value=" + newValue);
     }
 
     /**
      * Rebuilds the original cookie from a masqueraded one.
      * @param cookie the cookie to unmasquerade
-     * @param aResource the resource that owns the Cookie
+     * @return an string array with doamain, path and original value of the cookie.
      */
     public void unmasqueradeCookie (Cookie cookie) {
-        String[] originalValues = cookie.getComment().split (COMMENT_FIELDS_SEPARATOR);
-        cookie.setDomain(originalValues[0]);
-        cookie.setPath(originalValues[1]);
-
-        log.finer("Unmasqueraded Cookie, original Host/domain " + cookie.getComment() + " restored."); 
+        String cookieValue = cookie.getValue();
+        if (cookieValue.startsWith(PROXYMA_REWRITTEN_HEADER)) {
+            String originalValue = cookieValue.substring(33);
+            cookie.setValue(originalValue);
+            log.finer("Unmasqueraded Cookie original value: " + originalValue);
+        }
     }
 
     /**
@@ -82,8 +81,13 @@ public class CookieRewriteEngine {
     private Logger log = null;
 
     /**
-     * The separator used into the cookie comment to store the original
-     * domain and path fields.
+     * The url rewriter used to rewrite cookie paths
      */
-    public static final String COMMENT_FIELDS_SEPARATOR = "@";
+    private URLRewriteEngine urlRewriter = null;
+
+    /**
+     * The header added to the rewritten cookies that can be recognized by the
+     * preprocessor to restore the original values.
+     */
+    public static final String PROXYMA_REWRITTEN_HEADER = "#%#PROXYMA-NG_REWRITTEN_COOKIE#%#";
 }

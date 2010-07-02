@@ -72,7 +72,7 @@ public class ProxyEngine {
             try {
                 //prepare a redirect response to the "Proxyma root uri"
                 log.fine("Requested the proxyma path without trailing \"/\".. Redirecting to root uri: " + aResource.getProxymaRootURLAsString());
-                responseData = ProxyInternalResponsesFactory.createRedirectResponse(aResource.getProxymaRootURLAsString(), context);
+                responseData = ProxyInternalResponsesFactory.createRedirectResponse(aResource.getProxymaRootURLAsString()+"/", context);
             } catch (MalformedURLException ex) {
                 //if the URL is malformed send back an error page.
                 log.severe("Malformed URL found (" + aResource.getProxymaRootURLAsString() + ") for the proxyma root URI!");
@@ -150,6 +150,10 @@ public class ProxyEngine {
                         plugin = availableRetrivers.get(folder.getRetriver());
                         log.finer("Getting resource with the "+ plugin.getName());
                         plugin.process(aResource);
+
+                        //Set the Server Header into the response:
+                        aResource.getResponse().getResponseData().deleteHeader(SERVER_HEADER);
+                        aResource.getResponse().getResponseData().addHeader(SERVER_HEADER, context.getProxymaVersion());
 
                         //Apply the folder-specific transformer in registration order
                         configuredPlugins = folder.getTransformers().iterator();
@@ -376,6 +380,11 @@ public class ProxyEngine {
      * https
      */
     private static final String HTTPS_SCHEME = "https";
+
+    /**
+     * The originating server header name
+     */
+    private static final String SERVER_HEADER = "Server";
     
     /**
      * Http status code for "not found" resources

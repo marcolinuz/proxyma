@@ -170,10 +170,10 @@ public class CharsetInspectorTransformer extends m.c.m.proxyma.plugins.transform
      */
     private static final String description = "" +
               "This plugin is an html inspector.<br/>" +
-              "If a server doesn't provides a proper character encoding into " +
-              "the Content-Type header, it scans the html page searching for " +
-              "a meta tag that declares it.<br/>" +
-              "This plugin can be useful to avoid wrong characters into the pages.";
+              "It is very useful if a remote server doesn't provides a proper character encoding " +
+              "value into the Content-Type header. In this case, the plugin will scan the html page " +
+              "searching for a meta tag that declares it.<br/>" +
+              "This plugin can be useful to avoid wrong characters into some html pages.";
 
     //INSPECTED TAG NAMES
     private final static String META = "meta";
