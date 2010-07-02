@@ -39,7 +39,7 @@ body {
 #riga_desc{
 	float:left;
 	width:70%;
-	background-image:url(../img/riga.png);
+	background-image:url(img/riga.png);
 	background-position:left;
 	background-repeat:repeat-y;
 	color:#FFFFFF;
@@ -69,27 +69,27 @@ body {
 	left:20px;
 	margin-top:20px;
 }
-#riferimenti {
+#author {
 	border-top:1px solid #000000;
 	margin-top:15px;
 	padding-right:20px;
 	padding-left:5px;
 	float:left
 }
-#riferimenti p{
+#author p{
 	font-size:0.7em;
 	margin-top:0px;
 }
 
 #www {
-	background-image:url(../img/angolo_grigio.gif);
+	background-image:url(img/angolo_grigio.gif);
 	background-position:left;
 	background-repeat:no-repeat;
 	text-indent:18px;
 	margin-top:0px;
 }
 
-#redazione, #www {
+#release, #www {
 	float:left;
 	font-size:0.8em;
 	background-color:#7F7F7F;
@@ -97,7 +97,7 @@ body {
 	height:16px;
 	margin-top:10px;
 }
-#redazione a, #www a {
+#release a, #www a {
 	color:#FFFFFF;
 	text-decoration:none;
 	height:14px;
@@ -111,7 +111,8 @@ body {
 	left:0px;
 	/*margin-top:60px;*/
 }
-#titolo {
+
+#titolo{
 	font-size:medium;
 	font-weight:bold;
 	text-align:center;
@@ -120,6 +121,32 @@ body {
 	color:#960000;
 	margin-left:20px;
 	margin-right:20px;
+}
+
+
+.tableTitle{
+	font-size:medium;
+	font-weight:bold;
+	text-align:center;
+	text-transform:capitalize;
+	border-bottom:1px solid #960000;
+	color:#960000;
+	margin-left:20px;
+	margin-right:20px;
+}
+
+#toggleView {
+    margin-top: 5px;
+}
+
+#line {
+    margin-bottom:5px;
+    border-bottom:1px solid #cccccc;
+    padding-bottom:5px;
+}
+
+.folderActions {
+    border-style: none;
 }
 /**************************/
 /**   domande            **/

@@ -31,7 +31,7 @@
     %>
     <head>
         <title>Proxyma Configuration Console</title>
-        <meta http-equiv="Content-Type" content="text/html;">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"
         <link href="<%=proxymaContextPath%>/stile.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
             //Shows or hides divs based upon the content of the section box
@@ -78,8 +78,8 @@
         </div>
         <br />
         <div id="centrale">
-            <div id="titolo">
-                Proxyma Proxy-Folder Edit Page (<a href="#" onclick="toggle('advanced');return(false);">Show/Hide Advanced Options</a>)
+            <div class="tableTitle">
+                Edit Proxy-Folder
             </div>
             <div id="gruppo">
                 <%
@@ -119,8 +119,8 @@
                                 </td>
                                 <td align="left">
 	                                In this field you can set the name and the consequent path of the Proxy-Folder.<br/>
-	                                It's a required parameter and it must be a valid string, note that it can't countain the "/" character.<br/>
-	                                The destination will be masqueraded into the follow path: "<%=context.getProxymaContextBasePath()%>/${URLEncoded-ProxyFolderName}".
+	                                This is a required parameter but it can't countain any "/" character.<br/>
+	                                Note: the destination will be masqueraded into the follow path: "<%=context.getProxymaContextBasePath()%>/${URLEncoded-ProxyFolderName}".
                                 </td>
                             </tr>
                             <tr class="odd">
@@ -131,14 +131,10 @@
                                     <input type="text" class="risposta" name="<%=GlobalConstants.EDIT_FORM_DESTINATION%>" size="40" maxlength="255" value="<%=currentFolder.getDestinationAsString()%>" />
                                 </td>
                                 <td align="left">
-	                                This a required parameter. It countains a valid URL that will be masquerded by Proxyma.<br/>
+	                                This is another required parameter and it must countain the valid URL that will be masquerded by Proxyma.<br/>
 	                                NOTE: If provided, the tailing "/" (slash) will be automatically removed.
                                 </td>
                             </tr>
-                        </table>
-                    </div>
-                    <div id="advanced">
-                        <table width="95%" align="center">
                             <tr class="even">
                                 <td align="center" width="10%">
 	                                Max POST-Size
@@ -147,18 +143,41 @@
                                     <input type="text" class="risposta" name="<%=GlobalConstants.EDIT_FORM_MAX_POST_SIZE%>" size="40" maxlength="50" value="<%=currentFolder.getMaxPostSize()%>" />
                                 </td>
                                 <td align="left" width="50%">
-	                                This option sets the maximum allowed size for
-	                                the POST data that comes from the client browser.<br/>
-	                                Please note that this parameter could be useful
-	                                to avoid some kind of DOS attaks based on large
-	                                POSTS (that cause high memory consumption).<br/>
-	                                To disable this limit set it to 0 (zero).
+	                                This option sets the maximum allowed size for a "POST" method.<br/>
+	                                In some cases this parameter could be useful to avoid some kind of DOS attaks based upon large POSTS (that cause high memory consumption).<br/>
+	                                Note: To disable this limit, set it to 0 (zero).
                                 </td>
                             </tr>
-
+                        </table>
+                    </div>
+                    <div id="toggleView">
+                        <table width="95%" align="center">
+                            <tr class="submit">
+                                <td width="100%" align="center" >
+                                    <input type="button" name="toggleButton" value="Show/Hide Plugins Options" onclick="toggle('advanced');return(false);" />
+                                </td>
+                            </tr>
+                       </table>
+                    </div>
+                    <div id="advanced">
+                        <div class="tableTitle">
+                            Proxy-Engine Availabe Plugins
+                        </div>
+                        <table width="95%" align="center">
+                            <tr class="labels">
+                                <td align="center" width="10%" >
+                                    <b>Plugin Type</b>
+                                </td>
+                                <td align="left" width="40%" >
+                                    <b>Plugins Selection</b>
+                                </td>
+                                <td align="left" width="50%" >
+                                    <b>Plugins Description</b>
+                                </td>
+                            </tr>                           
                             <tr class="odd">
                                 <td align="center">
-	                                Preprocessor Plugins
+	                                Preprocessors
                                 </td>
                                 <td align="left">
                                     <%
@@ -202,7 +221,7 @@
 
                             <tr class="even">
                                 <td align="center">
-	                                Cache Provider Plugin
+	                                Cache Providers
                                 </td>
                                 <td align="left">
                                     <select name="<%=GlobalConstants.EDIT_FORM_CACHE_PROVIDER%>" class="risposta">
@@ -241,7 +260,7 @@
 
                             <tr class="odd">
                                 <td align="center">
-	                                Retriver Plugin
+	                                Retrivers
                                 </td>
                                 <td align="left">
                                     <select name="<%=GlobalConstants.EDIT_FORM_RETRIVER%>" class="risposta">
@@ -280,7 +299,7 @@
 
                             <tr class="even">
                                 <td align="center">
-	                                Transformer Plugins
+	                                Transformers
                                 </td>
                                 <td align="left">
                                     <%
@@ -323,7 +342,7 @@
 
                             <tr class="odd">
                                 <td align="center">
-	                                Serializer Plugin
+	                                Serializers
                                 </td>
                                 <td align="left">
                                     <select name="<%=GlobalConstants.EDIT_FORM_SERIALIZER%>" class="risposta">
@@ -362,16 +381,27 @@
 
                         </table>
                     </div>
+                    <div id="line"></div>
                     <table width="95%" align="center">
                         <tr class="submit">
                             <td width="100%" align="center" >
-                                <input type="submit" value="Apply" />
+                                <input type="submit" value="Apply Changes" />
                             </td>
                         </tr>
                     </table>
                 </form>
             </div>
         </div>
-        <jsp:include page="/footer.html" />
+        <div id="fondo">
+            <div id="author">
+                    <p><b><%=context.getProxymaVersion()%></b> - Marco Casavecchia Morganti (marcolinuz@gmail.com)</p>
+            </div>
+            <div id="www">
+                    <a href="http://proxyma.sourceforge.net/">Proxyma Project</a>
+            </div>
+            <div id="release">
+                <img src="<%=proxymaContextPath%>/img/angolo_grigio_rev.gif" alt="grey angle image" />
+            </div>
+        </div>
     </body>
 </html:html>

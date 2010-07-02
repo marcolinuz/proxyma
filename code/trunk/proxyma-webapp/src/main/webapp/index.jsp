@@ -16,21 +16,22 @@
 -->
 <html>
     <head>
-        <title>Welcome to the new Proxyma 1.0!</title>
-        <meta http-equiv="Content-Type" content="text/html;">
+        <title>Welcome to the new Proxyma-NG!</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link href="stile.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <jsp:include page="header.html" />
         <div id="centrale">
-            <div id="titolo">Welcome to Proxyma!</div>
+            <div id="titolo">Welcome to the new Proxyma-NG!</div>
             <div id="gruppo">
                 <br/>
-                    This is the configuration console of the web application that implements the multiple<br/>
-                    reverse-proxy with basic url-rewriting capabilities using the proxyma-core library..
+                    This is the configuration console of the application that implements the multiple<br/>
+                    reverse-proxy with basic url-rewriting capabilities using the new proxyma-core library..
                 <br/><br/>
                     Now, all you have to do is to select a context and click the "go" button to start to manage the proxy-folders.
                 <br/><br/>
+                <div id="line"></div>
                 <span class="form">
                     <form action="console" method="post">
                         <input type="hidden" name="<%=GlobalConstants.COMMAND_PARAMETER %>" value="<%=GlobalConstants.RELOAD_PAGE_COMMAND %>"/>
@@ -53,6 +54,16 @@
                 </span>
             </div>
         </div>
-        <jsp:include page="footer.html" />
+        <div id="fondo">
+            <div id="author">
+                    <p><b>Proxyma-NG</b> - By MCM (marcolinuz@gmail.com)</p>
+            </div>
+            <div id="www">
+                    <a href="http://proxyma.sourceforge.net/">Proxyma Project</a>
+            </div>
+            <div id="release">
+                <img src="<%=getServletContext().getContextPath()%>/img/angolo_grigio_rev.gif" alt="grey angle image" />
+            </div>
+        </div>
     </body>
 </html>
