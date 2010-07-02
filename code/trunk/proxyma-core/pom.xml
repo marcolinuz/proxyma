@@ -2,7 +2,8 @@
 <!--
     Document   : pom.xml
     Description:
-       This is the Maven 2 POM file for the Proxyma Project..
+       This is the Maven 2 POM file for the Proxyma-Core module of
+       the Proxyma Project..
 
     NOTE:
        this software is released under GPL License.
