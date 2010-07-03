@@ -1,14 +1,13 @@
 package m.c.m.proxyma.plugins.serializers;
 
-import java.io.IOException;
 import m.c.m.proxyma.ProxymaTags;
 import m.c.m.proxyma.ProxymaTags.HandlerType;
 import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
  * <p>
- * This is the "null" implementation of a serializer plugin.
- * It does absolutely nothing. :O)
+ * This is the abstract class of a serializer plugin.<br/>
+ * you have to implement a subclass of this if you want to realize your own
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -21,7 +20,7 @@ public abstract class AbstractSerializer implements m.c.m.proxyma.core.ResourceH
 
     /**
      * This method is required to declare the type of plugin that this class
-     * implements.
+     * implements and it's final. So you don't have to override it.
      * @return the type of this plugin: SERIALIZER
      */
     @Override
@@ -30,8 +29,7 @@ public abstract class AbstractSerializer implements m.c.m.proxyma.core.ResourceH
     }
 
     /**
-     * This method only initialize its internal logger.
-     * It does absolutely nothing to the passed resource leaving it untouched.
+     * This is the method to implement to realize the serializer logic.
      * @param aResource any ProxymaResource
      */
     @Override

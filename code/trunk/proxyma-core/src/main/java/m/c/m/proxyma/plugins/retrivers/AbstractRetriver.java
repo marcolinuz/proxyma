@@ -6,8 +6,9 @@ import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
  * <p>
- * This is the "null" implementation of a retriver plugin.
- * It does absolutely nothing. :O)
+ * This is the abstract class of a retriver plugin.<br/>
+ * you have to implement a subclass of this if you want to realize your own
+ * preprocessor :O)
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -20,7 +21,7 @@ public abstract class AbstractRetriver implements m.c.m.proxyma.core.ResourceHan
 
     /**
      * This method is required to declare the type of plugin that this class
-     * implements.
+     * implements and it's final. So you don't have to override it.
      * @return the type of this plugin: RETRIVER
      */
     @Override
@@ -29,8 +30,8 @@ public abstract class AbstractRetriver implements m.c.m.proxyma.core.ResourceHan
     }
 
     /**
-     * This method only initialize its internal logger.
-     * It does absolutely nothing to the passed resource leaving it untouched.
+     * This is the method to implement to realize the retriver logic.
+     * It have to provide some response data for the further plugins.
      * @param aResource any ProxymaResource
      */
     @Override

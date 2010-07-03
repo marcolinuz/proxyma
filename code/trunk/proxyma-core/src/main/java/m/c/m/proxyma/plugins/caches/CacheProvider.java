@@ -5,9 +5,10 @@ import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
  * <p>
- * This is the interface to implement to provide a CacheProvider.
- * The default implementation of it is made using ECHACHE an Open Source Cache Manager.
- * IMPORTANT: The cache plugn is used 2 times into the engine:
+ * This is the interface to implement to provide a CacheProvider to the proxy engine.
+ * The default implementation of it is made using ECHACHE an Open Source Cache Manager
+ * but you can add any other cache engine if you want to.
+ * IMPORTANT: The cache plugn is used 2 times into the proxy-engine:
  * <ul>
  *  <li>After the last preprocessor-plugin has run. In this way the engine can evaulate if there is a cached version of the response already available.</li>
  *  <li>Before start the the serializer-plugin to decide if the resource can be cached.</li>

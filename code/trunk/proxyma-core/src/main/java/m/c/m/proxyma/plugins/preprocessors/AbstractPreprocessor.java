@@ -6,7 +6,7 @@ import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
  * <p>
- * This is the abstract class of a preprocessor plugin.
+ * This is the abstract class of a preprocessor plugin.<br/>
  * you have to implement a subclass of this if you want to realize your own
  * preprocessor :O)
  * </p><p>
