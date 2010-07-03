@@ -27,7 +27,10 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * </ul>
  * </p><p>
  * Its purpose is to manage a ProximaResource (that has a request inside) in order to fill the response with the requested data using
- * the provided plugins.
+ * the provided plugins. <br/>
+ * IMPORTANT: The engine guarantees that the preprocessors and the transformer are executed respecting the "executiPriority" defined
+ * into the proxyma-config.xml. Plugins with a lower priority are execute first and plugins with an higher priority are executed lastly
+ * (BTW: plugins with the same priority are executed in random order).
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
