@@ -21,7 +21,7 @@ public abstract class AbstractPreprocessor implements m.c.m.proxyma.core.Resourc
 
     /**
      * This method is required to declare the type of plugin that this class
-     * implements.
+     * implements and it's final. So you don't have to override it.
      * @return the type of this plugin: PREPROCESSOR
      */
     @Override
