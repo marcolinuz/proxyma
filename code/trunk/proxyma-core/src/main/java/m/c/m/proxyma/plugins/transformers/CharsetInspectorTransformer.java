@@ -18,9 +18,12 @@ import org.htmlparser.visitors.NodeVisitor;
 
 /**
  * <p>
- * This plugin implements a Style Sheets Rewriter.<br/>"
- * Its scans the html pages and the CSS files seraching for style links.<br/>
- * If any link is found it will be rewritten it in order to masquerde its real source.
+ * This plugin implements an html Charset inspector.<br/>
+ * Its scans the html pages seraching for content-tyle meta tags.<br/>
+ * If such tag is found, it will use its value to add a conten-type header
+ * to the response.<br/>
+ * Note: it only runs if the content-type provided by the remote server does
+ * not countain a charset encoding.
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.

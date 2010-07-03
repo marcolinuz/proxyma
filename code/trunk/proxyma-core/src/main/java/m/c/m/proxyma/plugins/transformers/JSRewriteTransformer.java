@@ -23,7 +23,7 @@ import org.htmlparser.visitors.NodeVisitor;
 
 /**
  * <p>
- * This plugin implements a basic and not complete Javascript Rewriter.<br/>"
+ * This plugin implements a basic and not complete Javascript Rewriter.<br/>
  * Its scans the html pages and the JS files seraching for javascript links.<br/>
  * If any link is found it will be rewritten it in order to masquerde its real source.
  * </p><p>

@@ -9,8 +9,8 @@ import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
  * <p>
- * This Class implements the logic od the URL rewriter engine.<br/>
- * It is used by the plugins that performs URL and Cookie rewriting.
+ * This Class implements the logic of the Cookies rewriter engine.<br/>
+ * It is used by the plugins that performs Cookie rewriting stuff.
  *
  * </p><p>
  * NOTE: this software is released under GPL License.

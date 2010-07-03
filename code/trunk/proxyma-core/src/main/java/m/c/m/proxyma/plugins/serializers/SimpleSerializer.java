@@ -18,7 +18,7 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * <p>
  * This plugin implements a simple serializer.<br/>
  * Its work is to send back to the client the response adding to it
- * only a few only useful headers.<br/>
+ * only a few useful headers.<br/>
  * It writes also the "access log" in common logging format."
  * </p><p>
  * NOTE: this software is released under GPL License.

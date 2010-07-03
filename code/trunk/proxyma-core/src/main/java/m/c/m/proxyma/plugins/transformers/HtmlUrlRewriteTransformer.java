@@ -23,9 +23,9 @@ import org.htmlparser.visitors.NodeVisitor;
  * <p>
  * This plugin implements an URL Rewriter.<br/>
  * It scans the HTML page contained into the response-data searching for any URL.<br/>
- * When it finds an URL relative to the path of the current configured proxy folders,
+ * When it finds an URL relative to any of the proxy folders configured into the current context,
  * it uses the UrlRewriterEngine to modify the URL.<br/>
- * Its purpose is to make pages and link relative only to proxyma URI in order to fully
+ * Its purpose is to make pages and link relative only to proxyma URIs in order to fully
  * masquerde the real source of the resources.
  * </p><p>
  * NOTE: this software is released under GPL License.

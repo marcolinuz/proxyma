@@ -22,7 +22,7 @@ import org.htmlparser.visitors.NodeVisitor;
 
 /**
  * <p>
- * This plugin implements a Style Sheets Rewriter.<br/>"
+ * This plugin implements a Style Sheets Rewriter.<br/>
  * Its scans the html pages and the CSS files seraching for style links.<br/>
  * If any link is found it will be rewritten it in order to masquerde its real source.
  * </p><p>
