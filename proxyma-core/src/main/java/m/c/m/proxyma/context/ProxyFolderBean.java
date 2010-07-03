@@ -15,9 +15,9 @@ import org.apache.commons.lang.NullArgumentException;
 
 /**
  * <p>
- * This class is the bean that represents a remote destinationAsString for the
+ * This class is the bean that represents a remote destination for the
  * reverse proxy engine.
- * It is a data-object that counteins all the configuration needed by the
+ * It is a data-object and countains all the configuration needed by the
  * ProxymaCore to achieve its work.
  * </p><p>
  * NOTE: this software is released under GPL License.

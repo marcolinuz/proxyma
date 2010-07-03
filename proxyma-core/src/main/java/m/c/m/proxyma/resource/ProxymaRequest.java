@@ -52,9 +52,9 @@ public interface ProxymaRequest {
     
     /**
      * Returns the base path of proxyma from the request (without host, port, protocol and query string)
-     * @return the absolute path of the requested URI.
+     * @return the absolute URI path that implements the current context.
      */
-    public String getServletContextPath();
+    public String getContextURLPath();
 
     /**
      * Returns the path of the request (without protocol, host, port, proxyma context and query string)

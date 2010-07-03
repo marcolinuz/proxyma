@@ -14,9 +14,10 @@ import org.apache.commons.lang.NullArgumentException;
 /**
  * <p>
  *
- * This class rappresents a resource managed by the proxy.
+ * This class rappresents a resource managed by the proxy.<br/>
  * It countains a request and a response and it has all the attributes required
- * by the proxyma-core to manage a client request/response.
+ * by the proxyma-core to manage a client request/response.<br/>
+ * In other words, this is the object that will be managed by all the plugins.
  *
  * </p><p>
  * NOTE: this software is released under GPL License.

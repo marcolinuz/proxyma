@@ -20,13 +20,14 @@ import m.c.m.proxyma.resource.ProxymaResponseDataBean;
  * This class is the main skeleton of this whole project and is a mixture of many design patterns.
  * </p><p>
  * <ul>
- * <li>It's like a "Builder" because it separates the building of a cmplex object (the proxy response) from its implementation.</li>
+ * <li>It's like a "Builder" because it separates the building of a complex object (the proxy response) from its implementation.</li>
  * <li>It's like a "Mediator" because it encapsulate the collaboration strategies of a group of objects that doesn't know anything about each other</li>
  * <li>It's like a "Strategy" because the algorithms to build of the proxy response are choosen at run time form the ProxyFolder configuration</li>
  * <li>It's like a "Template Method" because it defines the skeleton of the algorithm and delegates to the plugins the implementation of the manipulation algorithms</li>
  * </ul>
  * </p><p>
- * Its purpose is to take a ProximaResource (that has a request inside) and manipulate it in order to fill the response with the requested data.
+ * Its purpose is to manage a ProximaResource (that has a request inside) in order to fill the response with the requested data using
+ * the provided plugins.
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -65,7 +66,7 @@ public class ProxyEngine {
         aResource.setProxymaRootURI(getProxymaRootURI(request));
 
         // *** Try to understand what kind of request was come and if it belongs to any proxyFolder ***
-        String subPath = request.getRequestURI().replace(request.getServletContextPath(), EMPTY_STRING);
+        String subPath = request.getRequestURI().replace(request.getContextURLPath(), EMPTY_STRING);
         ProxymaResponseDataBean responseData = null;
         if (subPath == null || EMPTY_STRING.equals(subPath)) {
             //The path is not complete, redirect the client to proxyma root path
@@ -319,7 +320,7 @@ public class ProxyEngine {
         } else {
             retVal.append(":").append(request.getServerPort());
         }
-        retVal.append(request.getServletContextPath());
+        retVal.append(request.getContextURLPath());
         
         return retVal.toString();
     }

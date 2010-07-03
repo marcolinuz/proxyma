@@ -118,7 +118,7 @@ public class ProxymaServletRequestTest extends TestCase {
     }
 
     /**
-     * Test of getServletContextPath method, of class ProxymaServletRequest.
+     * Test of getContextURLPath method, of class ProxymaServletRequest.
      */
     public void testGetSubPath() {
         System.out.println("getSubPath");
@@ -132,7 +132,7 @@ public class ProxymaServletRequestTest extends TestCase {
     }
 
     /**
-     * Test of getServletContextPath method, of class ProxymaServletRequest.
+     * Test of getContextURLPath method, of class ProxymaServletRequest.
      */
     public void testGetContextPath() {
         System.out.println("getContextPath");
@@ -141,7 +141,7 @@ public class ProxymaServletRequestTest extends TestCase {
 
         ProxymaServletRequest instance = new ProxymaServletRequest(request, context);
         String expResult = request.getContextPath() + request.getServletPath();
-        String result = instance.getServletContextPath();
+        String result = instance.getContextURLPath();
         assertEquals(expResult, result);
     }
 
