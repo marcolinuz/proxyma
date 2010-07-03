@@ -9,7 +9,7 @@ import m.c.m.proxyma.resource.ProxymaResource;
 /**
  * </p><p>
  * This is a null implementation of the interface CacheProvider.
- * It doesn't stores anything and never returns anything.
+ * It doesn't stores anything and never returns anything.<br/>
  * IMPORTANT: The cache plugn is used 2 times into the engine:
  * <ul>
  *  <li>After the last preprocessor-plugin has run. In this way the engine can evaulate if there is a cached version of the response already available.</li>
