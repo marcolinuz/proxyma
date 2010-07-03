@@ -6,8 +6,8 @@ import m.c.m.proxyma.resource.ProxymaResource;
 
 /**
  * <p>
- * This is the "null" implementation of a transformer plugin.
- * It does absolutely nothing. :O)
+ * This is the abstract class of a transformer plugin.<br/>
+ * you have to implement a subclass of this if you want to realize your own
  * </p><p>
  * NOTE: this software is released under GPL License.
  *       See the LICENSE of this distribution for more informations.
@@ -20,7 +20,7 @@ public abstract class AbstractTransformer implements m.c.m.proxyma.core.Resource
 
     /**
      * This method is required to declare the type of plugin that this class
-     * implements.
+     * implements and it's final. So you don't have to override it.
      * @return the type of this plugin: TRANSFORMER
      */
     @Override
@@ -29,8 +29,7 @@ public abstract class AbstractTransformer implements m.c.m.proxyma.core.Resource
     }
 
     /**
-     * This method only initialize its internal logger.
-     * It does absolutely nothing to the passed resource leaving it untouched.
+     * This is the method to implement to realize the transformer logic.
      * @param aResource any ProxymaResource
      */
     @Override
