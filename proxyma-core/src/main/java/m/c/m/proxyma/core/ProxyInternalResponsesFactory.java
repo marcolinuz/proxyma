@@ -61,12 +61,13 @@ public class ProxyInternalResponsesFactory {
     }
 
     /**
-     * Generates an error response.
+     * Generates an error page response.
      * @param the error status to report
      * @return a new response data bean ready to be sent to the client
      */
     public static ProxymaResponseDataBean createErrorResponse(int errorCode, ProxymaContext context) {
         ProxymaResponseDataBean error = new ProxymaResponseDataBean();
+        String charsetEncoding = context.getDefaultEncoding();
 
         //Set response status
         error.setStatus(errorCode);
@@ -78,10 +79,51 @@ public class ProxyInternalResponsesFactory {
         //Add Server header
         error.addHeader(SERVER_HEADER, context.getProxymaVersion());
 
+        //Add content type header
+        error.addHeader(CONTENT_TYPE_HEADER, "text/html;charset="+charsetEncoding);
+
         //Add headers for the cache providers to avoid to cache this resource
         error.addHeader(CACHE_CONTROL_HEADER, NO_CACHE);
         error.addHeader(PRAGMA_HEADER, NO_CACHE);
 
+        //Prepare the error Page data
+        String errorPageData = html_error_page.replaceAll("%ERROR_CODE%", Integer.toString(errorCode));
+        switch (errorCode) {
+            case STATUS_FORBIDDEN:
+                errorPageData = errorPageData.replaceAll("%ERROR_SHORT_MESSAGE%", STATUS_FORBIDDEN_MESSAGE);
+                errorPageData = errorPageData.replace("%ERROR_MESSAGE%", "the requested resource was LOCKED by administratos.");
+                break;
+
+            case STATUS_NOT_FOUND:
+                errorPageData = errorPageData.replaceAll("%ERROR_SHORT_MESSAGE%", STATUS_NOT_FOUND_MESSAGE);
+                errorPageData = errorPageData.replace("%ERROR_MESSAGE%", "the requested resource doesn't exists on this server.");
+                break;
+
+            case STATUS_BAD_REQUEST:
+                errorPageData = errorPageData.replaceAll("%ERROR_SHORT_MESSAGE%", STATUS_BAD_REQUEST_MESSAGE);
+                errorPageData = errorPageData.replace("%ERROR_MESSAGE%", "your browser sent an incorrect or incomplete request.");
+                break;
+
+            case STATUS_INTERNAL_SERVER_ERROR:
+                errorPageData = errorPageData.replaceAll("%ERROR_SHORT_MESSAGE%", STATUS_INTERNAL_SERVER_ERROR_MESSAGE);
+                errorPageData = errorPageData.replace("%ERROR_MESSAGE%", "there was an internal error into Proxyma-NG.. please contact the developer.");
+                break;
+
+            default:
+                errorPageData = errorPageData.replaceAll("%ERROR_SHORT_MESSAGE%", STATUS_UNDEFINED_ERROR_MESSAGE);
+                errorPageData = errorPageData.replace("%ERROR_MESSAGE%", "there was an error..");
+                break;
+        }
+
+        //Prepare the output buffer
+        try {
+            ByteBuffer out = ByteBufferFactory.createNewByteBuffer(context);
+            byte[] data = errorPageData.getBytes(charsetEncoding);
+            out.appendBytes(data,data.length);
+            error.setData(out);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         return error;
     }
 
@@ -95,7 +137,7 @@ public class ProxyInternalResponsesFactory {
     protected static ProxymaResponseDataBean createFoldersListResponse(ProxymaContext context) {
         ProxymaResponseDataBean listPage = new ProxymaResponseDataBean();
         Logger log = context.getLogger();
-        String charsetEncoding = context.getSingleValueParameter(ProxymaTags.GLOBAL_DEFAULT_ENCODING);
+        String charsetEncoding = context.getDefaultEncoding();
 
         log.fine("Generating folders list page..");
 
@@ -153,7 +195,7 @@ public class ProxyInternalResponsesFactory {
         } catch (Exception e) {
             log.severe("Unable to generate the folder list page.");
             e.printStackTrace();
-            listPage = createErrorResponse(STATUS_SERVER_ERROR, context);
+            listPage = createErrorResponse(STATUS_INTERNAL_SERVER_ERROR, context);
         }
         log.finer("page creation done.");
 
@@ -175,9 +217,49 @@ public class ProxyInternalResponsesFactory {
     private static final int STATUS_OK = 200;
 
     /**
+     * Http status code for "not found" resources
+     */
+    private static final int STATUS_NOT_FOUND = 404;
+
+    /**
+     * Http status code for "forbidden" resources
+     */
+    private static final int STATUS_FORBIDDEN = 403;
+
+    /**
+     * Http status code for "Malformed requests"
+     */
+    private static final int STATUS_BAD_REQUEST = 400;
+
+    /**
      * Standard status code for an internal server error
      */
-    private static final int STATUS_SERVER_ERROR = 500;
+    private static final int STATUS_INTERNAL_SERVER_ERROR = 500;
+
+    /**
+     * Description for NOT_FOUND error
+     */
+    private static final String STATUS_NOT_FOUND_MESSAGE = "Not found";
+
+    /**
+     * Description for FORBIDDEN error
+     */
+    private static final String STATUS_FORBIDDEN_MESSAGE = "Forbidden";
+
+    /**
+     * Description for BAD_REQUEST error
+     */
+    private static final String STATUS_BAD_REQUEST_MESSAGE = "Bad request";
+
+    /**
+     * Description for INTERNAL_SERVER_ERROR error
+     */
+    private static final String STATUS_INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error";
+
+    /**
+     * Description for UNDEFINED_ERROR error
+     */
+    private static final String STATUS_UNDEFINED_ERROR_MESSAGE = "Error";
 
     /**
      * The date header name
@@ -267,4 +349,16 @@ public class ProxyInternalResponsesFactory {
             "<hr/>Generated by %PROXYMA-RELEASE%\n" +
             "</font></body>\n" +
             "</html>\n";
+
+    /*
+     * Template for error pages.
+     */
+    private final static String html_error_page = "" +
+            "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n" +
+            "<html><head>\n" +
+            "<title>%ERROR_CODE% %ERROR_SHORT_MESSAGE%</title>\n" +
+            "</head><body>\n" +
+            "<h1>%ERROR_SHORT_MESSAGE%</h1>\n" +
+            "<p>The requested URL can't be processed.<br/>Reason: %ERROR_MESSAGE%.</p>\n" +
+            "</body></html>";
 }
