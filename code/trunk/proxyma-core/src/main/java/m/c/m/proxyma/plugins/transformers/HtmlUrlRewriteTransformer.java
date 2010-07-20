@@ -63,7 +63,7 @@ public class HtmlUrlRewriteTransformer extends m.c.m.proxyma.plugins.transformer
         Matcher contentTypeMatcher = processedContentType.matcher(contentType.getValue());
 
         // The plugin works only on text/html documents
-        if ((contentType != null) && (contentTypeMatcher.matches())) {
+        if ((contentType != null) && (contentTypeMatcher.matches()) && (originalResponse.getData() != null)) {
             /**
              * Inner Class for the html analisys.
              */
