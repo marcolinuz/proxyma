@@ -2,6 +2,7 @@ package m.c.m.proxyma.plugins.retrivers;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -395,6 +396,7 @@ public class SimpleHttpRetriver extends m.c.m.proxyma.plugins.retrivers.Abstract
                 theBuffer.appendBytes(buffer, count);
             }
             responseData.setData(theBuffer);
+        } catch (FileNotFoundException x) {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

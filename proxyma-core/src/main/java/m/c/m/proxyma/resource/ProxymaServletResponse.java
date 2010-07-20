@@ -73,9 +73,6 @@ public class ProxymaServletResponse extends ProxymaResponse {
         } else {
             statusCode = serializeAndSendResponseData(responseData, this.theApplicationServerResponse);
         }
-
-        if (statusCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            this.theApplicationServerResponse.sendError(statusCode);
         
         return statusCode;
     }

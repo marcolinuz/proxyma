@@ -65,7 +65,7 @@ public class EhcacheCacheProvider implements m.c.m.proxyma.plugins.caches.CacheP
     @Override
     public void storeResponseDataIfCacheable(ProxymaResource aResource) {
         ProxymaRequest theRequest = aResource.getRequest();
-        if (isCacheable(aResource.getResponse().getResponseData())) {
+        if ((aResource.getResponse().getResponseData().getData() != null) &&  isCacheable(aResource.getResponse().getResponseData())) {
             log.finer("The resource is cacheable.. storing it into the cache");
             Element element = new Element(calculateKey(aResource), aResource.getResponse().getResponseData());
             theCache.put(element);

@@ -62,7 +62,7 @@ public class JSRewriteTransformer extends m.c.m.proxyma.plugins.transformers.Abs
         Matcher htmlTypeMatcher = htmlContentTypePattern.matcher(contentType.getValue());
 
         // The plugin works only on Javascript documents or fragments
-        if (contentType != null) {
+        if (contentType != null && (originalResponse.getData() != null)) {
             if (htmlTypeMatcher.matches()) {
                 log.fine("This is an Html Page, searching for JS URLs.");
                 /**

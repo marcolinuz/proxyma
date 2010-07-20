@@ -59,7 +59,7 @@ public class CharsetInspectorTransformer extends m.c.m.proxyma.plugins.transform
         Matcher htmlTypeMatcher = htmlContentTypePattern.matcher(contentType.getValue());
 
         // The plugin works only on Cascading Stylesheet documents or fragments
-        if (contentType != null) {
+        if (contentType != null && (originalResponse.getData() != null)) {
             if (htmlTypeMatcher.matches()) {
                 log.fine("This is an Html Page, searching for Charset Encoding.");
                 /**
